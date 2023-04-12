@@ -126,16 +126,16 @@ struct AtomsView: View {
         (116, "Lv", "Livermorium", "[Rn] 5f14 6d10 7s2 7p4", 293.2, 16, "A highly radioactive metal that has no stable isotopes and is used in some types of nuclear research."),
         (117, "Ts", "Tennessine", "[Rn] 5f14 6d10 7s2 7p5", 294.21, 17, "A highly radioactive metal that has no stable isotopes and is used in some types of nuclear research."),
         (118, "Og", "Oganesson", "[Rn] 5f14 6d10 7s2 7p6", 294.21, 18, "A highly radioactive metal that has no stable isotopes and is used in some types of nuclear research.")
-    ]
+    ] as [Any] as [Any]
 
     
     var body: some View {
         ScrollView(.vertical) {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: isIPad ? 6 : 3), spacing: 16) {
                 ForEach(elements, id: \.0) { (index, symbol, name, config, mass, charge, description) in
-                    NavigationLink(destination: ElementView(element: symbol, name: name)) {
+                    NavigationLink(destination: ElementView(element: symbol, name: name, description: description)) {
                         VStack {
-                            ElementSymbolView(symbol: symbol, description: description)
+                            ElementSymbolView(symbol: symbol)
                                 .frame(width: 50, height: 50)
                             Text(name)
                                 .font(.caption)
@@ -160,10 +160,9 @@ struct AtomsView_Previews: PreviewProvider {
 
 struct ElementSymbolView: View {
     let symbol: String
-    let description : String
     
     var body: some View {
-        Text(description)
+        Text(symbol)
             .font(.system(size: 24, weight: .bold))
             .frame(width: 50, height: 50)
             .background(Color.gray.opacity(0.1))
@@ -172,6 +171,8 @@ struct ElementSymbolView: View {
 struct ElementView: View {
     let element: String
     let name: String
+    let description: String
+    
     var body: some View {
         VStack {
             Text(element)
@@ -179,7 +180,7 @@ struct ElementView: View {
             Text(name)
                 .font(.title)
                 .padding(.bottom)
-            Text("This is the \(name) element. Its symbol is \(element).")
+            Text(description)
                 .padding(.horizontal)
             Spacer()
         }
