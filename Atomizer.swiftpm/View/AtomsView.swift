@@ -126,7 +126,7 @@ struct AtomsView: View {
         (116, "Lv", "Livermorium", "[Rn] 5f14 6d10 7s2 7p4", 293.2, 16, "A highly radioactive metal that has no stable isotopes and is used in some types of nuclear research."),
         (117, "Ts", "Tennessine", "[Rn] 5f14 6d10 7s2 7p5", 294.21, 17, "A highly radioactive metal that has no stable isotopes and is used in some types of nuclear research."),
         (118, "Og", "Oganesson", "[Rn] 5f14 6d10 7s2 7p6", 294.21, 18, "A highly radioactive metal that has no stable isotopes and is used in some types of nuclear research.")
-    ] as [Any] as [Any]
+    ]
 
     
     var body: some View {
