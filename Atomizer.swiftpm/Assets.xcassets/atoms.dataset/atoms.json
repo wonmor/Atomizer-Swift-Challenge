@@ -1,0 +1,200 @@
+{
+  "H": [
+    "H",
+    "Hydrogen Atom",
+    "Atom",
+    "Lightest element. Gas of diatomic molecules. Highly combustible.",
+    "1s^1",
+    1.008,
+    0
+  ],
+  "Be": [
+    "Be",
+    "Beryllium Atom",
+    "Atom",
+    "Steel-gray, strong, lightweight and brittle alkaline earth metal.",
+    "[He] 2s^2",
+    9.012,
+    2
+  ],
+  "B": [
+    "B",
+    "Boron Atom",
+    "Atom",
+    "Brittle, dark, lustrous metalloid.",
+    "[He] 2s^2 2p^1",
+    10.81,
+    3
+  ],
+  "O": [
+    "O",
+    "Oxygen Atom",
+    "Atom",
+    "Colorless, odorless, tasteless gas essential to living organisms.",
+    "[He] 2s^2 2p^4",
+    15.999,
+    -2
+  ],
+  "F": [
+    "F",
+    "Fluorine Atom",
+    "Atom",
+    "Highly reactive pale yellow diatomic gas. Most electronegative element.",
+    "[He] 2s^2 2p^5",
+    18.998,
+    -1
+  ],
+  "Ne": [
+    "Ne",
+    "Neon Atom",
+    "Atom",
+    "Colorless, odorless, inert monatomic gas.",
+    "[He] 2s^2 2p^6",
+    20.18,
+    0
+  ],
+  "Fe": [
+    "Fe",
+    "Iron Atom",
+    "Atom",
+    "Most common element on Earth. Belongs to first transition series and group 8 of periodic table.",
+    "[Ar] 4s^2 3d^6",
+    55.845,
+    2
+  ],
+  "Co": [
+    "Co",
+    "Cobalt Atom",
+    "Atom",
+    "Hard, lustrous, silver-gray metal.",
+    "[Ar] 4s^2 3d^7",
+    58.933,
+    2
+  ],
+  "Ni": [
+    "Ni",
+    "Nickel Atom",
+    "Atom",
+    "Silvery-white lustrous metal with a slight golden tinge.",
+    "[Ar] 4s^2 3d^8",
+    58.693,
+    2
+  ],
+  "Cu": [
+    "Cu",
+    "Copper Atom",
+    "Atom",
+    "Soft, malleable, and ductile metal with high thermal and electrical conductivity.",
+    "[Ar] 4s^1 3d^10",
+    63.546,
+    2
+  ],
+  "Zn": [
+    "Zn",
+    "Zinc Atom",
+    "Atom",
+    "First element in group 12 of the periodic table. Chemically similar to magnesium.",
+    "[Ar] 4s^2 3d^10",
+    65.38,
+    2
+  ],
+  "Pd": [
+    "Pd",
+    "Palladium Atom",
+    "Atom",
+    "Rare and lustrous silvery-white metal with greatest density of any element.",
+    "[Kr] 4d^10",
+    106.42,
+    2
+  ],
+  "Ce": [
+    "Ce",
+    "Cerium Atom",
+    "Atom",
+    "Soft, ductile, and silvery-white metal that tarnishes when exposed to air. Belongs to the lanthanide series.",
+    "[Xe] 6s^2 4f^1",
+    140.12,
+    3
+  ],
+  "Pr": [
+    "Pr",
+    "Praseodymium Atom",
+    "Atom",
+    "Soft and traditionally considered to be one of the rare-earth elements. Belongs to the lanthanide series.",
+    "[Xe] 6s^2 4f^3",
+    140.91,
+    3
+  ],
+  "Nd": [
+    "Nd",
+    "Neodymium Atom",
+    "Atom",
+    "Fourth member of the lanthanide series and traditionally considered to be one of the rare-earth elements.",
+    "[Xe] 6s^2 4f^4",
+    144.24,
+    3
+  ],
+  "Pm": [
+    "Pm",
+    "Promethium Atom",
+    "Atom",
+    "Fifth member of the lanthanide series and traditionally considered to be one of the rare-earth elements. Radioactive.",
+    "[Xe] 6s^2 4f^5",
+    145,
+    3
+  ],
+  "Sm": [
+    "Sm",
+    "Samarium Atom",
+    "Atom",
+    "Sixth member of the lanthanide series and traditionally considered to be one of the rare-earth elements.",
+    "[Xe] 6s^2 4f^6",
+    150.36,
+    3
+  ],
+  "Eu": [
+    "Eu",
+    "Europium Atom",
+    "Atom",
+    "Soft, silvery-white metal that tarnishes when exposed to air. Belongs to the lanthanide series.",
+    "[Xe] 6s^2 4f^7",
+    151.96,
+    2
+  ],
+  "Gd": [
+    "Gd",
+    "Gadolinium Atom",
+    "Atom",
+    "Silvery-white, malleable, and ductile rare earth metal. Third most abundant rare earth element.",
+    "[Xe] 6s^2 5d^1 4f^7",
+    157.25,
+    3
+  ],
+  "Li": [
+    "Li",
+    "Lithium Atom",
+    "Atom",
+    "Composed of three electrons bound to a nucleus containing three protons. Common alkali metal.",
+    "1s^2 2s^1",
+    6.941,
+    1
+  ],
+  "Na": [
+    "Na",
+    "Sodium Atom",
+    "Atom",
+    "Very soft silvery-white metal. Sixth most abundant element on Earth.",
+    "[Ne] 3s^1",
+    22.99,
+    1
+  ],
+  "K": [
+    "K",
+    "Potassium Atom",
+    "Atom",
+    "Silvery-white metal that is soft enough to be cut with a knife with little force. Reacts rapidly with atmospheric oxygen.",
+    "[Ar] 4s^1",
+    39.098,
+    1
+  ]
+}

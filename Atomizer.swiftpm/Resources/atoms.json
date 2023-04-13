@@ -1,0 +1,74 @@
+[
+    {
+        "symbol": "H",
+        "name": "Hydrogen Atom",
+        "category": "Nonmetal",
+        "description": "Lightest element. Gas of diatomic molecules. Highly combustible.",
+        "electronConfiguration": "1s^1",
+        "atomicMass": 1.008,
+        "oxidationStates": 0
+    },
+    {
+        "symbol": "Be",
+        "name": "Beryllium Atom",
+        "category": "Alkaline Earth Metal",
+        "description": "Steel-gray, strong, lightweight and brittle alkaline earth metal.",
+        "electronConfiguration": "[He] 2s^2",
+        "atomicMass": 9.012,
+        "oxidationStates": 2
+    },
+    {
+        "symbol": "B",
+        "name": "Boron Atom",
+        "category": "Metalloid",
+        "description": "Brittle, dark, lustrous metalloid.",
+        "electronConfiguration": "[He] 2s^2 2p^1",
+        "atomicMass": 10.81,
+        "oxidationStates": 3
+    },
+    {
+        "symbol": "O",
+        "name": "Oxygen Atom",
+        "category": "Nonmetal",
+        "description": "Colorless, odorless, tasteless gas essential to living organisms.",
+        "electronConfiguration": "[He] 2s^2 2p^4",
+        "atomicMass": 15.999,
+        "oxidationStates": -2
+    },
+    {
+        "symbol": "F",
+        "name": "Fluorine Atom",
+        "category": "Halogen",
+        "description": "Highly reactive pale yellow diatomic gas. Most electronegative element.",
+        "electronConfiguration": "[He] 2s^2 2p^5",
+        "atomicMass": 18.998,
+        "oxidationStates": -1
+    },
+    {
+        "symbol": "Ne",
+        "name": "Neon Atom",
+        "category": "Noble Gas",
+        "description": "Colorless, odorless, inert monatomic gas.",
+        "electronConfiguration": "[He] 2s^2 2p^6",
+        "atomicMass": 20.18,
+        "oxidationStates": 0
+    },
+    {
+        "symbol": "Fe",
+        "name": "Iron Atom",
+        "category": "Transition Metal",
+        "description": "Most common element on Earth. Belongs to first transition series and group 8 of periodic table.",
+        "electronConfiguration": "[Ar] 4s^2 3d^6",
+        "atomicMass": 55.845,
+        "oxidationStates": 2
+    },
+    {
+        "symbol": "Co",
+        "name": "Cobalt Atom",
+        "category": "Transition Metal",
+        "description": "Hard, lustrous, silver-gray metal.",
+        "electronConfiguration": "[Ar] 4s^2 3d^7",
+        "atomicMass": 58.933,
+        "oxidationStates": 2
+    }
+]
