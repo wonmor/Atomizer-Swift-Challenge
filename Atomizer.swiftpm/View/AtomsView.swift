@@ -17,9 +17,19 @@ let elements = try! decoder.decode([Element].self, from: jsonData)
 
 // Now you can use the `elements` array in your SwiftUI code
 struct AtomsView: View {
+    @Environment(\.adaptiveSize) var adaptiveSize
+    
+    private var isIPad: Bool {
+        return adaptiveSize.width >= 768
+    }
+    
+    var columns: [GridItem] {
+        return Array(repeating: GridItem(.flexible()), count: isIPad ? 6 : 3)
+    }
+    
     var body: some View {
         ScrollView(.vertical) {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 16) {
+            LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(elements, id: \.symbol) { element in
                     NavigationLink(destination: ElementView(element: element)) {
                         VStack {
@@ -41,6 +51,7 @@ struct AtomsView: View {
         .navigationTitle("Atoms")
     }
 }
+
 
 struct ElementView: View {
     let element: Element
