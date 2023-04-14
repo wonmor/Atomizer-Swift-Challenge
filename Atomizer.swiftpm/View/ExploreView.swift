@@ -9,6 +9,7 @@ struct ExploreView: View {
             ZStack {
                 Color(colorScheme == .dark ? .darkGray : UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.9))
                     .frame(height: adaptiveSize.width * 0.4)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 VStack(alignment: .leading) {
                     Text("New and noteworthy")
@@ -19,9 +20,9 @@ struct ExploreView: View {
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.secondary)
                 }
-                .padding(.horizontal)
                 .padding(.top, adaptiveSize.width * 0.1)
             }
+            .padding()
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 16)], spacing: 16) {
                 ForEach(0..<articles.count) { index in
