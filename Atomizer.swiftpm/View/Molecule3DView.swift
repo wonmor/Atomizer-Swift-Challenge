@@ -75,11 +75,6 @@ struct Molecule3DView: UIViewRepresentable {
         Coordinator(self)
     }
     
-    // Add a method to update the angle state variable
-    func rotateModel() {
-        angle += .pi / 4
-    }
-    
     func updateUIView(_ uiView: SCNView, context: Context) {
         if isLoading || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
             // Start loading the GLTF file if it hasn't been loaded yet
@@ -195,5 +190,7 @@ struct Molecule3DView: UIViewRepresentable {
         }
     }
 }
+
+
 
 

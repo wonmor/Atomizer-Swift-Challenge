@@ -7,6 +7,7 @@ struct MoleculeDetailView: View {
     @State private var isInstructionPopupVisible = true // Add this state property
     @State private var selectedOrbital = 0 // Add a state property for the selected orbital
     @State private var isMolecularOrbitalHOMO = true;
+    @State private var isArView = false;
     
     // Add a timer to automatically swipe through the tabs
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
@@ -18,7 +19,7 @@ struct MoleculeDetailView: View {
                     .edgesIgnoringSafeArea(.all)
                     .overlay(
                             Button(action: {
-                                // Code to trigger AR display
+                                isArView = true;
                             }) {
                                 Image(systemName: "arkit")
                                     .font(.system(size: 20))
@@ -28,7 +29,6 @@ struct MoleculeDetailView: View {
                                     .cornerRadius(10)
                             }
                             .padding(.trailing, 20)
-                            .padding(.bottom, 20)
                             , alignment: .bottomTrailing
                         )
                 
@@ -185,6 +185,9 @@ struct MoleculeDetailView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isInstructionPopupVisible = false
             }
+        }
+        .sheet(isPresented: $isArView) {
+            GLTFARView(gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!)
         }
     }
 }
