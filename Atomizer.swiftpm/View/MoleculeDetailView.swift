@@ -2,11 +2,9 @@ import SwiftUI
 import SceneKit
 import GLTFSceneKit
 
-struct MoleculeDetailView: UIViewRepresentable {
+struct Molecule3DView: UIViewRepresentable {
     typealias UIViewType = SCNView
-    
-    let molecule: Molecule
-    
+
     @State private var isLoading = true
     @State private var error: Error?
     
@@ -114,12 +112,10 @@ struct MoleculeDetailView: UIViewRepresentable {
         }
     }
 
-
-    
     class Coordinator: NSObject, SCNSceneRendererDelegate {
-        var parent: MoleculeDetailView
+        var parent: Molecule3DView
         
-        init(_ parent: MoleculeDetailView) {
+        init(_ parent: Molecule3DView) {
             self.parent = parent
         }
         
@@ -135,3 +131,19 @@ struct MoleculeDetailView: UIViewRepresentable {
         }
     }
 }
+
+struct MoleculeDetailView: View {
+    let molecule: Molecule
+
+    var body: some View {
+        VStack {
+            Text(molecule.name)
+                .font(.largeTitle)
+                .padding(.bottom)
+
+            Molecule3DView()
+                .edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
