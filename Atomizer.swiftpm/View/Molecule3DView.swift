@@ -14,6 +14,7 @@ struct Molecule3DView: UIViewRepresentable {
 
     @State private var isLoading = true
     @State private var error: Error?
+    @State private var angle: Float = 0
     
     func makeUIView(context: Context) -> SCNView {
             let sceneView = SCNView()
@@ -56,6 +57,11 @@ struct Molecule3DView: UIViewRepresentable {
         Coordinator(self)
     }
     
+    // Add a method to update the angle state variable
+    func rotateModel() {
+        angle += .pi / 4
+    }
+    
     func updateUIView(_ uiView: SCNView, context: Context) {
         if isLoading {
             // Start loading the GLTF file if it hasn't been loaded yet
@@ -82,6 +88,12 @@ struct Molecule3DView: UIViewRepresentable {
                     let sceneSource = try GLTFSceneSource(data: data, options: nil)
                     let scene = try sceneSource.scene()
                     let rootNode = scene.rootNode
+                    
+                    rootNode.eulerAngles.y = angle
+                            
+                    // Add a rotation action to the root node to continuously rotate it
+                    let rotateAction = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 10))
+                    rootNode.runAction(rotateAction)
                     
                     func applyMaterial(to node: SCNNode) {
                         if let geometry = node.geometry {
