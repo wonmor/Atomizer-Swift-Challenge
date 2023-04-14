@@ -1,15 +1,5 @@
 import SwiftUI
 
-struct Element: Codable {
-    let symbol: String
-    let name: String
-    let category: String
-    let description: String
-    let electronConfiguration: String
-    let atomicMass: Double
-    let oxidationStates: Int
-}
-
 let jsonURL = Bundle.main.url(forResource: "atoms", withExtension: "json")!
 let jsonData = try! Data(contentsOf: jsonURL)
 let decoder = JSONDecoder()
@@ -49,25 +39,6 @@ struct AtomsView: View {
             .padding()
         }
         .navigationTitle("Atoms")
-    }
-}
-
-
-struct ElementView: View {
-    let element: Element
-    
-    var body: some View {
-        VStack {
-            Text(element.symbol)
-                .font(.system(size: 96, weight: .bold))
-            Text("\(element.atomicMass)")
-                .font(.title)
-                .padding(.bottom)
-            Text(element.description)
-                .padding(.horizontal)
-            Spacer()
-        }
-        .navigationBarTitle(element.name)
     }
 }
 

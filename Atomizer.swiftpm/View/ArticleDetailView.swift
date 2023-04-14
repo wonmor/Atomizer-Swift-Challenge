@@ -46,3 +46,42 @@ struct ArticleDetailView_Previews: PreviewProvider {
         ArticleDetailView(article: articles[0])
     }
 }
+
+let articles = [
+    Article(
+        title: "Article 1",
+        subtitle: "Subtitle 1",
+        imageName: "article1",
+        content: "This is the content for article 1."
+    ),
+    Article(
+        title: "Article 2",
+        subtitle: "Subtitle 2",
+        imageName: "article2",
+        content: "This is the content for article 2."
+    ),
+    Article(
+        title: "Article 3",
+        subtitle: "Subtitle 3",
+        imageName: "article3",
+        content: "This is the content for article 3."
+    ),
+    Article(
+        title: "Article 4",
+        subtitle: "Subtitle 4",
+        imageName: "article4",
+        content: "This is the content for article 4."
+    ),
+    Article(
+        title: "Article 5",
+        subtitle: "Subtitle 5",
+        imageName: "article5",
+        content: "This is the content for article 5."
+    ),
+    Article(
+        title: "Article 6",
+        subtitle: "Subtitle 6",
+        imageName: "article6",
+        content: "This is the content for article 6."
+    )
+]
