@@ -20,7 +20,7 @@ let package = Package(
             teamIdentifier: "Z64KRUX3W3",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .flower),
+            appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.blue),
             supportedDeviceFamilies: [
                 .pad,
@@ -36,13 +36,15 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/SwiftUIX/SwiftUIX", "0.1.4"..<"1.0.0")
+        .package(url: "https://github.com/SwiftUIX/SwiftUIX", "0.1.4"..<"1.0.0"),
+        .package(url: "https://github.com/onevcat/Kingfisher", "7.0.0"..<"8.0.0")
     ],
     targets: [
         .executableTarget(
             name: "AppModule",
             dependencies: [
-                .product(name: "SwiftUIX", package: "swiftuix")
+                .product(name: "SwiftUIX", package: "swiftuix"),
+                .product(name: "Kingfisher", package: "kingfisher")
             ],
             path: ".",
             resources: [
