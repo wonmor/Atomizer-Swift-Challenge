@@ -27,48 +27,50 @@ struct MoleculeButton: View {
     @State private var image: UIImage?
 
     var body: some View {
-        VStack {
-            if let image = image {
-                ZStack {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+        NavigationLink(destination: MoleculeDetailView(molecule: molecule)) {
+            VStack {
+                if let image = image {
+                    ZStack {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 100)
+                            .clipped()
+                            .blur(radius: 24)
+                            .overlay(Color.black.opacity(0.6))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 100)
+                            .clipped()
+                            .invertColors()
+                            .blur(radius: 4)
+                        
+                        Text(molecule.name)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .shadow(color: .black, radius: 3)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                } else {
+                    ProgressView()
                         .frame(height: 100)
-                        .clipped()
-                        .blur(radius: 24)
-                        .overlay(Color.black.opacity(0.6))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                    
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 100)
-                        .clipped()
-                        .invertColors()
-                        .blur(radius: 4)
-                    
-                    Text(molecule.name)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .shadow(color: .black, radius: 3)
-                        .lineLimit(nil) // Allow text to wrap to multiple lines
-                        .fixedSize(horizontal: false, vertical: true) // Make the text wrap properly
                 }
-            } else {
-                ProgressView()
-                    .frame(height: 100)
             }
-        }
-        .frame(maxWidth: .infinity) // Force the button to take the available width
-        .padding()
-        .background(
-            LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.3)]), startPoint: .leading, endPoint: .trailing)
-        )
-        .shadow(radius: 8)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .onAppear {
-            loadImage()
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(
+                LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.3)]), startPoint: .leading, endPoint: .trailing)
+            )
+            .shadow(radius: 8)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .onAppear {
+                loadImage()
+            }
         }
     }
     
