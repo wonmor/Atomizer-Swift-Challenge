@@ -139,11 +139,18 @@ struct MoleculeDetailView: View {
         VStack {
             Text(molecule.name)
                 .font(.largeTitle)
-                .padding(.bottom)
+                .bold() // Add this line to make the text bold
+                .padding(.leading)
+                .padding(.trailing)
+            
+            Text(molecule.description)
+                .font(.largeTitle)
+                .padding()
 
             Molecule3DView()
                 .edgesIgnoringSafeArea(.all)
         }
     }
 }
+
 
