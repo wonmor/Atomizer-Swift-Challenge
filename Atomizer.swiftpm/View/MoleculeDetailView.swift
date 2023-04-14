@@ -15,131 +15,141 @@ struct MoleculeDetailView: View {
                 Molecule3DView()
                     .edgesIgnoringSafeArea(.all)
                 
-                Text(molecule.name)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
-                
-                ZStack(alignment: .bottom) {
-                    TabView(selection: $selectedTab) {
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Description")
-                                .font(.headline)
-                            Text(molecule.description)
-                            Spacer()
-                        }
+                VStack {
+                    Text(molecule.name)
+                        .font(.largeTitle)
+                        .bold()
                         .padding()
-                        .tag(0)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Molecular Formula")
-                                .font(.headline)
-                            Text(molecule.formula)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(1)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Shape")
-                                .font(.headline)
-                            Text(molecule.shape)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(2)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Polarity")
-                                .font(.headline)
-                            Text(molecule.polarity)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(3)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Bond Angle")
-                                .font(.headline)
-                            Text(molecule.bondAngle)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(4)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Orbitals")
-                                .font(.headline)
-                            Text(molecule.orbitals)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(5)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Hybridization")
-                                .font(.headline)
-                            Text(molecule.hybridization)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(6)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Molecular Geometry")
-                                .font(.headline)
-                            Text(molecule.molecularGeometry)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(7)
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Bonds")
-                                .font(.headline)
-                            Text(molecule.bonds)
-                            Spacer()
-                        }
-                        .padding()
-                        .tag(8)
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .padding(.horizontal)
                     
-                    HStack(spacing: 0) {
-                        ForEach(0..<9) { i in
-                            Rectangle()
-                                .fill(i == selectedTab ? Color.white : Color.gray)
-                                .frame(width: 30, height: 5)
-                                .cornerRadius(3)
-                                .padding(.vertical, 8)
-                                .animation(.easeInOut, value: selectedTab)
-                                .onTapGesture {
-                                    selectedTab = i
-                                }
+                    ZStack(alignment: .bottom) {
+                        TabView(selection: $selectedTab) {
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Description")
+                                    .font(.headline)
+                                Text(molecule.description)
+                                    .padding(.horizontal)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(0)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Molecular Formula")
+                                    .font(.headline)
+                                Text(molecule.formula)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(1)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Shape")
+                                    .font(.headline)
+                                Text(molecule.shape)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(2)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Polarity")
+                                    .font(.headline)
+                                Text(molecule.polarity)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(3)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Bond Angle")
+                                    .font(.headline)
+                                Text(molecule.bondAngle)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(4)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Orbitals")
+                                    .font(.headline)
+                                Text(molecule.orbitals)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(5)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Hybridization")
+                                    .font(.headline)
+                                Text(molecule.hybridization)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(6)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Molecular Geometry")
+                                    .font(.headline)
+                                Text(molecule.molecularGeometry)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(7)
+                            
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Bonds")
+                                    .font(.headline)
+                                Text(molecule.bonds)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .tag(8)
+                        }
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        
+                        HStack(spacing: 0) {
+                            ForEach(0..<9) { i in
+                                Rectangle()
+                                    .fill(i == selectedTab ? Color.white : Color.gray)
+                                    .frame(width: 30, height: 5)
+                                    .cornerRadius(3)
+                                    .padding(.vertical, 8)
+                                    .animation(.easeInOut, value: selectedTab)
+                                    .onTapGesture {
+                                        selectedTab = i
+                                    }
+                            }
+                        }
+                        .padding(.bottom)
+                        .opacity(0.3)
+                        // Use the timer to automatically swipe through the tabs
+                        .onReceive(timer) { _ in
+                            withAnimation {
+                                selectedTab = (selectedTab + 1) % 9
+                            }
                         }
                     }
                     .padding(.bottom)
-                    .opacity(0.3)
-                    // Use the timer to automatically swipe through the tabs
-                    .onReceive(timer) { _ in
-                        withAnimation {
-                            selectedTab = (selectedTab + 1) % 9
-                        }
-                    }
                 }
-                .padding(.bottom)
+                .background(Color(UIColor.darkGray).opacity(0.2))
+                .cornerRadius(20)
+                .shadow(radius: 10)
+                .padding()
             }
+            .blur(radius: isInstructionPopupVisible ? 5 : 0).animation(.easeInOut(duration: 0.5), value: isInstructionPopupVisible)
+            
             if isInstructionPopupVisible {
                 InstructionPopupView(isVisible: $isInstructionPopupVisible)
+                    .transition(.opacity) // Add this line for the fade-in effect
             }
         }
         .onAppear {
-            // Hide the instruction popup after 3 seconds
+            // Show the instruction popup
+            isInstructionPopupVisible = true
+            
+            // Hide the instruction popup after 2 seconds
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                withAnimation {
-                    isInstructionPopupVisible = false
-                }
+                isInstructionPopupVisible = false
             }
         }
     }

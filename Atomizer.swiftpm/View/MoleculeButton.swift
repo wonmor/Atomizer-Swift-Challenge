@@ -48,7 +48,7 @@ struct MoleculeButton: View {
                             .invertColors()
                             .blur(radius: 4)
                         
-                        Text("\(molecule.name).")
+                        Text(molecule.name)
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
