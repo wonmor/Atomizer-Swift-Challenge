@@ -60,12 +60,15 @@ struct MoleculeButton: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .shadow(color: .black, radius: 3)
+                        .lineLimit(nil) // Allow text to wrap to multiple lines
+                        .fixedSize(horizontal: false, vertical: true) // Make the text wrap properly
                 }
             } else {
                 ProgressView()
                     .frame(height: 100)
             }
         }
+        .frame(maxWidth: .infinity) // Force the button to take the available width
         .padding()
         .background(
             LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.3)]), startPoint: .leading, endPoint: .trailing)
@@ -162,24 +165,41 @@ struct MoleculeDetailView: View {
 }
 
 struct MoleculesView: View {
-    let columns = [
-        GridItem(.adaptive(minimum: 180), spacing: 24)
-    ]
+    @Environment(\.horizontalSizeClass) var sizeClass
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 24) {
-                ForEach(molecules) { molecule in
-                    MoleculeButton(molecule: molecule)
-                        .padding(8)
+        if sizeClass == .regular {
+            let columns = [
+                    GridItem(.flexible(minimum: 180), spacing: 24), // Use flexible GridItem with minimum width
+                    GridItem(.flexible(minimum: 180), spacing: 24)  // Add a second GridItem
+                ]
+            ScrollView {
+                        LazyVGrid(columns: columns, spacing: 24) {
+                            ForEach(molecules) { molecule in
+                                MoleculeButton(molecule: molecule)
+                                    .padding(8)
+                            }
+                        }
+                        .padding()
+                    }
+                    .background(Color(.systemGroupedBackground))
+                    .edgesIgnoringSafeArea(.bottom)
+                    .padding(.horizontal, 8) // Add horizontal padding
+                    .navigationTitle("Molecules")
+        } else {
+            ScrollView {
+                LazyVStack(spacing: 24) {
+                    ForEach(molecules) { molecule in
+                        MoleculeButton(molecule: molecule)
+                            .padding(.horizontal, 8)
+                    }
                 }
+                .padding()
             }
-            .padding()
+            .background(Color(.systemGroupedBackground))
+            .edgesIgnoringSafeArea(.bottom)
+            .navigationTitle("Molecules")
         }
-        .background(Color(.systemGroupedBackground))
-        .edgesIgnoringSafeArea(.bottom)
-        .padding(.horizontal, 8) // Add horizontal padding
-        .navigationTitle("Molecules")
     }
 }
 
