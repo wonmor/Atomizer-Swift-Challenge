@@ -16,6 +16,21 @@ struct MoleculeDetailView: View {
             VStack {
                 Molecule3DView(isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
                     .edgesIgnoringSafeArea(.all)
+                    .overlay(
+                            Button(action: {
+                                // Code to trigger AR display
+                            }) {
+                                Image(systemName: "arkit")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.white)
+                                    .padding(10)
+                                    .background(Color.white.opacity(0.1))
+                                    .cornerRadius(10)
+                            }
+                            .padding(.trailing, 20)
+                            .padding(.bottom, 20)
+                            , alignment: .bottomTrailing
+                        )
                 
                 VStack {
                     Text(molecule.name)
