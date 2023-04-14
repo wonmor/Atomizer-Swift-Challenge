@@ -5,6 +5,8 @@ struct MoleculeDetailView: View {
     
     @State private var selectedTab = 0
     @State private var isInstructionPopupVisible = true // Add this state property
+    @State private var selectedOrbital = 0 // Add a state property for the selected orbital
+    @State private var isMolecularOrbitalHOMO = true;
     
     // Add a timer to automatically swipe through the tabs
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
@@ -12,13 +14,12 @@ struct MoleculeDetailView: View {
     var body: some View {
         ZStack {
             VStack {
-                Molecule3DView()
+                Molecule3DView(isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
                     Text(molecule.name)
                         .font(.largeTitle)
-                        .bold()
                         .padding()
                     
                     ZStack(alignment: .bottom) {
@@ -135,6 +136,24 @@ struct MoleculeDetailView: View {
                 .cornerRadius(20)
                 .shadow(radius: 10)
                 .padding()
+                
+                HStack {
+                    Picker(selection: $selectedOrbital, label: Text("Orbital")) {
+                        Text("HOMO").tag(0)
+                        Text("LUMO").tag(1)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .onChange(of: selectedOrbital) { value in
+                        if value == 0 {
+                            isMolecularOrbitalHOMO = true
+                        } else {
+                            isMolecularOrbitalHOMO = false
+                        }
+                    }
+            }
+            .frame(width: 200)
+            .padding(.bottom)
             }
             .blur(radius: isInstructionPopupVisible ? 5 : 0).animation(.easeInOut(duration: 0.5), value: isInstructionPopupVisible)
             

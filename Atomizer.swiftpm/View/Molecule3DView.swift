@@ -15,6 +15,9 @@ struct Molecule3DView: UIViewRepresentable {
     @State private var isLoading = true
     @State private var error: Error?
     @State private var angle: Float = 0
+    @State private var lastIsMolecularOrbitalHOMO: Bool = true
+    
+    @Binding var isMolecularOrbitalHOMO: Bool
     
     func makeUIView(context: Context) -> SCNView {
         let sceneView = SCNView()
@@ -78,9 +81,9 @@ struct Molecule3DView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: SCNView, context: Context) {
-        if isLoading {
+        if isLoading || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
             // Start loading the GLTF file if it hasn't been loaded yet
-            let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_HOMO_GLTF")!
+            let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!
             let urlSession = URLSession(configuration: .default)
             let task = urlSession.dataTask(with: url) { data, _, error in
                 if let error
@@ -150,6 +153,9 @@ struct Molecule3DView: UIViewRepresentable {
                         uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
                     }
                 }
+                // Update the lastIsMolecularOrbitalHOMO variable to reflect
+                // the new value of isMolecularOrbitalHOMO.
+                lastIsMolecularOrbitalHOMO = isMolecularOrbitalHOMO
             }
             
             task.resume()
@@ -186,13 +192,6 @@ struct Molecule3DView: UIViewRepresentable {
                 camera.zFar = 1000
                 camera.fieldOfView = 60
             }
-        }
-    }
-    
-    // Add a preview for the Molecule3DView
-    struct Molecule3DView_Previews: PreviewProvider {
-        static var previews: some View {
-            Molecule3DView()
         }
     }
 }
