@@ -15,7 +15,7 @@ struct MoleculeDetailView: View {
     var body: some View {
         ZStack {
             VStack {
-                Molecule3DView(isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
+                Molecule3DView(isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO, isArView: $isArView)
                     .edgesIgnoringSafeArea(.all)
                     .overlay(
                             Button(action: {
@@ -185,9 +185,6 @@ struct MoleculeDetailView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isInstructionPopupVisible = false
             }
-        }
-        .sheet(isPresented: $isArView) {
-            GLTFARView(gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!)
         }
     }
 }

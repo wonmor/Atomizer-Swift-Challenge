@@ -1,40 +1,17 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by John Seong on 2023-04-14.
-//
-
 import SwiftUI
 import SceneKit
+import ARKit
 import GLTFSceneKit
 
 struct Molecule3DView: UIViewRepresentable {
-    typealias UIViewType = SCNView
-    
-    @State private var isLoading = true
-    @State private var error: Error?
-    @State private var angle: Float = 0
-    @State private var lastIsMolecularOrbitalHOMO: Bool = true
+    typealias UIViewType = ARSCNView
     
     @Binding var isMolecularOrbitalHOMO: Bool
+    @Binding var isArView: Bool
     
-    func makeUIView(context: Context) -> SCNView {
-        let sceneView = SCNView()
-        sceneView.backgroundColor = UIColor.black
-        sceneView.allowsCameraControl = true
+    func makeUIView(context: Context) -> ARSCNView {
+        let sceneView = ARSCNView(frame: .zero)
         sceneView.delegate = context.coordinator
-        
-        // Add a spinner to indicate that the model is being loaded
-        let spinner = UIActivityIndicatorView(style: .medium)
-        spinner.color = .white
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        sceneView.addSubview(spinner)
-        NSLayoutConstraint.activate([
-            spinner.centerXAnchor.constraint(equalTo: sceneView.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: sceneView.centerYAnchor),
-        ])
-        spinner.startAnimating()
         
         // Create a new scene
         let scene = SCNScene()
@@ -68,6 +45,13 @@ struct Molecule3DView: UIViewRepresentable {
         longPressGesture.minimumPressDuration = 0.3
         sceneView.addGestureRecognizer(longPressGesture)
         
+        // Set up AR session configuration if isArView is true
+        if isArView {
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.planeDetection = [.horizontal, .vertical]
+            sceneView.session.run(configuration)
+        }
+        
         return sceneView
     }
     
@@ -75,90 +59,73 @@ struct Molecule3DView: UIViewRepresentable {
         Coordinator(self)
     }
     
-    func updateUIView(_ uiView: SCNView, context: Context) {
-        if isLoading || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
-            // Start loading the GLTF file if it hasn't been loaded yet
-            let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!
-            let urlSession = URLSession(configuration: .default)
-            let task = urlSession.dataTask(with: url) { data, _, error in
-                if let error
-                    = error {
-                    DispatchQueue.main.async {
-                        self.error = error
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                    return
+    func updateUIView(_ uiView: ARSCNView, context: Context) {
+        guard isArView else { return }
+        // Load the GLTF file if it hasn't been loaded yet
+        let moleculeName = isMolecularOrbitalHOMO ? "HOMO" : "LUMO"
+        let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_\(moleculeName)_GLTF")!
+        let urlSession = URLSession(configuration: .default)
+        let task = urlSession.dataTask(with: url) { data, _, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    context.coordinator.isLoading = false
+                    context.coordinator.error = error
                 }
-                
-                guard let data = data else {
-                    DispatchQueue.main.async {
-                        self.error = NSError(domain: "MoleculeDetailView", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data was received"])
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                    return
-                }
-                
-                do {
-                    let sceneSource = try GLTFSceneSource(data: data, options: nil)
-                    let scene = try sceneSource.scene()
-                    let rootNode = scene.rootNode
-                    
-                    rootNode.eulerAngles.y = angle
-                    
-                    // Add a rotation action to the root node to continuously rotate it
-                    let rotateAction = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 10))
-                    let rotationKey = "rotationKey"
-                    rootNode.removeAction(forKey: rotationKey) // remove existing action, if any
-                    rootNode.runAction(rotateAction, forKey: rotationKey)
-                    
-                    func applyMaterial(to node: SCNNode) {
-                        if let geometry = node.geometry {
-                            if let material = geometry.firstMaterial {
-                                material.lightingModel = .constant
-                                material.isDoubleSided = true
-                                geometry.materials = [material]
-                            }
-                        }
-                        for childNode in node.childNodes {
-                            applyMaterial(to: childNode)
-                        }
-                    }
-                    
-                    applyMaterial(to: rootNode)
-                    
-                    // Scale down the root node
-                    rootNode.scale = SCNVector3(x: 0.3, y: 0.3, z: 0.3)
-                    
-                    DispatchQueue.main.async {
-                        uiView.scene = scene
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                    
-                } catch {
-                    DispatchQueue.main.async {
-                        self.error = error
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                }
-                // Update the lastIsMolecularOrbitalHOMO variable to reflect
-                // the new value of isMolecularOrbitalHOMO.
-                lastIsMolecularOrbitalHOMO = isMolecularOrbitalHOMO
+                return
             }
             
+            do {
+                let sceneSource = try GLTFSceneSource(data: data, options: nil)
+                let scene = try sceneSource.scene()
+                let rootNode = scene.rootNode
+                
+                // Add a rotation action to the root node
+                let rotateAction = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 10))
+                let rotationKey = "rotationKey"
+                rootNode.removeAction(forKey: rotationKey) // remove existing action, if any
+                rootNode.runAction(rotateAction, forKey: rotationKey)
+                
+                // Scale down the root node
+                rootNode.scale = SCNVector3(x: 0.3, y: 0.3, z: 0.3)
+                
+                // Apply material to the nodes of the scene
+                func applyMaterial(to node: SCNNode) {
+                    if let geometry = node.geometry {
+                        if let material = geometry.firstMaterial {
+                            material.lightingModel = .constant
+                            material.isDoubleSided = true
+                            geometry.materials = [material]
+                        }
+                    }
+                    for childNode in node.childNodes {
+                        applyMaterial(to: childNode)
+                    }
+                }
+                
+                applyMaterial(to: rootNode)
+                
+                DispatchQueue.main.async {
+                    uiView.scene = scene
+                    context.coordinator.isLoading = false
+                }
+                
+            } catch {
+                DispatchQueue.main.async {
+                    context.coordinator.isLoading = false
+                    context.coordinator.error = error
+                }
+            }
+        }
+        
+        if context.coordinator.isLoading {
             task.resume()
         }
     }
     
-    class Coordinator: NSObject, SCNSceneRendererDelegate {
+    class Coordinator: NSObject, ARSCNViewDelegate {
         var parent: Molecule3DView
+        var isLoading = true
+        var error: Error?
         
         init(_ parent: Molecule3DView) {
             self.parent = parent
@@ -166,10 +133,11 @@ struct Molecule3DView: UIViewRepresentable {
         
         // Handle long press events
         @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-            let sceneView = gestureRecognizer.view as! SCNView
-            let rootNode = sceneView.scene!.rootNode
+            guard parent.isArView else { return }
+            let sceneView = gestureRecognizer.view as! ARSCNView
+            let rootNode = sceneView.scene.rootNode
             let rotationKey = "rotationKey"
-
+            
             if gestureRecognizer.state == .began {
                 rootNode.removeAction(forKey: rotationKey)
             } else if gestureRecognizer.state == .ended {
@@ -188,9 +156,34 @@ struct Molecule3DView: UIViewRepresentable {
                 camera.fieldOfView = 60
             }
         }
+        
+        // Add ARKit delegate methods
+        func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+            if anchor is ARPlaneAnchor {
+                // Create a plane node for the detected plane and add it to the scene
+                let plane = SCNPlane(width: 1, height: 1)
+                plane.firstMaterial?.diffuse.contents = UIColor.red.withAlphaComponent(0.5)
+                let planeNode = SCNNode(geometry: plane)
+                planeNode.eulerAngles.x = -.pi / 2
+                node.addChildNode(planeNode)
+            }
+        }
+        
+        func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+            if anchor is ARPlaneAnchor {
+                // Update the size of the plane node to match the detected plane
+                if let planeNode = node.childNodes.first, let plane
+                    = anchor as? ARPlaneAnchor {
+                    planeNode.geometry = SCNPlane(width: CGFloat(plane.extent.x), height: CGFloat(plane.extent.z))
+                    planeNode.position = SCNVector3(plane.center.x, 0, plane.center.z)
+                }
+            }
+        }
+    }
+    
+    struct Molecule3DView_Previews: PreviewProvider {
+        static var previews: some View {
+            Molecule3DView(isMolecularOrbitalHOMO: .constant(true), isArView: .constant(false))
+        }
     }
 }
-
-
-
-
