@@ -11,20 +11,40 @@ struct MoleculeDetailView: UIViewRepresentable {
     @State private var error: Error?
     
     func makeUIView(context: Context) -> SCNView {
-        let sceneView = SCNView()
-        sceneView.backgroundColor = UIColor.white
-        sceneView.allowsCameraControl = true
-        sceneView.delegate = context.coordinator
-        
-        // Create a new node to hold the light
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light?.type = .omni // Set the light type to Omni (point light)
-        lightNode.position = SCNVector3(x: 0, y: 0, z: 10) // Set the position of the light
-        sceneView.scene?.rootNode.addChildNode(lightNode) // Add the light node to the scene
-        
-        return sceneView
-    }
+            let sceneView = SCNView()
+            sceneView.backgroundColor = UIColor.black
+            sceneView.allowsCameraControl = true
+            sceneView.delegate = context.coordinator
+            
+            // Create a new scene
+            let scene = SCNScene()
+            
+            // Create an ambient light
+            let ambientLightNode = SCNNode()
+            ambientLightNode.light = SCNLight()
+            ambientLightNode.light?.type = .ambient
+            ambientLightNode.light?.color = UIColor(white: 0.5, alpha: 1.0)
+            scene.rootNode.addChildNode(ambientLightNode)
+            
+            // Create a new node to hold the omni light
+            let lightNode = SCNNode()
+            lightNode.light = SCNLight()
+            lightNode.light?.type = .omni // Set the light type to Omni (point light)
+            lightNode.position = SCNVector3(x: 0, y: 0, z: 10) // Set the position of the light
+            scene.rootNode.addChildNode(lightNode) // Add the light node to the scene
+
+            // Create a directional light
+            let directionalLightNode = SCNNode()
+            directionalLightNode.light = SCNLight()
+            directionalLightNode.light?.type = .directional
+            directionalLightNode.light?.color = UIColor(white: 0.8, alpha: 1.0)
+            directionalLightNode.eulerAngles = SCNVector3(x: -.pi / 3, y: .pi / 4, z: 0)
+            scene.rootNode.addChildNode(directionalLightNode)
+            
+            sceneView.scene = scene
+
+            return sceneView
+        }
 
 
     func makeCoordinator() -> Coordinator {
@@ -58,13 +78,30 @@ struct MoleculeDetailView: UIViewRepresentable {
                     let scene = try sceneSource.scene()
                     let rootNode = scene.rootNode
                     
+                    func applyMaterial(to node: SCNNode) {
+                        if let geometry = node.geometry {
+                            if let material = geometry.firstMaterial {
+                                material.lightingModel = .constant
+                                material.isDoubleSided = true
+                                geometry.materials = [material]
+                            }
+                        }
+                        for childNode in node.childNodes {
+                            applyMaterial(to: childNode)
+                        }
+                    }
+
+
+                    applyMaterial(to: rootNode)
+
                     // Scale down the root node
-                    rootNode.scale = SCNVector3(x: 0.25, y: 0.25, z: 0.25)
-                    
+                    rootNode.scale = SCNVector3(x: 0.3, y: 0.3, z: 0.3)
+
                     DispatchQueue.main.async {
                         uiView.scene = scene
                         isLoading = false
                     }
+
                 } catch {
                     DispatchQueue.main.async {
                         self.error = error
@@ -76,6 +113,7 @@ struct MoleculeDetailView: UIViewRepresentable {
             task.resume()
         }
     }
+
 
     
     class Coordinator: NSObject, SCNSceneRendererDelegate {
