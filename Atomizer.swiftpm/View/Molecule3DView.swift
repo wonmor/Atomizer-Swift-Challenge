@@ -23,7 +23,7 @@ struct Molecule3DView: UIViewRepresentable {
         sceneView.delegate = context.coordinator
         
         // Add a spinner to indicate that the model is being loaded
-        let spinner = UIActivityIndicatorView(style: .large)
+        let spinner = UIActivityIndicatorView(style: .medium)
         spinner.color = .white
         spinner.translatesAutoresizingMaskIntoConstraints = false
         sceneView.addSubview(spinner)
