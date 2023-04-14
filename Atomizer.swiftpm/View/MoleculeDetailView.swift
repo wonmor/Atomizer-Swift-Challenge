@@ -59,7 +59,7 @@ struct MoleculeDetailView: UIViewRepresentable {
                     let rootNode = scene.rootNode
                     
                     // Scale down the root node
-                    rootNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+                    rootNode.scale = SCNVector3(x: 0.25, y: 0.25, z: 0.25)
                     
                     DispatchQueue.main.async {
                         uiView.scene = scene
