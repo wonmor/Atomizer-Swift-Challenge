@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct InvertColors: ViewModifier {
     func body(content: Content) -> some View {
@@ -44,7 +45,7 @@ struct MoleculeButton: View {
                         .frame(height: 100)
                         .clipped()
                         .invertColors()
-                        .blur(radius: 3)
+                        .blur(radius: 4)
                     
                     Text(molecule.name)
                         .font(.title2)

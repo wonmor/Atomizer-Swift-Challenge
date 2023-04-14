@@ -34,7 +34,6 @@ struct MoleculeView: View {
                         }
                         .padding()
                     }
-                    .background(Color(.systemGroupedBackground))
                     .edgesIgnoringSafeArea(.bottom)
                     .padding(.horizontal, 8) // Add horizontal padding
                     .navigationTitle("Molecules")
@@ -48,7 +47,6 @@ struct MoleculeView: View {
                 }
                 .padding()
             }
-            .background(Color(.systemGroupedBackground))
             .edgesIgnoringSafeArea(.bottom)
             .navigationTitle("Molecules")
         }
