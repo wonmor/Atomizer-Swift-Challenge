@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ElementView: View {
+struct AtomDetailView: View {
     let element: Element
     
     var body: some View {

@@ -16,7 +16,7 @@ struct ContentView: View {
                 )
                 
                 NavigationLink(
-                    destination: AtomsView(),
+                    destination: AtomView(),
                     tag: 1,
                     selection: $selectedView,
                     label: {
@@ -38,7 +38,7 @@ struct ContentView: View {
                 if selectedView == 0 {
                     ExploreView()
                 } else if selectedView == 1 {
-                    AtomsView()
+                    AtomView()
                 } else if selectedView == 2 {
                     MoleculeView()
                 }
