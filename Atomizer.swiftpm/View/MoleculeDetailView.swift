@@ -247,6 +247,7 @@ struct MoleculeDetailView: View {
                     }
                 }
                 .padding(.bottom)
+                .opacity(0.3)
             }
             .frame(height: 300)
 
