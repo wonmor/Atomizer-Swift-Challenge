@@ -22,9 +22,20 @@ struct Molecule3DView: UIViewRepresentable {
             sceneView.allowsCameraControl = true
             sceneView.delegate = context.coordinator
             
+            // Add a spinner to indicate that the model is being loaded
+            let spinner = UIActivityIndicatorView(style: .large)
+            spinner.color = .white
+            spinner.translatesAutoresizingMaskIntoConstraints = false
+            sceneView.addSubview(spinner)
+            NSLayoutConstraint.activate([
+                spinner.centerXAnchor.constraint(equalTo: sceneView.centerXAnchor),
+                spinner.centerYAnchor.constraint(equalTo: sceneView.centerYAnchor),
+            ])
+            spinner.startAnimating()
+
             // Create a new scene
             let scene = SCNScene()
-            
+        
             // Create an ambient light
             let ambientLightNode = SCNNode()
             ambientLightNode.light = SCNLight()
@@ -63,31 +74,31 @@ struct Molecule3DView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: SCNView, context: Context) {
-        if isLoading {
-            // Start loading the GLTF file if it hasn't been loaded yet
-            let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_HOMO_GLTF")!
-            let urlSession = URLSession(configuration: .default)
-            let task = urlSession.dataTask(with: url) { data, _, error in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        self.error = error
-                        isLoading = false
+            if isLoading {
+                // Start loading the GLTF file if it hasn't been loaded yet
+                let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_HOMO_GLTF")!
+                let urlSession = URLSession(configuration: .default)
+                let task = urlSession.dataTask(with: url) { data, _, error in
+                    if let error = error {
+                        DispatchQueue.main.async {
+                            self.error = error
+                            isLoading = false
+                        }
+                        return
                     }
-                    return
-                }
-                
-                guard let data = data else {
-                    DispatchQueue.main.async {
-                        self.error = NSError(domain: "MoleculeDetailView", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data was received"])
-                        isLoading = false
+
+                    guard let data = data else {
+                        DispatchQueue.main.async {
+                            self.error = NSError(domain: "MoleculeDetailView", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data was received"])
+                            isLoading = false
+                        }
+                        return
                     }
-                    return
-                }
-                
-                do {
-                    let sceneSource = try GLTFSceneSource(data: data, options: nil)
-                    let scene = try sceneSource.scene()
-                    let rootNode = scene.rootNode
+
+                    do {
+                        let sceneSource = try GLTFSceneSource(data: data, options: nil)
+                        let scene = try sceneSource.scene()
+                        let rootNode = scene.rootNode
                     
                     rootNode.eulerAngles.y = angle
                             
@@ -114,20 +125,24 @@ struct Molecule3DView: UIViewRepresentable {
                     // Scale down the root node
                     rootNode.scale = SCNVector3(x: 0.3, y: 0.3, z: 0.3)
 
-                    DispatchQueue.main.async {
-                        uiView.scene = scene
-                        isLoading = false
-                    }
+                        DispatchQueue.main.async {
+                                                uiView.scene = scene
+                                                isLoading = false
+                                                // Stop the spinner
+                                                uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
+                                            }
 
-                } catch {
-                    DispatchQueue.main.async {
-                        self.error = error
-                        isLoading = false
-                    }
-                }
-            }
-            
-            task.resume()
+                                        } catch {
+                                            DispatchQueue.main.async {
+                                                self.error = error
+                                                isLoading = false
+                                                // Stop the spinner
+                                                uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
+                                            }
+                                        }
+                                    }
+
+                                    task.resume()
         }
     }
 
