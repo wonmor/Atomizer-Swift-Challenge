@@ -55,7 +55,7 @@ struct GLTFARView: UIViewRepresentable {
                     let scene = try sceneSource.scene()
                     let rootNode = scene.rootNode
 
-                    rootNode.scale = SCNVector3(x: 0.1, y: 0.1, z: 0.1)
+                    rootNode.scale = SCNVector3(x: 0.005, y: 0.005, z: 0.005)
 
                     DispatchQueue.main.async {
                         if let arView = self?.arView {
