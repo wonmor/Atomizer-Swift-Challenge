@@ -3,7 +3,6 @@ import SmartHitTest
 import SceneKit
 import ARKit
 import GLTFSceneKit
-import FocusNode
 import Vision
 import Dispatch
 
