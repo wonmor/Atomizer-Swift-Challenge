@@ -11,7 +11,7 @@ struct MoleculeARViewSheet: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            GLTFARView(molecule: molecule, gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!)
+            GLTFARView(molecule: molecule, gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF_AR")!)
             
             Image(systemName: "hand.point.up.fill")
                 .font(.system(size: 40))

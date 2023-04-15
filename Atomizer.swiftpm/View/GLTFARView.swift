@@ -22,6 +22,9 @@ struct GLTFARView: UIViewRepresentable {
 
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
+        if #available(iOS 13.0, *), ARWorldTrackingConfiguration.supportsSceneReconstruction(.meshWithClassification) {
+            configuration.sceneReconstruction = .meshWithClassification
+        }
         arView.session.run(configuration)
 
         context.coordinator.arView = arView
@@ -70,15 +73,15 @@ struct GLTFARView: UIViewRepresentable {
                     
                     self?.modelNode = rootNode
                     
-                    var scaleFactor = 0.01
+                    var scaleFactor = 0.03
                     
                     switch self?.molecule.formula {
                     case "C2H4":
-                        scaleFactor = 0.01
-                    case "H2O":
                         scaleFactor = 0.03
+                    case "H2O":
+                        scaleFactor = 0.05
                     default:
-                        scaleFactor = 0.01
+                        scaleFactor = 0.03
                     }
                     
                     let floatScaleFactor = Float(scaleFactor)

@@ -13,12 +13,26 @@ class CustomFocusNode: SCNNode {
     }
 
     private func setupFocusNode() {
-        let geometry = SCNBox(width: 0.15, height: 0.001, length: 0.15, chamferRadius: 0)
+        let geometry = SCNSphere(radius: 0.1)
         geometry.firstMaterial?.diffuse.contents = UIColor.yellow
-        let focusNode = SCNNode(geometry: geometry)
-        focusNode.opacity = 0.5
-        self.addChildNode(focusNode)
+        geometry.firstMaterial?.specular.contents = UIColor.white
+        
+        let sphereNode = SCNNode(geometry: geometry)
+        sphereNode.opacity = 0.3
+        sphereNode.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2 * .pi, z: 0, duration: 2)))
+        
+        let torusGeometry = SCNTorus(ringRadius: 0.15, pipeRadius: 0.005)
+        torusGeometry.firstMaterial?.diffuse.contents = UIColor.yellow
+        torusGeometry.firstMaterial?.specular.contents = UIColor.white
+        
+        let torusNode = SCNNode(geometry: torusGeometry)
+        torusNode.opacity = 0.5
+        torusNode.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 2 * .pi, y: 0, z: 0, duration: 2)))
+        
+        self.addChildNode(sphereNode)
+        self.addChildNode(torusNode)
     }
+
 
     func updateAlignment(_ alignment: ARPlaneAnchor.Alignment) {
         if alignment == .horizontal {
