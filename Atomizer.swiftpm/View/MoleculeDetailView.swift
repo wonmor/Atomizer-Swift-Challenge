@@ -21,7 +21,10 @@ struct MoleculeDetailView: View {
                             Button(action: {
                                 isArView = true;
                             }) {
-                                Image(systemName: "arkit")
+                                HStack {
+                                    Image(systemName: "arkit")
+                                    Text("AR")
+                                }
                                     .font(.system(size: 20))
                                     .foregroundColor(.white)
                                     .padding(10)
