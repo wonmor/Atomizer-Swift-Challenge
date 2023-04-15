@@ -42,6 +42,7 @@ struct GLTFARView: UIViewRepresentable {
     class Coordinator: NSObject, ARSCNViewDelegate, ARSessionDelegate {
         let molecule: Molecule
         
+        var isFocusNodeVisible = true
         var parent: GLTFARView
         weak var arView: ARSCNView?
         var gltfURL: URL
@@ -111,16 +112,20 @@ struct GLTFARView: UIViewRepresentable {
         }
 
         func session(_ session: ARSession, didUpdate frame: ARFrame) {
-            guard let arView = arView else { return }
-            let hitTestResults = frame.hitTest(arView.center, types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
+                guard let arView = arView, isFocusNodeVisible else { return }
+                let hitTestResults = frame.hitTest(arView.center, types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
 
-            if let hitResult = hitTestResults.first {
-                let worldTransform = hitResult.worldTransform
-                let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
-                focusNode.position = position
+                if let hitResult = hitTestResults.first {
+                    let worldTransform = hitResult.worldTransform
+                    let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
+                    focusNode.position = position
+
+                    if focusNode.parent == nil {
+                        arView.scene.rootNode.addChildNode(focusNode)
+                    }
+                }
             }
-        }
-        
+
         func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
             if case .normal = camera.trackingState {
                 DispatchQueue.main.async {
@@ -134,18 +139,21 @@ struct GLTFARView: UIViewRepresentable {
         }
         
         @objc func handleTap(_ gestureRecognize: UITapGestureRecognizer) {
-            guard let arView = arView, let modelNode = modelNode else { return }
-            let hitTestResults = arView.hitTest(gestureRecognize.location(in: arView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
-            
-            if let hitResult = hitTestResults.first {
-                let worldTransform = hitResult.worldTransform
-                let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
+                guard let arView = arView, let modelNode = modelNode else { return }
+                let hitTestResults = arView.hitTest(gestureRecognize.location(in: arView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
+                
+                if let hitResult = hitTestResults.first {
+                    let worldTransform = hitResult.worldTransform
+                    let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
 
-                let modelClone = modelNode.clone()
-                modelClone.position = position
-                arView.scene.rootNode.addChildNode(modelClone)
-                arView.scene.rootNode.addChildNode(self.focusNode)
+                    let modelClone = modelNode.clone()
+                    modelClone.position = position
+                    arView.scene.rootNode.addChildNode(modelClone)
+                    
+                    // Hide and remove the focus node after tapping
+                    focusNode.removeFromParentNode()
+                    isFocusNodeVisible = false
+                }
             }
-        }
     }
 }
