@@ -12,6 +12,8 @@ import GLTFSceneKit
 struct Molecule3DView: UIViewRepresentable {
     typealias UIViewType = SCNView
     
+    let molecule: Molecule
+    
     @State private var isLoading = true
     @State private var error: Error?
     @State private var angle: Float = 0
@@ -78,7 +80,7 @@ struct Molecule3DView: UIViewRepresentable {
     func updateUIView(_ uiView: SCNView, context: Context) {
         if isLoading || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
             // Start loading the GLTF file if it hasn't been loaded yet
-            let url = URL(string: "https://electronvisual.org/api/downloadGLB/C2H4_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!
+            let url = URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!
             let urlSession = URLSession(configuration: .default)
             let task = urlSession.dataTask(with: url) { data, _, error in
                 if let error
@@ -130,8 +132,21 @@ struct Molecule3DView: UIViewRepresentable {
                     
                     applyMaterial(to: rootNode)
                     
+                    var scaleFactor = 0.3
+                    
+                    switch molecule.formula {
+                    case "C2H4":
+                        scaleFactor = 0.3
+                    case "H2O":
+                        scaleFactor = 0.45
+                    default:
+                        scaleFactor = 0.3
+                    }
+                    
+                    let floatScaleFactor = Float(scaleFactor)
+                    
                     // Scale down the root node
-                    rootNode.scale = SCNVector3(x: 0.3, y: 0.3, z: 0.3)
+                    rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
                     
                     DispatchQueue.main.async {
                         uiView.scene = scene

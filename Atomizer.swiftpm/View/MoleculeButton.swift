@@ -23,7 +23,7 @@ extension View {
 
 struct MoleculeButton: View {
     let molecule: Molecule
-
+    
     @State private var image: UIImage?
 
     var body: some View {
