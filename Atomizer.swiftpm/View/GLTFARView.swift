@@ -158,35 +158,7 @@ struct GLTFARView: UIViewRepresentable {
         }
         
         // Object Occlusion in ARKit and SceneKit: https://stackoverflow.com/questions/64846510/scenekit-lidar-features-for-object-occlusion
-//        func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-//            guard let meshAnchor = anchor as? ARMeshAnchor else {
-//                    return nil
-//                }
-//
-//            let geometry = createGeometryFromAnchor(meshAnchor: meshAnchor)
-//
-//            //apply occlusion material
-//            geometry.firstMaterial?.colorBufferWriteMask = []
-//            geometry.firstMaterial?.writesToDepthBuffer = true
-//            geometry.firstMaterial?.readsFromDepthBuffer = true
-//                
-//            let node = SCNNode(geometry: geometry)
-//            
-//            //change rendering order so it renders before  our virtual object
-//            node.renderingOrder = -1
-//            
-//            guard let planeAnchor = anchor as? ARPlaneAnchor else { return node }
-//            
-//            if planeAnchor.alignment == .horizontal {
-//                DispatchQueue.main.async {
-//                    self.focusNode.removeFromParentNode()
-//                    node.addChildNode(self.focusNode)
-//                }
-//            }
-//            
-//            return node
-//        }
-        
+
         func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
             guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
             
