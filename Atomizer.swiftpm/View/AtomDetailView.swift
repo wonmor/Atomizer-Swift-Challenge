@@ -18,7 +18,7 @@ struct AtomDetailView: View {
             
             if isLoaded {
                 Atom3DView()
-                    .frame(maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))

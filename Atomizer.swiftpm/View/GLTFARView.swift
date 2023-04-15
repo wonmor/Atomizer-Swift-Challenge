@@ -150,6 +150,7 @@ struct GLTFARView: UIViewRepresentable {
                     
                     let floatScaleFactor = Float(scaleFactor)
                     rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
+                    
                 } catch {
                     print("Failed to load the GLTF model: \(error)")
                 }
@@ -171,7 +172,6 @@ struct GLTFARView: UIViewRepresentable {
         }
         
         func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-            
             if #available(iOS 13.0, *), ARWorldTrackingConfiguration.supportsSceneReconstruction(.meshWithClassification) {
                 guard let meshAnchor = anchor as? ARMeshAnchor else {
                     return
