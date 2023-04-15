@@ -4,6 +4,8 @@ import SceneKit
 import ARKit
 import GLTFSceneKit
 import FocusNode
+import Vision
+import Dispatch
 
 struct GLTFARView: UIViewRepresentable {
     let molecule: Molecule
@@ -30,7 +32,10 @@ struct GLTFARView: UIViewRepresentable {
         context.coordinator.arView = arView
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
-        arView.addGestureRecognizer(tapGestureRecognizer)
+            arView.addGestureRecognizer(tapGestureRecognizer)
+
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress(_:)))
+        arView.addGestureRecognizer(longPressGestureRecognizer)
 
         return arView
     }
@@ -45,12 +50,19 @@ struct GLTFARView: UIViewRepresentable {
     class Coordinator: NSObject, ARSCNViewDelegate, ARSessionDelegate {
         let molecule: Molecule
         
+        private var handObservation: VNHumanHandPoseObservation?
+        private let handPoseRequest = VNDetectHumanHandPoseRequest()
+        private let processingQueue = DispatchQueue(label: "com.johnseong.handpose.processing", qos: .userInitiated)
+
         var isFocusNodeVisible = true
+        var attachedModelNode: SCNNode?
         var parent: GLTFARView
         weak var arView: ARSCNView?
         var gltfURL: URL
         let focusNode = CustomFocusNode()
         var modelNode: SCNNode?
+        var initialObjectPosition: SCNVector3?
+        var objectPlacedOnGround = false
 
         init(me: GLTFARView, molecule: Molecule) {
             self.parent = me
@@ -59,6 +71,59 @@ struct GLTFARView: UIViewRepresentable {
             super.init()
             self.loadModel(from: gltfURL)
         }
+        
+        func handleHandPose(_ observation: VNHumanHandPoseObservation) {
+            guard let arView = arView, let modelNode = modelNode else { return }
+
+            guard let wristPoint = try? observation.recognizedPoint(.wrist) else {
+                if let initialPosition = initialObjectPosition, let attachedModelNode = attachedModelNode {
+                    attachedModelNode.position = initialPosition
+                    objectPlacedOnGround = true
+                }
+                attachedModelNode = nil
+                return
+            }
+
+            let wristLocation = CGPoint(x: CGFloat(wristPoint.location.x), y: CGFloat(wristPoint.location.y))
+
+            let hitTestResults = arView.hitTest(wristLocation, types: [.featurePoint])
+
+            if let hitResult = hitTestResults.first {
+                let worldTransform = hitResult.worldTransform
+                let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
+
+                if attachedModelNode == nil {
+                    if objectPlacedOnGround {
+                        if let modelClone = arView.scene.rootNode.childNode(withName: "modelNode", recursively: true) {
+                            initialObjectPosition = modelClone.position
+                            attachedModelNode = modelClone
+                            objectPlacedOnGround = false
+                        }
+                    } else {
+                        let modelClone = modelNode.clone()
+                        modelClone.position = position
+                        arView.scene.rootNode.addChildNode(modelClone)
+                        attachedModelNode = modelClone
+                    }
+                } else {
+                    // Smoothly animate the object towards the hand position
+                    let moveAction = SCNAction.move(to: position, duration: 0.2)
+                    moveAction.timingMode = .easeInEaseOut
+                    attachedModelNode?.runAction(moveAction)
+                }
+            }
+        }
+
+
+
+        
+        @objc func handleLongPress(_ gestureRecognize: UILongPressGestureRecognizer) {
+            if gestureRecognize.state == .began {
+                attachedModelNode = nil
+            }
+        }
+
+
 
         func loadModel(from url: URL) {
             let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -114,20 +179,33 @@ struct GLTFARView: UIViewRepresentable {
             }
         }
 
+        private var lastProcessingDate = Date()
+
         func session(_ session: ARSession, didUpdate frame: ARFrame) {
-                guard let arView = arView, isFocusNodeVisible else { return }
-                let hitTestResults = frame.hitTest(arView.center, types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
+            guard let arView = arView, isFocusNodeVisible else { return }
 
-                if let hitResult = hitTestResults.first {
-                    let worldTransform = hitResult.worldTransform
-                    let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
-                    focusNode.position = position
+            // Limit the processing rate
+            let currentDate = Date()
+            guard currentDate.timeIntervalSince(lastProcessingDate) >= 0.1 else { return }
+            lastProcessingDate = currentDate
 
-                    if focusNode.parent == nil {
-                        arView.scene.rootNode.addChildNode(focusNode)
+            processingQueue.async { [weak self] in
+                guard let self = self else { return }
+                let handler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, orientation: .right)
+                do {
+                    try handler.perform([self.handPoseRequest])
+                    if let result = self.handPoseRequest.results?.first as? VNHumanHandPoseObservation {
+                        self.handObservation = result
+                        DispatchQueue.main.async {
+                            self.handleHandPose(result)
+                        }
                     }
+                } catch {
+                    print("Error detecting hand pose: \(error)")
                 }
             }
+        }
+
 
         func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
             if case .normal = camera.trackingState {
@@ -142,21 +220,25 @@ struct GLTFARView: UIViewRepresentable {
         }
         
         @objc func handleTap(_ gestureRecognize: UITapGestureRecognizer) {
-                guard let arView = arView, let modelNode = modelNode else { return }
-                let hitTestResults = arView.hitTest(gestureRecognize.location(in: arView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
-                
-                if let hitResult = hitTestResults.first {
-                    let worldTransform = hitResult.worldTransform
-                    let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
+            guard let arView = arView, let modelNode = modelNode else { return }
+            let hitTestResults = arView.hitTest(gestureRecognize.location(in: arView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
 
-                    let modelClone = modelNode.clone()
-                    modelClone.position = position
-                    arView.scene.rootNode.addChildNode(modelClone)
-                    
-                    // Hide and remove the focus node after tapping
-                    focusNode.removeFromParentNode()
-                    isFocusNodeVisible = false
-                }
+            if let hitResult = hitTestResults.first {
+                let worldTransform = hitResult.worldTransform
+                let position = SCNVector3(x: worldTransform.columns.3.x, y: worldTransform.columns.3.y, z: worldTransform.columns.3.z)
+
+                let modelClone = modelNode.clone()
+                modelClone.position = position
+                arView.scene.rootNode.addChildNode(modelClone)
+
+                // Set objectPlacedOnGround to true
+                objectPlacedOnGround = true
+
+                // Hide and remove the focus node after tapping
+                focusNode.removeFromParentNode()
+                isFocusNodeVisible = false
             }
+        }
+
     }
 }
