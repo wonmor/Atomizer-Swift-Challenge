@@ -157,6 +157,36 @@ struct GLTFARView: UIViewRepresentable {
             task.resume()
         }
         
+        // Object Occlusion in ARKit and SceneKit: https://stackoverflow.com/questions/64846510/scenekit-lidar-features-for-object-occlusion
+//        func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+//            guard let meshAnchor = anchor as? ARMeshAnchor else {
+//                    return nil
+//                }
+//
+//            let geometry = createGeometryFromAnchor(meshAnchor: meshAnchor)
+//
+//            //apply occlusion material
+//            geometry.firstMaterial?.colorBufferWriteMask = []
+//            geometry.firstMaterial?.writesToDepthBuffer = true
+//            geometry.firstMaterial?.readsFromDepthBuffer = true
+//                
+//            let node = SCNNode(geometry: geometry)
+//            
+//            //change rendering order so it renders before  our virtual object
+//            node.renderingOrder = -1
+//            
+//            guard let planeAnchor = anchor as? ARPlaneAnchor else { return node }
+//            
+//            if planeAnchor.alignment == .horizontal {
+//                DispatchQueue.main.async {
+//                    self.focusNode.removeFromParentNode()
+//                    node.addChildNode(self.focusNode)
+//                }
+//            }
+//            
+//            return node
+//        }
+        
         func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
             guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
             
@@ -169,6 +199,23 @@ struct GLTFARView: UIViewRepresentable {
         }
         
         func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+            
+            if #available(iOS 13.0, *), ARWorldTrackingConfiguration.supportsSceneReconstruction(.meshWithClassification) {
+                guard let meshAnchor = anchor as? ARMeshAnchor else {
+                    return
+                }
+                
+                let geometry = createGeometryFromAnchor(meshAnchor: meshAnchor)
+                
+                // Optionally hide the node from rendering as well
+                geometry.firstMaterial?.colorBufferWriteMask = []
+                geometry.firstMaterial?.writesToDepthBuffer = true
+                geometry.firstMaterial?.readsFromDepthBuffer = true
+                
+                
+                node.geometry = geometry
+            }
+            
             guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
             
             if planeAnchor.alignment == .horizontal {
@@ -176,6 +223,34 @@ struct GLTFARView: UIViewRepresentable {
                     self.focusNode.updateAlignment(planeAnchor.alignment)
                 }
             }
+        }
+        
+        // Taken from https://developer.apple.com/forums/thread/130599
+        func createGeometryFromAnchor(meshAnchor: ARMeshAnchor) -> SCNGeometry {
+            let meshGeometry = meshAnchor.geometry
+            let vertices = meshGeometry.vertices
+            let normals = meshGeometry.normals
+            let faces = meshGeometry.faces
+            
+            // use the MTL buffer that ARKit gives us
+            let vertexSource = SCNGeometrySource(buffer: vertices.buffer, vertexFormat: vertices.format, semantic: .vertex, vertexCount: vertices.count, dataOffset: vertices.offset, dataStride: vertices.stride)
+            
+            let normalsSource = SCNGeometrySource(buffer: normals.buffer, vertexFormat: normals.format, semantic: .normal, vertexCount: normals.count, dataOffset: normals.offset, dataStride: normals.stride)
+            // Copy bytes as we may use them later
+            let faceData = Data(bytes: faces.buffer.contents(), count: faces.buffer.length)
+            
+            // create the geometry element
+            let geometryElement = SCNGeometryElement(data: faceData, primitiveType: primitiveType(type: faces.primitiveType), primitiveCount: faces.count, bytesPerIndex: faces.bytesPerIndex)
+            
+            return SCNGeometry(sources: [vertexSource, normalsSource], elements: [geometryElement])
+        }
+
+        func primitiveType(type: ARGeometryPrimitiveType) -> SCNGeometryPrimitiveType {
+                switch type {
+                    case .line: return .line
+                    case .triangle: return .triangles
+                default : return .triangles
+                }
         }
 
         private var lastProcessingDate = Date()
