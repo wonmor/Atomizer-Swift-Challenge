@@ -1,10 +1,13 @@
 import SwiftUI
+import SmartHitTest
 import SceneKit
 import ARKit
 import GLTFSceneKit
+import FocusNode
 
 struct GLTFARView: UIViewRepresentable {
     let molecule: Molecule
+    let focusNode = FocusSquare()
     
     var gltfURL: URL
 
@@ -40,6 +43,7 @@ struct GLTFARView: UIViewRepresentable {
         var parent: GLTFARView
         weak var arView: ARSCNView?
         var gltfURL: URL
+        let focusNode = FocusSquare()
 
         init(me: GLTFARView, molecule: Molecule) {
             self.parent = me
@@ -84,6 +88,7 @@ struct GLTFARView: UIViewRepresentable {
                             cameraNode.position = position
                             arView.scene.rootNode.addChildNode(cameraNode)
                             arView.scene.rootNode.addChildNode(rootNode)
+                            arView.scene.rootNode.addChildNode(self?.focusNode ?? FocusSquare())
                         }
                     }
                 } catch {

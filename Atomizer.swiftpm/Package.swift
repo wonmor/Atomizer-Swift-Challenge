@@ -41,7 +41,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SwiftUIX/SwiftUIX", "0.1.4"..<"1.0.0"),
         .package(url: "https://github.com/onevcat/Kingfisher", "7.0.0"..<"8.0.0"),
-        .package(url: "https://github.com/magicien/GLTFSceneKit", "0.4.1"..<"1.0.0")
+        .package(url: "https://github.com/magicien/GLTFSceneKit", "0.4.1"..<"1.0.0"),
+        .package(url: "https://github.com/maxxfrazer/ARKit-FocusNode.git", "2.0.0"..<"3.0.0")
     ],
     targets: [
         .executableTarget(
@@ -49,7 +50,8 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftUIX", package: "swiftuix"),
                 .product(name: "Kingfisher", package: "kingfisher"),
-                .product(name: "GLTFSceneKit", package: "gltfscenekit")
+                .product(name: "GLTFSceneKit", package: "gltfscenekit"),
+                .product(name: "FocusNode", package: "arkit-focusnode")
             ],
             path: ".",
             resources: [

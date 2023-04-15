@@ -1,6 +1,24 @@
 {
   "pins" : [
     {
+      "identity" : "arkit-focusnode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maxxfrazer/ARKit-FocusNode.git",
+      "state" : {
+        "revision" : "bfff754f2940edba94d1e9734124dab6a03f819d",
+        "version" : "2.0.2"
+      }
+    },
+    {
+      "identity" : "arkit-smarthittest",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maxxfrazer/ARKit-SmartHitTest",
+      "state" : {
+        "revision" : "2b7145d55ca273f1ec0328783f87e93b9473f9f5",
+        "version" : "2.0.0"
+      }
+    },
+    {
       "identity" : "gltfscenekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/magicien/GLTFSceneKit",
