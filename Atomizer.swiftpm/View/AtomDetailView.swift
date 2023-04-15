@@ -14,8 +14,10 @@ struct AtomDetailView: View {
         VStack {
             Text(element.symbol)
                 .font(.system(size: 96, weight: .bold))
-            Text("\(element.atomicMass)")
+                .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
+            Text(String(format: "%.2f", element.atomicMass))
                 .font(.title)
+                .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
                 .padding(.bottom)
             Text(element.description)
                 .padding(.horizontal)

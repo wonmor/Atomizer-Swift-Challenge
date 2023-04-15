@@ -4,10 +4,12 @@ import ARKit
 import GLTFSceneKit
 
 struct GLTFARView: UIViewRepresentable {
+    let molecule: Molecule
+    
     var gltfURL: URL
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(me: self, molecule: molecule)
     }
 
     func makeUIView(context: Context) -> ARSCNView {
@@ -33,13 +35,16 @@ struct GLTFARView: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, ARSCNViewDelegate, ARSessionDelegate {
+        let molecule: Molecule
+        
         var parent: GLTFARView
         weak var arView: ARSCNView?
         var gltfURL: URL
 
-        init(_ parent: GLTFARView) {
-            self.parent = parent
-            self.gltfURL = parent.gltfURL
+        init(me: GLTFARView, molecule: Molecule) {
+            self.parent = me
+            self.molecule = molecule
+            self.gltfURL = me.gltfURL
             super.init()
             self.loadModel(from: gltfURL)
         }
@@ -54,8 +59,21 @@ struct GLTFARView: UIViewRepresentable {
                     let sceneSource = try GLTFSceneSource(data: data, options: nil)
                     let scene = try sceneSource.scene()
                     let rootNode = scene.rootNode
+                    
+                    var scaleFactor = 0.005
+                    
+                    switch self?.molecule.formula {
+                    case "C2H4":
+                        scaleFactor = 0.005
+                    case "H2O":
+                        scaleFactor = 0.007
+                    default:
+                        scaleFactor = 0.005
+                    }
+                    
+                    let floatScaleFactor = Float(scaleFactor)
 
-                    rootNode.scale = SCNVector3(x: 0.005, y: 0.005, z: 0.005)
+                    rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
 
                     DispatchQueue.main.async {
                         if let arView = self?.arView {

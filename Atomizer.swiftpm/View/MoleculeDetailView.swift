@@ -191,7 +191,7 @@ struct MoleculeDetailView: View {
         }
         .sheet(isPresented: $isArView) {
             ZStack(alignment: .bottom) {
-                GLTFARView(gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!)
+                GLTFARView(molecule: molecule, gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!)
                 
                 Button(action: {
                     isArView = false
