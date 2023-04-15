@@ -190,30 +190,7 @@ struct MoleculeDetailView: View {
             }
         }
         .sheet(isPresented: $isArView) {
-            ZStack(alignment: .bottom) {
-                GLTFARView(molecule: molecule, gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!)
-                
-                Button(action: {
-                    isArView = false
-                }) {
-                    HStack {
-                        Image(systemName: "x.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white)
-                            .padding(16)
-                        Text("Close")
-                            .foregroundColor(.white)
-                            .font(.headline)
-                            .padding(.trailing, 16)
-                            .padding(.vertical, 8)
-                    }
-                    .background(Color.black.opacity(0.5))
-                    .cornerRadius(20)
-                    .padding(20)
-                }
-                .padding(.bottom, 20)
-            }
-            .edgesIgnoringSafeArea(.all)
+            MoleculeARViewSheet(molecule: molecule, isArView: $isArView, isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
         }
     }
 }

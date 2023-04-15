@@ -70,15 +70,15 @@ struct GLTFARView: UIViewRepresentable {
                     
                     self?.modelNode = rootNode
                     
-                    var scaleFactor = 0.005
+                    var scaleFactor = 0.01
                     
                     switch self?.molecule.formula {
                     case "C2H4":
-                        scaleFactor = 0.005
+                        scaleFactor = 0.01
                     case "H2O":
-                        scaleFactor = 0.007
+                        scaleFactor = 0.03
                     default:
-                        scaleFactor = 0.005
+                        scaleFactor = 0.01
                     }
                     
                     let floatScaleFactor = Float(scaleFactor)
