@@ -1,14 +1,8 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import SwiftUI
 
 struct AtomDetailView: View {
     let element: Element
+    @State private var isLoaded = false
     
     var body: some View {
         VStack {
@@ -21,8 +15,24 @@ struct AtomDetailView: View {
                 .padding(.bottom)
             Text(element.description)
                 .padding(.horizontal)
+            
+            if isLoaded {
+                Atom3DView()
+                    .frame(maxHeight: .infinity)
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(2.0, anchor: .center)
+                    .frame(maxHeight: .infinity)
+            }
+            
             Spacer()
         }
         .navigationBarTitle(element.name)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isLoaded = true
+            }
+        }
     }
 }
