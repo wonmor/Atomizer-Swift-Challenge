@@ -16,7 +16,7 @@ struct ExploreView: View {
                         .font(.system(size: 28, weight: .bold))
                         .foregroundColor(.primary)
                     
-                    Text("Discover the latest apps and games")
+                    Text("Discover the latest atoms and molecules")
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.secondary)
                 }

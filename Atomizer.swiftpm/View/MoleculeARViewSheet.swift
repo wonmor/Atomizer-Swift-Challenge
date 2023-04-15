@@ -25,7 +25,7 @@ struct MoleculeARViewSheet: View {
                     withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
                         fingerOffset = -20
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
                         withAnimation(Animation.easeInOut(duration: 0.5)) {
                             showMessage = false
                         }
@@ -33,7 +33,7 @@ struct MoleculeARViewSheet: View {
                 }
             
             if showMessage {
-                Text("Move around and tap any floor to place the molecule")
+                Text("Simply tap on any floor surface to place it on the ground.\n\nTo hover it in the air, hold up your hand in front of the camera.")
                     .font(.headline)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
@@ -42,7 +42,7 @@ struct MoleculeARViewSheet: View {
                     .modifier(PressAnimationModifier(isPressed: showMessage))
                     .shadow(color: .black, radius: 5, x: 0, y: 0)
                     .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
                             withAnimation(Animation.easeInOut(duration: 0.5)) {
                                 showMessage = false
                             }
