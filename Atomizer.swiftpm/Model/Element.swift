@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import Foundation
 
 struct Element: Codable {
@@ -15,4 +8,6 @@ struct Element: Codable {
     let electronConfiguration: String
     let atomicMass: Double
     let oxidationStates: Int
+    let orbitalBlock: String
+    let color: String
 }

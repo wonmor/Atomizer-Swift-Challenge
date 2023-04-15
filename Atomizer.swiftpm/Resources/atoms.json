@@ -6,7 +6,9 @@
     "description": "Lightest element. Gas of diatomic molecules. Highly combustible.",
     "electronConfiguration": "1s^1",
     "atomicMass": 1.008,
-    "oxidationStates": 0
+    "oxidationStates": 0,
+    "orbitalBlock": "s",
+    "color": "#FFD1DC"
   },
   {
     "symbol": "Be",
@@ -15,7 +17,9 @@
     "description": "Steel-gray, strong, lightweight and brittle alkaline earth metal.",
     "electronConfiguration": "[He] 2s^2",
     "atomicMass": 9.012,
-    "oxidationStates": 2
+    "oxidationStates": 2,
+    "orbitalBlock": "s",
+    "color": "#ADD8E6"
   },
   {
     "symbol": "B",
@@ -24,7 +28,9 @@
     "description": "Brittle, dark, lustrous metalloid.",
     "electronConfiguration": "[He] 2s^2 2p^1",
     "atomicMass": 10.81,
-    "oxidationStates": 3
+    "oxidationStates": 3,
+    "orbitalBlock": "p",
+    "color": "#FFC0CB"
   },
   {
     "symbol": "O",
@@ -33,7 +39,9 @@
     "description": "Colorless, odorless, tasteless gas essential to living organisms.",
     "electronConfiguration": "[He] 2s^2 2p^4",
     "atomicMass": 15.999,
-    "oxidationStates": -2
+    "oxidationStates": -2,
+    "orbitalBlock": "p",
+    "color": "#FFA07A"
   },
   {
     "symbol": "F",
@@ -42,7 +50,9 @@
     "description": "Highly reactive pale yellow diatomic gas. Most electronegative element.",
     "electronConfiguration": "[He] 2s^2 2p^5",
     "atomicMass": 18.998,
-    "oxidationStates": -1
+    "oxidationStates": -1,
+    "orbitalBlock": "p",
+    "color": "#00FF7F"
   },
   {
     "symbol": "Ne",
@@ -51,7 +61,9 @@
     "description": "Colorless, odorless, inert monatomic gas.",
     "electronConfiguration": "[He] 2s^2 2p^6",
     "atomicMass": 20.18,
-    "oxidationStates": 0
+    "oxidationStates": 0,
+    "orbitalBlock": "p",
+    "color": "#FF69B4"
   },
   {
     "symbol": "Fe",
@@ -60,7 +72,9 @@
     "description": "Most common element on Earth. Belongs to first transition series and group 8 of periodic table.",
     "electronConfiguration": "[Ar] 4s^2 3d^6",
     "atomicMass": 55.845,
-    "oxidationStates": 2
+    "oxidationStates": 2,
+    "orbitalBlock": "d",
+    "color": "#B19CD9"
   },
   {
     "symbol": "Co",
@@ -69,6 +83,52 @@
     "description": "Hard, lustrous, silver-gray metal.",
     "electronConfiguration": "[Ar] 4s^2 3d^7",
     "atomicMass": 58.933,
-    "oxidationStates": 2
-  }
-]
+    "oxidationStates": 2,
+    "orbitalBlock": "d",
+    "color": "#7FB3D5"
+    },
+    {
+    "symbol": "Cu",
+    "name": "Copper",
+    "category": "Transition Metal",
+    "description": "Soft, malleable, and ductile metal with high thermal and electrical conductivity.",
+    "electronConfiguration": "[Ar] 4s^1 3d^10",
+    "atomicMass": 63.546,
+    "oxidationStates": 2,
+    "orbitalBlock": "d",
+    "color": "#F7A8B8"
+    },
+    {
+    "symbol": "Zn",
+    "name": "Zinc",
+    "category": "Transition Metal",
+    "description": "Bluish-white metal with a low melting point and good electrical conductivity.",
+    "electronConfiguration": "[Ar] 4s^2 3d^10",
+    "atomicMass": 65.38,
+    "oxidationStates": 2,
+    "orbitalBlock": "d",
+    "color": "#F5B041"
+    },
+    {
+    "symbol": "Ag",
+    "name": "Silver",
+    "category": "Transition Metal",
+    "description": "Soft, white, lustrous metal. Has the highest electrical conductivity of all elements.",
+    "electronConfiguration": "[Kr] 5s^1 4d^10",
+    "atomicMass": 107.868,
+    "oxidationStates": 1,
+    "orbitalBlock": "d",
+    "color": "#F3E5F5"
+    },
+    {
+    "symbol": "Au",
+    "name": "Gold",
+    "category": "Transition Metal",
+    "description": "Soft, yellow, dense, and highly ductile and malleable metal. Does not corrode or tarnish.",
+    "electronConfiguration": "[Xe] 6s^1 4f^14 5d^10",
+    "atomicMass": 196.967,
+    "oxidationStates": 3,
+    "orbitalBlock": "d",
+    "color": "#F4D03F"
+    }
+    ]

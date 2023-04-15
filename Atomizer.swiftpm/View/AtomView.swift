@@ -26,7 +26,7 @@ struct AtomView: View {
                             Text(element.symbol)
                                 .font(.system(size: 24, weight: .bold))
                                 .frame(width: 50, height: 50)
-                                .background(Color.gray.opacity(0.1))
+                                .background(Color.white.opacity(0.2))
                                 .clipShape(Circle())
                             Text(element.name)
                                 .font(.caption)
