@@ -9,20 +9,20 @@ class Atom3DViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-                let arView = ARView(frame: view.frame,
-                                    cameraMode: .nonAR,
-                                    automaticallyConfigureSession: false)
-                view.addSubview(arView)
+        let arView = ARView(frame: view.frame,
+                             cameraMode: .nonAR,
+                             automaticallyConfigureSession: false)
+        view.addSubview(arView)
                 
-                var sphereMaterial = SimpleMaterial()
-                sphereMaterial.metallic = MaterialScalarParameter(floatLiteral: 1)
-                sphereMaterial.roughness = MaterialScalarParameter(floatLiteral: 0)
+        var sphereMaterial = SimpleMaterial()
+        sphereMaterial.metallic = MaterialScalarParameter(floatLiteral: 1)
+        sphereMaterial.roughness = MaterialScalarParameter(floatLiteral: 0)
                 
-                let particleRadius: Float = 0.05
+        let particleRadius: Float = 0.05
                 
-                guard let url = URL(string: "https://electronvisual.org/api/loadSPH/H") else {
-                    fatalError("Invalid URL")
-                }
+        guard let url = URL(string: "https://electronvisual.org/api/loadSPH/H") else {
+            fatalError("Invalid URL")
+        }
             
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             do {
@@ -32,39 +32,36 @@ class Atom3DViewController: UIViewController {
                 
                 let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
                 
-                        
-                        if  let object = jsonObject as? Dictionary<String, AnyObject> {
-                            let xArray = object["x_coords"] as! [NSNumber]
-                            let yArray = object["y_coords"] as! [NSNumber]
-                            let zArray = object["z_coords"] as! [NSNumber]
+                if let object = jsonObject as? Dictionary<String, AnyObject> {
+                    let xArray = object["x_coords"] as! [NSNumber]
+                    let yArray = object["y_coords"] as! [NSNumber]
+                    let zArray = object["z_coords"] as! [NSNumber]
                             
-                            print(xArray)
+                    print(xArray)
                             
-                            let particleSphereAnchors = (0..<xArray.count).map { index in
-                                let particlePosition = SIMD3<Float>(xArray[index].floatValue, yArray[index].floatValue, zArray[index].floatValue)
+                    let particleSphereAnchors = (0..<xArray.count).map { index in
+                        let particlePosition = SIMD3<Float>(xArray[index].floatValue, yArray[index].floatValue, zArray[index].floatValue)
                                 
-                                let particleSphereEntity = ModelEntity(mesh: .generateSphere(radius: particleRadius), materials: [sphereMaterial])
-                                let particleSphereAnchor = AnchorEntity(world: particlePosition)
-                                particleSphereAnchor.addChild(particleSphereEntity)
+                        let particleSphereEntity = ModelEntity(mesh: .generateSphere(radius: particleRadius), materials: [sphereMaterial])
+                        let particleSphereAnchor = AnchorEntity(world: particlePosition)
+                        particleSphereAnchor.addChild(particleSphereEntity)
                                 
-                                return particleSphereAnchor
-                            }
+                        return particleSphereAnchor
+                    }
                             
-                            let particleAnchorsParent = AnchorEntity(world: .zero)
-                            particleSphereAnchors.forEach { particleAnchorsParent.addChild($0) }
-                            arView.scene.anchors.append(particleAnchorsParent)
+                    let particleAnchorsParent = AnchorEntity(world: .zero)
+                    particleSphereAnchors.forEach { particleAnchorsParent.addChild($0) }
+                    arView.scene.anchors.append(particleAnchorsParent)
                             
-                            return
-                            
-                        } else {
-                                    print("JSON is invalid")
-                                }
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                        }
+                } else {
+                    print("JSON is invalid")
+                }
+            } catch {
+                print("Error loading JSON: \(error.localizedDescription)")
+            }
+        }
 
-                        task.resume()
+        task.resume()
         
         let camera = PerspectiveCamera()
         camera.camera.fieldOfViewInDegrees = 60
