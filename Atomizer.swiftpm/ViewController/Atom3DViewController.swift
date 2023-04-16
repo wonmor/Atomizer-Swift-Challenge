@@ -39,12 +39,6 @@ class Atom3DViewController: UIViewController {
         sphereMaterial.metalness.contents = 1.0
         sphereMaterial.roughness.contents = 0.1
         sphereMaterial.reflective.intensity = 0.5
-        
-        // Load the environment map texture
-        if let reflectionImage = UIImage(named: "workshop.exr") {
-            let reflectionProperty = SCNMaterialProperty(contents: reflectionImage)
-            sphereMaterial.reflective.contents = reflectionProperty
-        }
 
         
         // Load the particle data
@@ -99,9 +93,23 @@ class Atom3DViewController: UIViewController {
                         let particlesNode = SCNNode()
                         particleSphereNodes.forEach { particlesNode.addChildNode($0) }
                         particlesNode.position = SCNVector3(-center.x - 0.5, -center.y + 0.5, -center.z)
-                        
+
+                        let boundingBox = particlesNode.boundingBox
+                        let particleSize = SCNVector3(boundingBox.max.x - boundingBox.min.x,
+                                                      boundingBox.max.y - boundingBox.min.y,
+                                                      boundingBox.max.z - boundingBox.min.z)
+
+                        let maxDimension = max(particleSize.x, particleSize.y, particleSize.z)
+                        let scaleFactor = 1.0 / (maxDimension * 0.5) // Adjust the multiplier as desired
+                        particlesNode.scale = SCNVector3(scaleFactor, scaleFactor, scaleFactor)
+
+                        // Add the rotation animation to the particle node
+                        let rotation = SCNAction.rotateBy(x: 0, y: 2 * .pi, z: 0, duration: 10)
+                        particlesNode.runAction(SCNAction.repeatForever(rotation))
+
                         // Add the particle node to the scene
                         scene.rootNode.addChildNode(particlesNode)
+
                         
                         
                         let directionalLightNode = SCNNode()
