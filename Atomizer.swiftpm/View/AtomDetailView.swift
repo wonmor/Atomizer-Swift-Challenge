@@ -17,7 +17,7 @@ struct AtomDetailView: View {
                 .padding(.horizontal)
             
             if isLoaded {
-                Atom3DView()
+                Atom3DView(element: element)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                   .background(Color.clear)
                                   .edgesIgnoringSafeArea(.all)

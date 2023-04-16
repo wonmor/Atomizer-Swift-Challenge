@@ -16,20 +16,19 @@ struct ContentView: View {
                 )
                 
                 NavigationLink(
-                    destination: MoleculeView(),
+                    destination: AtomView(),
                     tag: 1,
                     selection: $selectedView,
                     label: {
-                        Label("Molecules", systemImage: "drop.degreesign")
+                        Label("Atoms", systemImage: "atom")
                     }
                 )
-                
                 NavigationLink(
-                    destination: AtomView(),
+                    destination: MoleculeView(),
                     tag: 2,
                     selection: $selectedView,
                     label: {
-                        Label("Atoms", systemImage: "atom")
+                        Label("Molecules", systemImage: "drop.degreesign")
                     }
                 )
             }
