@@ -36,9 +36,6 @@ class Atom3DViewController: UIViewController {
         // Set up the sphere material with a reflection
         sphereMaterial.lightingModel = .physicallyBased
         sphereMaterial.diffuse.contents = AtomView.hexStringToUIColor(hex: element.color)
-        sphereMaterial.metalness.contents = 1.0
-        sphereMaterial.roughness.contents = 0.1
-        sphereMaterial.reflective.intensity = 0.5
 
         
         // Load the particle data
