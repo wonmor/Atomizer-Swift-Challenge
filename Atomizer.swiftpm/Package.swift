@@ -34,7 +34,8 @@ let package = Package(
             ],
             capabilities: [
                 .camera(purposeString: "For our augmented reality features, we need permission to use your device's camera."),
-                .outgoingNetworkConnections()
+                .outgoingNetworkConnections(),
+                .bluetoothAlways(purposeString: "To communicate with your Microbit controller, bluetooth connection is needed.")
             ],
             appCategory: .education
         )
