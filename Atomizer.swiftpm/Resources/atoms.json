@@ -274,15 +274,4 @@
     "orbitalBlock": "s",
     "color": "#BA55D3"
     },
-    {
-    "symbol": "Rb",
-    "name": "Rubidium",
-    "category": "Alkali Metal",
-    "description": "Soft, silvery-white, highly reactive metal. Has a strong resemblance to potassium.",
-    "electronConfiguration": "[Kr] 5s^1",
-    "atomicMass": 85.468,
-    "oxidationStates": 1,
-    "orbitalBlock": "s",
-    "color": "#FFC8B4"
-    }
     ]
