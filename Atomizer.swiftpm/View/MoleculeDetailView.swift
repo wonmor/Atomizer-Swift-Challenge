@@ -173,12 +173,6 @@ struct MoleculeDetailView: View {
             .frame(width: 200)
             .padding(.bottom)
             }
-            .blur(radius: isInstructionPopupVisible ? 5 : 0).animation(.easeInOut(duration: 0.5), value: isInstructionPopupVisible)
-            
-            if isInstructionPopupVisible {
-                InstructionPopupView(isVisible: $isInstructionPopupVisible)
-                    .transition(.opacity) // Add this line for the fade-in effect
-            }
         }
         .onAppear {
             // Show the instruction popup

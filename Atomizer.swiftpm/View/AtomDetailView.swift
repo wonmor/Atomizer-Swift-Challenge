@@ -6,7 +6,7 @@ struct AtomDetailView: View {
     @State private var isLoaded = false
     @State private var particleNodes: [SCNNode] = []
 
-    let sphereGeometry = SCNSphere(radius: 0.03)
+    let sphereGeometry = SCNSphere(radius: 0.02)
     let sphereMaterial = SCNMaterial()
     
     var body: some View {
@@ -77,7 +77,7 @@ struct AtomDetailView: View {
                     let xMean = xFloatArray.reduce(0, +) / Float(xFloatArray.count)
                     let yMean = yFloatArray.reduce(0, +) / Float(yFloatArray.count)
                     let zMean = zFloatArray.reduce(0, +) / Float(zFloatArray.count)
-                    let center = SCNVector3(xMean / 15.0, yMean / 15.0, zMean / 15.0)
+                    _ = SCNVector3(xMean / 15.0, yMean / 15.0, zMean / 15.0)
                     
                     // Create the particle nodes
                     let particleSphereNodes = (0..<xFloatArray.count).map { index in
