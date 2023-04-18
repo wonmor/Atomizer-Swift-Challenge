@@ -1,8 +1,13 @@
 import SwiftUI
+import SceneKit
 
 struct AtomDetailView: View {
     let element: Element
     @State private var isLoaded = false
+    @State private var particleNodes: [SCNNode] = []
+
+    let sphereGeometry = SCNSphere(radius: 0.03)
+    let sphereMaterial = SCNMaterial()
     
     var body: some View {
         VStack {
@@ -17,24 +22,109 @@ struct AtomDetailView: View {
                 .padding(.horizontal)
             
             if isLoaded {
-                Atom3DView(element: element)
+                Atom3DView(particleNodes: particleNodes, sphereGeometry: sphereGeometry, sphereMaterial: sphereMaterial)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                  .background(Color.clear)
-                                  .edgesIgnoringSafeArea(.all)
+                    .background(Color.clear)
+                    .edgesIgnoringSafeArea(.all)
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     .scaleEffect(2.0, anchor: .center)
                     .frame(maxHeight: .infinity)
+                    .onAppear {
+                        fetchParticleData()
+                    }
             }
             
             Spacer()
         }
         .navigationBarTitle(element.name)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                isLoaded = true
+    }
+    
+    func fetchParticleData() {
+        guard let url = URL(string: "https://electronvisual.org/api/loadSPH/\(element.symbol)") else {
+            fatalError("Invalid URL")
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            do {
+                guard let data = data, error == nil else {
+                    throw error ?? URLError(.unknown)
+                }
+                
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                
+                if let object = jsonObject as? Dictionary<String, AnyObject> {
+                    let xArray = object["x_coords"] as! [NSNumber]
+                    let yArray = object["y_coords"] as! [NSNumber]
+                    let zArray = object["z_coords"] as! [NSNumber]
+                    
+                    let xFloatArray = xArray.map { $0.floatValue }
+                    let yFloatArray = yArray.map { $0.floatValue }
+                    let zFloatArray = zArray.map { $0.floatValue }
+
+                    // Set up the sphere material with a reflection
+                    self.sphereMaterial.lightingModel = .physicallyBased
+                    self.sphereMaterial.diffuse.contents = AtomView.hexStringToUIColor(hex: element.color)
+                    
+                    // Calculate the center of the particle cloud
+                    let xMean = xFloatArray.reduce(0, +) / Float(xFloatArray.count)
+                    let yMean = yFloatArray.reduce(0, +) / Float(yFloatArray.count)
+                    let zMean = zFloatArray.reduce(0, +) / Float(zFloatArray.count)
+                    let center = SCNVector3(xMean / 15.0, yMean / 15.0, zMean / 15.0)
+                    
+                    // Create the particle nodes
+                    let particleSphereNodes = (0..<xFloatArray.count).map { index in
+                        let particlePosition = SCNVector3(x: Float(xFloatArray[index] / 15.0), y: Float(yFloatArray[index] / 15.0), z: Float(zFloatArray[index]) / 15.0)
+                        
+                        let particleSphereNode = SCNNode(geometry: sphereGeometry)
+                        particleSphereNode.geometry?.materials = [sphereMaterial]
+                        particleSphereNode.position = particlePosition
+                        
+                        // Particle constraint
+                        let constraint = SCNBillboardConstraint()
+                        constraint.freeAxes = .all
+                        particleSphereNode.constraints = [constraint]
+                        
+                        // Particle movement
+                        //particleSphereNode.addParticleSystem(particleSystem)
+                        
+                        return particleSphereNode
+                    }
+                    
+                    // Create a node to hold all of the particle nodes
+                    let particlesNode = SCNNode()
+                    particleSphereNodes.forEach { particlesNode.addChildNode($0) }
+                    particlesNode.position = SCNVector3(-center.x - 0.5, -center.y + 0.5, -center.z)
+                    
+                    let boundingBox = particlesNode.boundingBox
+                    let particleSize = SCNVector3(boundingBox.max.x - boundingBox.min.x,
+                                                  boundingBox.max.y - boundingBox.min.y,
+                                                  boundingBox.max.z - boundingBox.min.z)
+                    
+                    let maxDimension = max(particleSize.x, particleSize.y, particleSize.z)
+                    let scaleFactor = 1.0 / (maxDimension * 0.5) // Adjust the multiplier as desired
+                    particlesNode.scale = SCNVector3(scaleFactor, scaleFactor, scaleFactor)
+                    
+                    // Add the rotation animation to the particle node
+                    let rotation = SCNAction.rotateBy(x: 0, y: 2 * .pi, z: 0, duration: 10)
+                    particlesNode.runAction(SCNAction.repeatForever(rotation))
+                    
+                    DispatchQueue.main.async {
+                        particleNodes = [particlesNode]
+                        isLoaded = true
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    alertController.addAction(okAction)
+                    UIApplication.shared.windows.first?.rootViewController?.present(alertController, animated: true, completion: nil)
+                }
             }
         }
+        
+        task.resume()
     }
 }
