@@ -4,7 +4,7 @@ import SwiftUI
     A view that displays an article.
 */
 
-struct ArticleCardView: View {å
+struct ArticleCardView: View {
     let article: Article
     
     @Environment(\.colorScheme) var colorScheme
