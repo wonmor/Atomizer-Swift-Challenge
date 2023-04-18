@@ -138,7 +138,13 @@ struct Molecule3DView: UIViewRepresentable {
                     case "C2H4":
                         scaleFactor = 0.3
                     case "H2O":
-                        scaleFactor = 0.45
+                        scaleFactor = 0.4
+                    case "H2":
+                        scaleFactor = 0.6
+                    case "Cl2":
+                        scaleFactor = 0.4
+                    case "HCl":
+                        scaleFactor = 0.4
                     default:
                         scaleFactor = 0.3
                     }

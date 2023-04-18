@@ -112,17 +112,12 @@ struct GLTFARView: UIViewRepresentable {
                 }
             }
         }
-
-
-
         
         @objc func handleLongPress(_ gestureRecognize: UILongPressGestureRecognizer) {
             if gestureRecognize.state == .began {
                 attachedModelNode = nil
             }
         }
-
-
 
         func loadModel(from url: URL) {
             let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -141,9 +136,15 @@ struct GLTFARView: UIViewRepresentable {
                     
                     switch self?.molecule.formula {
                     case "C2H4":
-                        scaleFactor = 0.03
+                        scaleFactor = 0.02
                     case "H2O":
-                        scaleFactor = 0.05
+                        scaleFactor = 0.04
+                    case "H2":
+                        scaleFactor = 0.04
+                    case "Cl2":
+                        scaleFactor = 0.02
+                    case "HCl":
+                        scaleFactor = 0.02
                     default:
                         scaleFactor = 0.03
                     }
