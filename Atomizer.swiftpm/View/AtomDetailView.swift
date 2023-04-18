@@ -1,4 +1,5 @@
 import SwiftUI
+import ActivityIndicatorView
 import SceneKit
 
 /**
@@ -7,8 +8,10 @@ import SceneKit
 
 struct AtomDetailView: View {
     let element: Element
+    
     @State private var isLoaded = false
     @State private var particleNodes: [SCNNode] = []
+    @State private var isSpinnerVisible = true
 
     let sphereGeometry = SCNSphere(radius: 0.02)
     let sphereMaterial = SCNMaterial()
@@ -35,15 +38,18 @@ struct AtomDetailView: View {
                     .background(Color.clear)
                     .edgesIgnoringSafeArea(.all)
                 }
-                
             } else {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    .scaleEffect(2.0, anchor: .center)
-                    .frame(maxHeight: .infinity)
-                    .onAppear {
-                        fetchParticleData()
-                    }
+                Spacer()
+                
+                HStack {
+                    ActivityIndicatorView(isVisible: $isSpinnerVisible, type: .arcs(count: 3, lineWidth: 2))
+                        .frame(width: 100.0, height: 100.0)
+                        .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
+                        .onAppear {
+                            fetchParticleData()
+                        }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             
             VStack(alignment: .leading, spacing: 8) {
@@ -213,3 +219,4 @@ struct AtomDetailView: View {
         task.resume()
     }
 }
+
