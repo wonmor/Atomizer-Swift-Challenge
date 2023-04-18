@@ -110,6 +110,27 @@ struct AtomDetailView: View {
                     let rotation = SCNAction.rotateBy(x: 0, y: 2 * .pi, z: 0, duration: 10)
                     particlesNode.runAction(SCNAction.repeatForever(rotation))
                     
+                    // Create an array of random positions for each particle
+                    let randomPositions = particleSphereNodes.map { _ in
+                        SCNVector3(Float.random(in: -1.0...1.0), Float.random(in: -1.0...1.0), Float.random(in: -1.0...1.0))
+                    }
+
+                    // Animate each particle to its actual position
+                    for i in 0..<particleSphereNodes.count {
+                        let particleSphereNode = particleSphereNodes[i]
+                        let randomPosition = randomPositions[i]
+                        let actualPosition = particleSphereNode.position
+
+                        // Set the initial position of the particle to the random position
+                        particleSphereNode.position = randomPosition
+
+                        // Add an action to animate the particle to its actual position
+                        let moveAction = SCNAction.move(to: actualPosition, duration: 0.5)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.001) {
+                            particleSphereNode.runAction(moveAction)
+                        }
+                    }
+                    
                     DispatchQueue.main.async {
                         particleNodes = [particlesNode]
                         isLoaded = true
