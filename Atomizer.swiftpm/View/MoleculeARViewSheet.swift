@@ -94,6 +94,7 @@ struct MoleculeARViewSheet: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .padding()
             .edgesIgnoringSafeArea(.all)
         }
         .edgesIgnoringSafeArea(.all)
