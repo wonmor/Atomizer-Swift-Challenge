@@ -43,7 +43,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher", "7.0.0"..<"8.0.0"),
         .package(url: "https://github.com/magicien/GLTFSceneKit", "0.4.1"..<"1.0.0"),
-        .package(url: "https://github.com/exyte/ActivityIndicatorView.git", "1.0.0"..<"2.0.0")
+        .package(url: "https://github.com/exyte/ActivityIndicatorView.git", "1.0.0"..<"2.0.0"),
+        .package(url: "https://github.com/gonzalezreal/swift-markdown-ui", "2.0.0"..<"3.0.0")
     ],
     targets: [
         .executableTarget(
@@ -51,7 +52,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Kingfisher", package: "kingfisher"),
                 .product(name: "GLTFSceneKit", package: "gltfscenekit"),
-                .product(name: "ActivityIndicatorView", package: "activityindicatorview")
+                .product(name: "ActivityIndicatorView", package: "activityindicatorview"),
+                .product(name: "MarkdownUI", package: "swift-markdown-ui")
             ],
             path: ".",
             resources: [

@@ -1,4 +1,5 @@
 import SwiftUI
+import MarkdownUI
 
 struct FormattedTextView: View {
     let text: String
@@ -72,7 +73,7 @@ struct SegmentView: View {
     var body: some View {
         switch segment.type {
         case .text:
-            return AnyView(Text(segment.content)
+            return AnyView(Markdown(segment.content)
                 .font(.body))
         case .image:
             return AnyView(ImageView(urlString: segment.content, altText: segment.altText))
