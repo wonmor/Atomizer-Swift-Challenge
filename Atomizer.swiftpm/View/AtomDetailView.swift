@@ -22,10 +22,16 @@ struct AtomDetailView: View {
                 .padding(.horizontal)
             
             if isLoaded {
-                Atom3DView(particleNodes: particleNodes, sphereGeometry: sphereGeometry, sphereMaterial: sphereMaterial)
+                GeometryReader { geometry in
+                    ZStack {
+                        Atom3DView(particleNodes: particleNodes, sphereGeometry: sphereGeometry, sphereMaterial: sphereMaterial)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.clear)
                     .edgesIgnoringSafeArea(.all)
+                }
+                
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -95,12 +101,17 @@ struct AtomDetailView: View {
                     // Create a node to hold all of the particle nodes
                     let particlesNode = SCNNode()
                     particleSphereNodes.forEach { particlesNode.addChildNode($0) }
-                    particlesNode.position = SCNVector3(-center.x - 0.5, -center.y + 0.5, -center.z)
                     
                     let boundingBox = particlesNode.boundingBox
                     let particleSize = SCNVector3(boundingBox.max.x - boundingBox.min.x,
                                                   boundingBox.max.y - boundingBox.min.y,
                                                   boundingBox.max.z - boundingBox.min.z)
+                    
+                    particlesNode.position = SCNVector3(
+                        -boundingBox.min.x - (boundingBox.max.x - boundingBox.min.x) / 2.0,
+                        -boundingBox.min.y - (boundingBox.max.y - boundingBox.min.y) / 2.0,
+                        -boundingBox.min.z - (boundingBox.max.z - boundingBox.min.z) / 2.0
+                    )
                     
                     let maxDimension = max(particleSize.x, particleSize.y, particleSize.z)
                     let scaleFactor = 1.0 / (maxDimension * 0.5) // Adjust the multiplier as desired
