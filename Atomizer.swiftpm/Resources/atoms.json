@@ -69,7 +69,7 @@
     "symbol": "O",
     "name": "Oxygen",
     "category": "Nonmetal",
-    "description": "Colorless, odorless, tasteless gas essential to living organisms",
+    "description": "Colorless, odorless, tasteless gas essential to living organisms.",
     "electronConfiguration": "[He] 2s^2 2p^4",
     "atomicMass": 15.999,
     "oxidationStates": -2,
