@@ -42,6 +42,10 @@ struct AtomDetailView: View {
                     }
             }
             
+            Text(element.electronConfiguration)
+                .font(.title)
+                .padding(.horizontal)
+            
             Spacer()
         }
         .navigationBarTitle(element.name)
