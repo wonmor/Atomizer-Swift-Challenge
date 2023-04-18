@@ -11,7 +11,6 @@ struct Atom3DView: UIViewRepresentable {
         sceneView.backgroundColor = UIColor.black
         sceneView.autoenablesDefaultLighting = true
         sceneView.allowsCameraControl = true
-        sceneView.showsStatistics = true
         return sceneView
     }
     

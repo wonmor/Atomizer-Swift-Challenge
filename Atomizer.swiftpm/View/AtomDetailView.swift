@@ -42,9 +42,41 @@ struct AtomDetailView: View {
                     }
             }
             
-            Text(element.electronConfiguration)
-                .font(.title)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Electron Config.")
+                    .font(.title3)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.horizontal)
+                
+                let electronConfigurationParts = element.electronConfiguration
+                    .components(separatedBy: " ")
+                
+                HStack(spacing: 8) {
+                    ForEach(electronConfigurationParts, id: \.self) { part in
+                        let subshell = part
+                            .replacingOccurrences(of: "[", with: "")
+                            .replacingOccurrences(of: "]", with: "")
+                        
+                        if subshell == electronConfigurationParts.last {
+                            Text(subshell)
+                                .font(.title)
+                                .fontWeight(.bold) // Set the font weight to bold
+                                .foregroundColor(.black)
+                                .padding(4)
+                                .background(Color(AtomView.hexStringToUIColor(hex: element.color)))
+                                .cornerRadius(8)
+                            
+                        } else {
+                            Text(part)
+                                .font(.title)
+                                .fontWeight(.bold) // Set the font weight to bold
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.horizontal)
+                .padding(.bottom)
+            }
             
             Spacer()
         }
