@@ -11,11 +11,16 @@ struct ArticleCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Image(article.imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 150)
-                .cornerRadius(8)
+            AsyncImage(url: URL(string: article.imageUrl)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 150)
+                    .cornerRadius(8)
+            } placeholder: {
+                ProgressView()
+                    .frame(height: 150)
+            }
             Text(article.title)
                 .font(.headline)
                 .lineLimit(2)

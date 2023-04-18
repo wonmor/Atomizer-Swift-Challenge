@@ -1,12 +1,14 @@
 import SwiftUI
 
 /**
-    A view that displays an article.
-*/
+ A view that displays an article.
+ */
 
 struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     @Environment(\.colorScheme) var colorScheme
+    
+    @ObservedObject var articleData = ArticleViewModel()
     
     var body: some View {
         ScrollView {
@@ -29,10 +31,11 @@ struct ExploreView: View {
             .padding()
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 16)], spacing: 16) {
-                ForEach(0..<articles.count) { index in
-                    NavigationLink(destination: ArticleDetailView(article: articles[index])) {
-                        ArticleCardView(article: articles[index])
+                ForEach(articleData.articles) { article in
+                    NavigationLink(destination: ArticleDetailView(article: article)) {
+                        ArticleCardView(article: article)
                     }
+                    .id(article.id)
                 }
             }
             .padding()
@@ -41,7 +44,6 @@ struct ExploreView: View {
         .navigationTitle("Explore")
     }
 }
-
 
 struct ExploreView_Previews: PreviewProvider {
     static var previews: some View {
