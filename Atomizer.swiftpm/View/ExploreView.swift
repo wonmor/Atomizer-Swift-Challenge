@@ -42,6 +42,12 @@ struct ExploreView: View {
                 }
             }
             .padding()
+            
+            Text("All the readings were generated using the GPT-4 language model.")
+                .font(.caption)
+                .padding(.horizontal)
+                .padding(.bottom)
+                .foregroundColor(Color.gray)
         }
         .padding(.horizontal)
         .navigationTitle("Explore")
