@@ -183,7 +183,7 @@ struct MoleculeDetailView: View {
             isInstructionPopupVisible = true
             
             // Hide the instruction popup after 2 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 isInstructionPopupVisible = false
             }
         }
