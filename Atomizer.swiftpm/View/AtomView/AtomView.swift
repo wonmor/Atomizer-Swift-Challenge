@@ -7,6 +7,9 @@ let elements = try! decoder.decode([Element].self, from: jsonData)
 
 /**
     A view that displays a list of atoms.
+ 
+    ATOMIZER
+    Developed and Designed by John Seong.
 */
 
 struct AtomView: View {

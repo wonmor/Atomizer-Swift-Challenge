@@ -5,6 +5,7 @@
   Version 1.0
  
 Copyright © 2018 Peter Wallen.
+https://github.com/phwallen/microbit-swift
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

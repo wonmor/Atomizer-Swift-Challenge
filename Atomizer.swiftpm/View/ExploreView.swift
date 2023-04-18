@@ -1,7 +1,10 @@
 import SwiftUI
 
 /**
- A view that displays an article.
+    A view that displays an article.
+ 
+    ATOMIZER
+    Developed and Designed by John Seong.
  */
 
 struct ExploreView: View {

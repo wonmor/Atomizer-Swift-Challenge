@@ -3,6 +3,9 @@ import SceneKit
 
 /**
     A view that displays an atom.
+ 
+    ATOMIZER
+    Developed and Designed by John Seong.
 */
 
 struct Atom3DView: UIViewRepresentable {

@@ -2,6 +2,9 @@ import SwiftUI
 
 /**
     A view that displays an article.
+ 
+    ATOMIZER
+    Developed and Designed by John Seong.
 */
 
 struct ArticleCardView: View {

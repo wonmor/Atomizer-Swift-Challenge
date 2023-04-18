@@ -1,6 +1,13 @@
 import SwiftUI
 import MarkdownUI
 
+/**
+    A view that displays an article.
+ 
+    ATOMIZER
+    Developed and Designed by John Seong.
+*/
+
 struct FormattedTextView: View {
     let text: String
     @State private var contentSegments: [FormattedTextSegment] = []

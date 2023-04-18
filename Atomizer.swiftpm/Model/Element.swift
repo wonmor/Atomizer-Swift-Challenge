@@ -1,7 +1,10 @@
 import Foundation
 
 /**
- * A model that represents an element on the periodic table.
+   A model that represents an element on the periodic table.
+
+   ATOMIZER
+   Developed and Designed by John Seong.
  */
 
 struct Element: Codable {

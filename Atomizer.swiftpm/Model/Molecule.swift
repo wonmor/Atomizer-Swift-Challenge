@@ -1,7 +1,10 @@
 import Foundation
 
 /**
- * A model that represents a molecule.
+   A model that represents a molecule.
+
+   ATOMIZER
+   Developed and Designed by John Seong.
  */
 
 class Molecule: Identifiable, Decodable {

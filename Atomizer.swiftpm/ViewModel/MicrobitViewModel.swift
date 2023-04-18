@@ -3,6 +3,9 @@ import CoreBluetooth
 
 /**
     A view model that manages the state of the micro:bit view.
+ 
+    ATOMIZER
+    Developed and Designed by John Seong.
 */
 
 class MicrobitViewModel: NSObject, ObservableObject, CBCentralManagerDelegate {

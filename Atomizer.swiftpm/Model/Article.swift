@@ -1,7 +1,10 @@
 import Foundation
 
 /**
- * A model that represents an article.
+   A model that represents an article.
+
+   ATOMIZER
+   Developed and Designed by John Seong.
  */
 
 struct Article: Codable, Identifiable {
