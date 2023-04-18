@@ -69,7 +69,6 @@ struct AtomDetailView: View {
                         } else {
                             Text(part)
                                 .font(.title)
-                                .fontWeight(.bold) // Set the font weight to bold
                         }
                     }
                 }
