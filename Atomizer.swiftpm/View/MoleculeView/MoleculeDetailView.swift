@@ -1,4 +1,5 @@
 import SwiftUI
+import PopupView
 
 /**
     A view that displays an article.
@@ -12,6 +13,7 @@ struct MoleculeDetailView: View {
     @State private var selectedOrbital = 0 // Add a state property for the selected orbital
     @State private var isMolecularOrbitalHOMO = true;
     @State private var isArView = false;
+    @State private var showingPopup = false;
     
     // Add a timer to automatically swipe through the tabs
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
@@ -163,17 +165,30 @@ struct MoleculeDetailView: View {
                     Picker(selection: $selectedOrbital, label: Text("Orbital")) {
                         Text("HOMO").tag(0)
                         Text("LUMO").tag(1)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
-                .onChange(of: selectedOrbital) { value in
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
+                    .onChange(of: selectedOrbital) { value in
                         if value == 0 {
                             isMolecularOrbitalHOMO = true
                         } else {
                             isMolecularOrbitalHOMO = false
                         }
                     }
-            }
+                    
+                    Button(action: {
+                        showingPopup = true;
+                    }, label: {
+                        Circle()
+                            .fill(Color(UIColor.darkGray))
+                            .frame(width: 20, height: 20)
+                            .overlay(
+                                Text("?")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.black)
+                            )
+                    })
+                }
             .frame(width: 200)
             .padding(.bottom)
             }
@@ -187,8 +202,18 @@ struct MoleculeDetailView: View {
                 isInstructionPopupVisible = false
             }
         }
+        .blur(radius: showingPopup ? 5 : 0).animation(.easeInOut(duration: 0.5), value: showingPopup)
         .sheet(isPresented: $isArView) {
             MoleculeARViewSheet(molecule: molecule, isArView: $isArView, isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
+        }
+        .popup(isPresented: $showingPopup) {
+            InstructionPopupView()
+                .frame(width: 800, height: 1000)
+                .cornerRadius(8)
+        } customize: {
+            $0
+                .animation(.spring())
+                .closeOnTapOutside(true)
         }
     }
 }
