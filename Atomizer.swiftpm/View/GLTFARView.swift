@@ -6,6 +6,10 @@ import GLTFSceneKit
 import Vision
 import Dispatch
 
+/**
+    A view that displays a GLTF model in AR.
+*/
+
 struct GLTFARView: UIViewRepresentable {
     let molecule: Molecule
     

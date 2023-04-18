@@ -1,5 +1,9 @@
 import SwiftUI
 
+/**
+    A view that displays an article.
+*/
+
 struct MoleculeARViewSheet: View {
     let molecule: Molecule
     
@@ -11,6 +15,21 @@ struct MoleculeARViewSheet: View {
     
     var body: some View {
         ZStack(alignment: .center) {
+           /**
+            Uses the ElectronVisualized REST API to download the GLB file of the molecule.
+            The API was created from scratch by me, using Python and Flask.
+            I used ASE and GPAW to get electron density data, using Density Functional Theory (DFT).
+            For the molecular orbitals, I used PySCF to get the molecular orbitals, using Hartree–Fock (HF) theory.
+            I then converted the data into GlTF format, using UCSF's Chimera.
+
+            GitHub repo of the API that I created:
+            https://github.com/wonmor/ElectronVisualized
+            
+            Relevant links:
+            https://en.wikipedia.org/wiki/Density_functional_theory
+            https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method
+        */
+        
             GLTFARView(molecule: molecule, gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF_AR")!)
             
             Image(systemName: "hand.point.up.fill")

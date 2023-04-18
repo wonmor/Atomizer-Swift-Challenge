@@ -1,11 +1,8 @@
-//
-//  File.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import Foundation
+
+/**
+ * A model that represents an article.
+ */
 
 struct Article {
     let title: String

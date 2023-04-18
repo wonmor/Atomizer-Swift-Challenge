@@ -1,6 +1,10 @@
 import SceneKit
 import ARKit
 
+/**
+    A node that represents the focus point of the AR session.
+*/
+
 class CustomFocusNode: SCNNode {
 
     override init() {

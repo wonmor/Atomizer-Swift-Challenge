@@ -1,5 +1,9 @@
 import SwiftUI
 
+/**
+    A view that displays an article.
+*/
+
 struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     @Environment(\.colorScheme) var colorScheme

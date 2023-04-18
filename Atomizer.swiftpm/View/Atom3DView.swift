@@ -1,6 +1,10 @@
 import SwiftUI
 import SceneKit
 
+/**
+    A view that displays an atom.
+*/
+
 struct Atom3DView: UIViewRepresentable {
     let particleNodes: [SCNNode]
     let sphereGeometry: SCNSphere

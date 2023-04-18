@@ -1,5 +1,9 @@
 import SwiftUI
 
+/**
+    A view that displays an article.
+*/
+
 struct ContentView: View {
     @State private var selectedView: Int? = 0
     

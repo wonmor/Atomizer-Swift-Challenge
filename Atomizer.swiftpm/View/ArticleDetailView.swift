@@ -1,11 +1,8 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import SwiftUI
+
+/**
+    A view that displays an article.
+*/
 
 struct ArticleDetailView: View {
     let article: Article

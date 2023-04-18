@@ -1,12 +1,9 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import SwiftUI
 import Kingfisher
+
+/**
+    Inverts the colors of a view.
+*/
 
 struct InvertColors: ViewModifier {
     func body(content: Content) -> some View {
@@ -20,6 +17,10 @@ extension View {
         self.modifier(InvertColors())
     }
 }
+
+/**
+    A view that displays a molecule.
+*/
 
 struct MoleculeButton: View {
     let molecule: Molecule

@@ -1,6 +1,10 @@
 import SwiftUI
 import SceneKit
 
+/**
+    A view that displays an atom.
+*/
+
 struct AtomDetailView: View {
     let element: Element
     @State private var isLoaded = false
@@ -83,6 +87,20 @@ struct AtomDetailView: View {
     }
     
     func fetchParticleData() {
+        /**
+            Uses the ElectronVisualized REST API to download the electron coordinates.
+            The API was created from scratch by me, using Python and Flask.
+            I used SciPy and NumPy to calculate spherical harmonics.
+            Then, I sampled the wavefunction by using the Metropolis-Hastings algorithm.
+
+            GitHub repo of the API that I created:
+            https://github.com/wonmor/ElectronVisualized
+            
+            Relevant links:
+            https://en.wikipedia.org/wiki/Spherical_harmonics
+            https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm
+        */
+
         guard let url = URL(string: "https://electronvisual.org/api/loadSPH/\(element.symbol)") else {
             fatalError("Invalid URL")
         }

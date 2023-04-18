@@ -1,13 +1,10 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import SwiftUI
 
-struct ArticleCardView: View {
+/**
+    A view that displays an article.
+*/
+
+struct ArticleCardView: View {å
     let article: Article
     
     @Environment(\.colorScheme) var colorScheme

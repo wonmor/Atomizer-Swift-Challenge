@@ -1,6 +1,10 @@
 import SwiftUI
 import Kingfisher
 
+/**
+    A view that displays a molecule.
+*/
+
 struct MoleculeView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     

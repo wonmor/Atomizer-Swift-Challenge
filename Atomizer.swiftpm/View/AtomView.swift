@@ -5,7 +5,10 @@ let jsonData = try! Data(contentsOf: jsonURL)
 let decoder = JSONDecoder()
 let elements = try! decoder.decode([Element].self, from: jsonData)
 
-// Now you can use the `elements` array in your SwiftUI code
+/**
+    A view that displays a list of atoms.
+*/
+
 struct AtomView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     

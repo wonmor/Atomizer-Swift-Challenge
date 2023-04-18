@@ -1,5 +1,9 @@
 import Foundation
 
+/**
+ * A model that represents an element on the periodic table.
+ */
+
 struct Element: Codable {
     let symbol: String
     let name: String

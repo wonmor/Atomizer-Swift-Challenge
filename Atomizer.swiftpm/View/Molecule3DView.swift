@@ -1,13 +1,10 @@
-//
-//  SwiftUIView.swift
-//
-//
-//  Created by John Seong on 2023-04-14.
-//
-
 import SwiftUI
 import SceneKit
 import GLTFSceneKit
+
+/**
+    A view that displays a molecule.
+*/
 
 struct Molecule3DView: UIViewRepresentable {
     typealias UIViewType = SCNView
@@ -79,7 +76,21 @@ struct Molecule3DView: UIViewRepresentable {
     
     func updateUIView(_ uiView: SCNView, context: Context) {
         if isLoading || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
-            // Start loading the GLTF file if it hasn't been loaded yet
+        /**
+            Uses the ElectronVisualized REST API to download the GLB file of the molecule.
+            The API was created from scratch by me, using Python and Flask.
+            I used ASE and GPAW to get electron density data, using Density Functional Theory (DFT).
+            For the molecular orbitals, I used PySCF to get the molecular orbitals, using Hartree–Fock (HF) theory.
+            I then converted the data into GlTF format, using UCSF's Chimera.
+
+            GitHub repo of the API that I created:
+            https://github.com/wonmor/ElectronVisualized
+            
+            Relevant links:
+            https://en.wikipedia.org/wiki/Density_functional_theory
+            https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method
+        */
+        
             let url = URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!
             let urlSession = URLSession(configuration: .default)
             let task = urlSession.dataTask(with: url) { data, _, error in

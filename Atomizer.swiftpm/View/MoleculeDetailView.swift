@@ -1,5 +1,9 @@
 import SwiftUI
 
+/**
+    A view that displays an article.
+*/
+
 struct MoleculeDetailView: View {
     let molecule: Molecule
     

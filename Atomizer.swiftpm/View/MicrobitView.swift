@@ -1,6 +1,10 @@
 import SwiftUI
 import CoreBluetooth
 
+/**
+    A view that displays an article.
+*/
+
 struct MicrobitView: View {
     @StateObject private var microbitViewModel = MicrobitViewModel()
 

@@ -1,11 +1,8 @@
-//
-//  File.swift
-//  
-//
-//  Created by John Seong on 2023-04-13.
-//
-
 import Foundation
+
+/**
+ * A model that represents a molecule.
+ */
 
 class Molecule: Identifiable, Decodable {
     let id = UUID()

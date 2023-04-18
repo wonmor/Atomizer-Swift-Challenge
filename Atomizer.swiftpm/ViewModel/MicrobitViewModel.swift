@@ -1,12 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by John Seong on 2023-04-16.
-//
-
 import Foundation
 import CoreBluetooth
+
+/**
+    A view model that manages the state of the micro:bit view.
+*/
 
 class MicrobitViewModel: NSObject, ObservableObject, CBCentralManagerDelegate {
     @Published var devices = [CBPeripheral]()
