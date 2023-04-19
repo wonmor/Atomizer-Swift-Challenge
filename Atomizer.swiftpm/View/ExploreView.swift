@@ -16,7 +16,7 @@ struct ExploreView: View {
     var body: some View {
         ScrollView {
             ZStack {
-                Image("backgroundImage")
+                Image("background-image")
                     .resizable()
                     .scaledToFill()
                     .frame(height: UIScreen.main.bounds.width < 500 ? adaptiveSize.width * 0.4 : adaptiveSize.width * 0.2)
