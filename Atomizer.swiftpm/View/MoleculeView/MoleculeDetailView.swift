@@ -206,14 +206,8 @@ struct MoleculeDetailView: View {
         .sheet(isPresented: $isArView) {
             MoleculeARViewSheet(molecule: molecule, isArView: $isArView, isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
         }
-        .popup(isPresented: $showingPopup) {
+        .sheet(isPresented: $showingPopup) {
             InstructionPopupView()
-                .frame(width: 800, height: 1000)
-                .cornerRadius(8)
-        } customize: {
-            $0
-                .animation(.spring())
-                .closeOnTapOutside(true)
         }
     }
 }
