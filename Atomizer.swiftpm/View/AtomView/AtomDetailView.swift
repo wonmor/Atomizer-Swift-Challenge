@@ -97,7 +97,7 @@ struct AtomDetailView: View {
     
     func fetchParticleData() {
         /**
-         Uses the ElectronVisualized REST API to download the electron coordinates.
+         Uses the ElectronVisualized API to generate the electron coordinates.
          The API was created from scratch by me, using Python and Flask.
          I used SciPy and NumPy to calculate spherical harmonics.
          Then, I sampled the wavefunction by using the Metropolis-Hastings algorithm.
