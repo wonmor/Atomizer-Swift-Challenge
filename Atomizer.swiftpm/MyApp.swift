@@ -41,6 +41,7 @@ import SwiftUI
  
     John Seong
     Class of 2023 at Garth Webb Secondary School
+    Oakville, Canada
 */
 
 @main
