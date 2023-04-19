@@ -83,8 +83,23 @@ struct SegmentView: View {
     var body: some View {
         switch segment.type {
         case .text:
-            return AnyView(Markdown(segment.content as? String ?? "")
-                .font(.body))
+            return AnyView(
+                Markdown(segment.content as? String ?? "")
+                    .markdownBlockStyle(\.blockquote) { configuration in
+                      configuration.label
+                        .padding()
+                        .markdownTextStyle {
+                          FontWeight(.semibold)
+                          BackgroundColor(nil)
+                        }
+                        .overlay(alignment: .leading) {
+                          Rectangle()
+                            .fill(Color.teal)
+                            .frame(width: 4)
+                        }
+                        .background(Color.teal.opacity(0.5))
+                    }
+            )
         case .image:
             if let uiImage = segment.content as? UIImage {
                 return AnyView(
