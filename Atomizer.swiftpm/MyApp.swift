@@ -20,7 +20,7 @@ import SwiftUI
  
     Disclaimer:
     DON'T WORRY, INTERNET CONNECTION IS *NOT* REQUIRED TO RUN THIS APP.
-    I PRE-LOADED ALL THE ASSETS FOR THE 3D PLOTTING.
+    I PRE-LOADED ALL THE 3D ASSETS FOR PLOTTING.
 
     - I used ASE and GPAW to get electron density data, using Density Functional Theory (DFT).
     For the molecular orbitals, I used PySCF to get the molecular orbitals, using Hartree–Fock (HF) theory.
