@@ -8,7 +8,7 @@ import SwiftUI
     Atomizer is a state-of-the-art SwiftUI app that visualizes atomic and molecular orbitals.
     It features atomic orbitals in the form of electron density, and molecular orbitals in which you can view it in AR.
  
-    - ARKit and SceneKit are used to render the 3D models. Object occlusion is also supported on LiDAR-enabled devices, despite the fact that only RealityKit supports it.
+    - ARKit and SceneKit are used to render the 3D models. Object occlusion is also supported on LiDAR-enabled devices.
  
     - Using Apple's powerful ML-trained Vision framework, I was able to achieve object spawning by hand detection,
     in which the molecule will come right into your hand like Thor's hammer, all in Augmented Reality.
