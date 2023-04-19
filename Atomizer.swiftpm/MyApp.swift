@@ -22,11 +22,6 @@ import SwiftUI
     https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm
     https://en.wikipedia.org/wiki/Density_functional_theory
     https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method
- 
-    I additionally referenced two open source projects from GitHub, first of which being Microbit.swift written by Peter Wallen.
-    As it is my first time working on an embedded system, and as a person who is not familiar with Bluetooth LE technology,
-    an external library solution for the communication between micro:bit controller and iOS device was a necessary choice.
-    https://github.com/phwallen/microbit-swift
 */
 
 @main

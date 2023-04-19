@@ -19,7 +19,7 @@ class Molecule: Identifiable, Decodable {
     let hybridization: String
     let molecularGeometry: String
     let bonds: String
-    let imageURL: URL?
+    let imageURL: String
     
     enum CodingKeys: String, CodingKey {
         case name, formula, description, shape, polarity, bondAngle, orbitals, hybridization, molecularGeometry, bonds
@@ -38,6 +38,6 @@ class Molecule: Identifiable, Decodable {
         hybridization = try container.decode(String.self, forKey: .hybridization)
         molecularGeometry = try container.decode(String.self, forKey: .molecularGeometry)
         bonds = try container.decode(String.self, forKey: .bonds)
-        imageURL = try container.decodeIfPresent(URL.self, forKey: .imageURL)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)!
     }
 }

@@ -1,5 +1,4 @@
 import SwiftUI
-import PopupView
 
 /**
     A view that displays an article.
@@ -17,6 +16,7 @@ struct MoleculeDetailView: View {
     
     // Add a timer to automatically swipe through the tabs
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    let instruction = Article(title: "What are HOMO and LUMO?", subtitle: "Molecular Orbital Theory", imageUrl: "molecular-orbital", content: "HOMO stands for Highest Occupied Molecular Orbital and LUMO stands for Lowest Unoccupied Molecular Orbital. Think of HOMO as the top floor of a building and LUMO as the basement. HOMO is where the electrons hang out the most and LUMO is where they like to go when they're excited. Electrons are tiny particles that make up everything around us!\n\n![Image1](homo-lumo-1)\n\n*Source: UCalgary*\n\nWhen atoms come together to form molecules, their electrons are located in orbitals, which are like little clouds that surround the atoms. There are two types of orbitals involved in bonding: bonding orbitals and antibonding orbitals.\n\nBonding orbitals are like friendly hugs between atoms. When two atoms come close enough together, their orbitals can overlap in a way that allows their electrons to share the same space. This sharing of electrons creates a bond between the atoms, which corresponds to the HOMO. In contrast, antibonding orbitals are like two people pushing against each other. When two atoms come too close together, their orbitals can overlap in a way that causes their electrons to repel each other, preventing the formation of a bond. This corresponds to the LUMO.\n\nIn summary, bonding orbitals allow for the formation of chemical bonds, which correspond to the HOMO. Antibonding orbitals prevent bonding, which correspond to the LUMO. Electrons can move from bonding orbitals to antibonding orbitals, which can weaken or break chemical bonds.")
     
     var body: some View {
         ZStack {
@@ -176,9 +176,7 @@ struct MoleculeDetailView: View {
                         }
                     }
                     
-                    Button(action: {
-                        showingPopup = true;
-                    }, label: {
+                    NavigationLink(destination: ArticleDetailView(article: instruction)) {
                         Circle()
                             .fill(Color(UIColor.darkGray))
                             .frame(width: 20, height: 20)
@@ -187,7 +185,7 @@ struct MoleculeDetailView: View {
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.black)
                             )
-                    })
+                    }
                 }
             .frame(width: 200)
             .padding(.bottom)
@@ -202,12 +200,8 @@ struct MoleculeDetailView: View {
                 isInstructionPopupVisible = false
             }
         }
-        .blur(radius: showingPopup ? 5 : 0).animation(.easeInOut(duration: 0.5), value: showingPopup)
         .sheet(isPresented: $isArView) {
             MoleculeARViewSheet(molecule: molecule, isArView: $isArView, isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
-        }
-        .sheet(isPresented: $showingPopup) {
-            InstructionPopupView()
         }
     }
 }

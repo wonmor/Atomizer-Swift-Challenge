@@ -10,7 +10,7 @@
     "hybridization": "sp2",
     "molecularGeometry": "AX2E",
     "bonds": "1 sigma bond\n1 pi bond",
-    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C74851&Type=Color"
+    "imageURL": "C2H4-structure"
   },
   {
     "formula": "H2O",
@@ -23,7 +23,7 @@
     "hybridization": "sp3",
     "molecularGeometry": "AX2E2",
     "bonds": "2 sigma bonds\n2 lone pairs",
-    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C7732185&Type=Color"
+    "imageURL": "H2O-structure"
   },
   {
     "formula": "H2",
@@ -36,7 +36,7 @@
     "hybridization": "No",
     "molecularGeometry": "AX2",
     "bonds": "1 sigma bond",
-    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C1333740&Type=Color"
+    "imageURL": "H2-structure"
   },
   {
     "formula": "Cl2",
@@ -49,7 +49,7 @@
     "hybridization": "No",
     "molecularGeometry": "AX2",
     "bonds": "1 sigma bond\n1 pi bond",
-    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C7782505&Type=Color"
+    "imageURL": "Cl2-structure"
   },
   {
     "formula": "HCl",
@@ -62,6 +62,6 @@
     "hybridization": "sp",
     "molecularGeometry": "AX2E",
     "bonds": "1 sigma bond\n1 lone pair",
-    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C7647010&Type=Color"
+    "imageURL": "HCl-structure"
   }
 ]

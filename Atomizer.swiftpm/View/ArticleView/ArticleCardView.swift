@@ -18,7 +18,7 @@ struct ArticleCardView: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(height: 150)
+                    .frame(width: 150, height: 150)
                     .cornerRadius(8)
             } else {
                 RoundedRectangle(cornerRadius: 8)

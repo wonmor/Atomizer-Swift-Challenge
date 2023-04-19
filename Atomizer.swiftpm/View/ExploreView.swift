@@ -29,15 +29,20 @@ struct ExploreView: View {
                         .font(.system(size: 28, weight: .bold))
                         .foregroundColor(.primary)
                     
-                    Text("Atomic and Molecular Orbitals")
+                    Text("Quantum Mechanics")
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.secondary)
                 }
                 .padding(.top, adaptiveSize.width * 0.1)
                 .multilineTextAlignment(.center)
             }
-
             .padding()
+            
+            Text("All visuals were generated from scratch using SciPy, PySCF, and GPAW.")
+                .font(.caption)
+                .padding(.horizontal)
+                .foregroundColor(Color.gray)
+                .multilineTextAlignment(.center)
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 16)], spacing: 16) {
                 ForEach(articleData.articles) { article in
@@ -56,7 +61,7 @@ struct ExploreView: View {
             }
             .padding()
             
-            Text("Developed and Designed by John Seong.\nAll visuals were generated from scratch using SciPy, PySCF, and GPAW.")
+            Text("Developed and Designed by John Seong.")
                 .font(.caption)
                 .padding(.horizontal)
                 .padding(.bottom)

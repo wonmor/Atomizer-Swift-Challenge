@@ -18,31 +18,46 @@ struct MoleculeView: View {
             ]
             
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 24) {
-                    ForEach(molecules) { molecule in
-                        MoleculeButton(molecule: molecule)
-                            .padding(8)
+                VStack {
+                    Text("Atomizer uses DFT calculations to derive electron density,\nand Hatree-Fock method to plot molecular orbitals.")
+                        .font(.caption)
+                        .padding(.horizontal)
+                        .foregroundColor(Color.gray)
+                        .multilineTextAlignment(.leading)
+                    
+                    LazyVGrid(columns: columns, spacing: 24) {
+                        ForEach(molecules) { molecule in
+                            MoleculeButton(molecule: molecule)
+                                .padding(8)
+                        }
                     }
+                    .padding()
                 }
-                .padding()
-            }
-            .edgesIgnoringSafeArea(.bottom)
-            .padding(.horizontal, 8)
-            .navigationTitle("Molecules")
-            .onAppear {
-                loadMolecules()
+                .edgesIgnoringSafeArea(.bottom)
+                .padding(.horizontal, 8)
+                .navigationTitle("Molecules")
+                .onAppear {
+                    loadMolecules()
+                }
             }
         } else {
             ScrollView {
-                LazyVStack(spacing: 24) {
-                    ForEach(molecules) { molecule in
-                        MoleculeButton(molecule: molecule)
-                            .padding(.horizontal, 8)
+                VStack {
+                    Text("Atomizer uses DFT calculations to derive electron density,\nand Hatree-Fock method to plot molecular orbitals.")
+                        .font(.caption)
+                        .padding(.horizontal)
+                        .foregroundColor(Color.gray)
+                        .multilineTextAlignment(.leading)
+                    
+                    LazyVStack(spacing: 24) {
+                        ForEach(molecules) { molecule in
+                            MoleculeButton(molecule: molecule)
+                                .padding(.horizontal, 8)
+                        }
                     }
+                    .padding()
                 }
-                .padding()
             }
-            .edgesIgnoringSafeArea(.bottom)
             .navigationTitle("Molecules")
             .onAppear {
                 loadMolecules()

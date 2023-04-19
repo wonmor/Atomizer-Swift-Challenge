@@ -25,25 +25,33 @@ struct AtomView: View {
     
     var body: some View {
         ScrollView(.vertical) {
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(elements, id: \.symbol) { element in
-                    NavigationLink(destination: AtomDetailView(element: element)) {
-                        VStack {
-                            Text(element.symbol)
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
-                                .background(Color.white.opacity(0.2))
-                                .clipShape(Circle())
-                            Text(element.name)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+            VStack {
+                Text("Atomizer uses Spherical Harmonics and Metropolis-Hastings algorithm to plot atomic orbitals.")
+                    .font(.caption)
+                    .padding(.horizontal)
+                    .foregroundColor(Color.gray)
+                    .multilineTextAlignment(.leading)
+                
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(elements, id: \.symbol) { element in
+                        NavigationLink(destination: AtomDetailView(element: element)) {
+                            VStack {
+                                Text(element.symbol)
+                                    .font(.system(size: 24, weight: .bold))
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
+                                    .background(Color.white.opacity(0.2))
+                                    .clipShape(Circle())
+                                Text(element.name)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("Atoms")
     }

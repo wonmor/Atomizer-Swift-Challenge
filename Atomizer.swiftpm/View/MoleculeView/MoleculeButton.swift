@@ -76,26 +76,9 @@ struct MoleculeButton: View {
     }
     
     private func loadImage() {
-        guard let imageURL = molecule.imageURL else {
+        guard let imageName: String? = molecule.imageURL else {
             return
         }
-
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 200, height: 200))
-            |> RoundCornerImageProcessor(cornerRadius: 8)
-        let options: KingfisherOptionsInfo = [
-            .processor(processor),
-            .scaleFactor(UIScreen.main.scale),
-            .transition(.fade(1)),
-            .cacheOriginalImage
-        ]
-
-        KingfisherManager.shared.retrieveImage(with: imageURL, options: options) { result in
-            switch result {
-            case .success(let value):
-                self.image = value.image
-            case .failure(let error):
-                print("Job failed: \(error.localizedDescription)")
-            }
-        }
+        self.image = UIImage(named: imageName!)
     }
 }
