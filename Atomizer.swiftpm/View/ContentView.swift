@@ -39,17 +39,6 @@ struct ContentView: View {
                         Label("Molecules", systemImage: "drop.degreesign")
                     }
                 )
-                
-                Section(header: Text("Extensions")) {
-                    NavigationLink(
-                        destination: MicrobitView(),
-                        tag: 3,
-                        selection: $selectedView,
-                        label: {
-                            Label("micro:bit", systemImage: "bolt.horizontal.circle")
-                        }
-                    )
-                }
             }
             .navigationTitle("Atomizer")
             
