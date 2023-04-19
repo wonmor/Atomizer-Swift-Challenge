@@ -1,27 +1,19 @@
 import Foundation
 
-
 class ArticleViewModel: ObservableObject {
     @Published var articles = [Article]()
     
     init() {
-        guard let url = URL(string: "https://electronvisual.org/api/get-articles") else {
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            
+        if let path = Bundle.main.path(forResource: "articles", ofType: "json") {
             do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path))
                 let decodedData = try JSONDecoder().decode([Article].self, from: data)
-                DispatchQueue.main.async {
-                    self.articles = decodedData
-                }
-            } catch let error {
+                self.articles = decodedData
+            } catch {
                 print(error)
             }
-        }.resume()
+        } else {
+            print("articles.json not found")
+        }
     }
 }

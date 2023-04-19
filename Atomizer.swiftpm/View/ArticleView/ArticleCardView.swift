@@ -14,14 +14,15 @@ struct ArticleCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            AsyncImage(url: URL(string: article.imageUrl)) { image in
-                image
+            if let image = UIImage(named: article.imageUrl) {
+                Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 150)
                     .cornerRadius(8)
-            } placeholder: {
-                ProgressView()
+            } else {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.gray)
                     .frame(height: 150)
             }
             Text(article.title)

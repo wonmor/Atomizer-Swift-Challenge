@@ -13,16 +13,18 @@ struct ArticleDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                AsyncImage(url: URL(string: article.imageUrl)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 200)
-                        .cornerRadius(8)
-                } placeholder: {
-                    ProgressView()
-                }
-                
+                if let image = UIImage(named: article.imageUrl) {
+                   Image(uiImage: image)
+                       .resizable()
+                       .aspectRatio(contentMode: .fill)
+                       .frame(height: 200)
+                       .cornerRadius(8)
+               } else {
+                   RoundedRectangle(cornerRadius: 8)
+                       .fill(Color.gray)
+                       .frame(height: 200)
+               }
+    
                 VStack(alignment: .leading, spacing: 8) {
                     Text(article.title)
                         .font(.title)

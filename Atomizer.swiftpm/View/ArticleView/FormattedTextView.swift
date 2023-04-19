@@ -11,7 +11,7 @@ import MarkdownUI
 struct FormattedTextView: View {
     let text: String
     @State private var contentSegments: [FormattedTextSegment] = []
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ForEach(contentSegments) { segment in
@@ -39,10 +39,13 @@ struct FormattedTextView: View {
                 parsedSegments.append(FormattedTextSegment(type: .text, content: plainText))
             }
             
-            let altText = (rawText as NSString).substring(with: match.range(at: 1))
-            let url = (rawText as NSString).substring(with: match.range(at: 2))
-            parsedSegments.append(FormattedTextSegment(type: .image, content: url, altText: altText))
-            
+            let imageFileName = (rawText as NSString).substring(with: match.range(at: 2))
+            if let image = UIImage(named: imageFileName) {
+                parsedSegments.append(FormattedTextSegment(type: .image, content: image, altText: imageFileName))
+            } else {
+                parsedSegments.append(FormattedTextSegment(type: .text, content: "![\(imageFileName)](\(imageFileName))"))
+            }
+
             lastRangeEnd = match.range.upperBound
         }
         
@@ -59,15 +62,15 @@ struct FormattedTextView: View {
 struct FormattedTextSegment: Identifiable {
     let id = UUID()
     let type: ContentType
-    let content: String
+    let content: Any
     let altText: String
 
     enum ContentType {
         case text
         case image
     }
-    
-    init(type: ContentType, content: String, altText: String = "") {
+
+    init(type: ContentType, content: Any, altText: String = "") {
         self.type = type
         self.content = content
         self.altText = altText
@@ -80,46 +83,23 @@ struct SegmentView: View {
     var body: some View {
         switch segment.type {
         case .text:
-            return AnyView(Markdown(segment.content)
+            return AnyView(Markdown(segment.content as? String ?? "")
                 .font(.body))
         case .image:
-            return AnyView(ImageView(urlString: segment.content, altText: segment.altText))
-        }
-    }
-}
-
-struct ImageView: View {
-    let urlString: String
-    let altText: String
-    
-    @State private var image: UIImage? = nil
-    
-    var body: some View {
-        Group {
-            if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .accessibility(label: Text(altText))
+            if let uiImage = segment.content as? UIImage {
+                return AnyView(
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .accessibility(label: Text(segment.altText))
+                )
             } else {
-                ProgressView()
+                return AnyView(
+                    Markdown(segment.content as? String ?? "")
+                        .font(.body)
+                )
             }
-        }
-        .onAppear {
-            loadImage()
-        }
-    }
-    
-    private func loadImage() {
-        guard let url = URL(string: urlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.image = image
-                }
 
-            }
-        }.resume()
+        }
     }
 }
