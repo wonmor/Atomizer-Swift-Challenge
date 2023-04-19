@@ -56,11 +56,12 @@ struct ExploreView: View {
             }
             .padding()
             
-            Text("Developed and Designed by John Seong.")
+            Text("Developed and Designed by John Seong.\nAll visuals were generated from scratch using SciPy, PySCF, and GPAW.")
                 .font(.caption)
                 .padding(.horizontal)
                 .padding(.bottom)
                 .foregroundColor(Color.gray)
+                .multilineTextAlignment(.center)
         }
         .padding(.horizontal)
         .navigationTitle("Explore")
