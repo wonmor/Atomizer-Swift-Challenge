@@ -13,7 +13,7 @@ import Dispatch
 struct GLTFARView: UIViewRepresentable {
     let molecule: Molecule
     
-    var gltfURL: URL
+    var gltfURL: String
 
     func makeCoordinator() -> Coordinator {
         Coordinator(me: self, molecule: molecule)
@@ -46,7 +46,7 @@ struct GLTFARView: UIViewRepresentable {
     func updateUIView(_ uiView: ARSCNView, context: Context) {
         if gltfURL != context.coordinator.gltfURL {
             context.coordinator.gltfURL = gltfURL
-            context.coordinator.loadModel(from: gltfURL)
+            context.coordinator.loadModel(fromRelativePath: gltfURL)
         }
     }
 
@@ -61,7 +61,7 @@ struct GLTFARView: UIViewRepresentable {
         var attachedModelNode: SCNNode?
         var parent: GLTFARView
         weak var arView: ARSCNView?
-        var gltfURL: URL
+        var gltfURL: String
         let focusNode = CustomFocusNode()
         var modelNode: SCNNode?
         var initialObjectPosition: SCNVector3?
@@ -72,7 +72,7 @@ struct GLTFARView: UIViewRepresentable {
             self.molecule = molecule
             self.gltfURL = me.gltfURL
             super.init()
-            self.loadModel(from: gltfURL)
+            self.loadModel(fromRelativePath: gltfURL)
         }
         
         func handleHandPose(_ observation: VNHumanHandPoseObservation) {
@@ -123,45 +123,44 @@ struct GLTFARView: UIViewRepresentable {
             }
         }
 
-        func loadModel(from url: URL) {
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                guard let data = data else {
-                    print("Failed to load the GLTF model: \(error?.localizedDescription ?? "unknown error")")
-                    return
-                }
-                do {
-                    let sceneSource = try GLTFSceneSource(data: data, options: nil)
-                    let scene = try sceneSource.scene()
-                    let rootNode = scene.rootNode
-                    
-                    self?.modelNode = rootNode
-                    
-                    var scaleFactor = 0.03
-                    
-                    switch self?.molecule.formula {
-                    case "C2H4":
-                        scaleFactor = 0.02
-                    case "H2O":
-                        scaleFactor = 0.04
-                    case "H2":
-                        scaleFactor = 0.04
-                    case "Cl2":
-                        scaleFactor = 0.02
-                    case "HCl":
-                        scaleFactor = 0.02
-                    default:
-                        scaleFactor = 0.03
-                    }
-                    
-                    let floatScaleFactor = Float(scaleFactor)
-                    rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
-                    
-                } catch {
-                    print("Failed to load the GLTF model: \(error)")
-                }
+        func loadModel(fromRelativePath relativePath: String) {
+            guard let url = Bundle.main.url(forResource: relativePath, withExtension: "json") else {
+                print("Failed to locate the GLTF file at path: \(relativePath)")
+                return
             }
-            task.resume()
+            
+            do {
+                let data = try Data(contentsOf: url)
+                let sceneSource = try GLTFSceneSource(data: data, options: nil)
+                let scene = try sceneSource.scene()
+                let rootNode = scene.rootNode
+                
+                self.modelNode = rootNode
+                
+                var scaleFactor = 0.03
+                
+                switch self.molecule.formula {
+                case "C2H4":
+                    scaleFactor = 0.02
+                case "H2O":
+                    scaleFactor = 0.04
+                case "H2":
+                    scaleFactor = 0.04
+                case "Cl2":
+                    scaleFactor = 0.02
+                case "HCl":
+                    scaleFactor = 0.02
+                default:
+                    scaleFactor = 0.03
+                }
+                
+                let floatScaleFactor = Float(scaleFactor)
+                rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
+            } catch {
+                print("Failed to load the GLTF model: \(error)")
+            }
         }
+
         
         // Object Occlusion in ARKit and SceneKit: https://stackoverflow.com/questions/64846510/scenekit-lidar-features-for-object-occlusion
 

@@ -14,7 +14,7 @@ struct Molecule3DView: UIViewRepresentable {
     @State private var isLoading = true
     @State private var error: Error?
     @State private var angle: Float = 0
-    @State private var lastIsMolecularOrbitalHOMO: Bool = true
+    @State private var lastIsMolecularOrbitalHOMO: Bool?
     
     @Binding var isMolecularOrbitalHOMO: Bool
     
@@ -67,6 +67,9 @@ struct Molecule3DView: UIViewRepresentable {
         longPressGesture.minimumPressDuration = 0.3
         sceneView.addGestureRecognizer(longPressGesture)
         
+        // Load the GLTF scene
+        loadGLTFScene(sceneView: sceneView, spinner: spinner)
+        
         return sceneView
     }
     
@@ -75,119 +78,99 @@ struct Molecule3DView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: SCNView, context: Context) {
-        if isLoading || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
-        /**
-            Uses the ElectronVisualized REST API to download the GLB file of the molecule.
-            The API was created from scratch by me, using Python and Flask.
-            I used ASE and GPAW to get electron density data, using Density Functional Theory (DFT).
-            For the molecular orbitals, I used PySCF to get the molecular orbitals, using Hartree–Fock (HF) theory.
-            I then converted the data into GlTF format, using UCSF's Chimera.
-
-            GitHub repo of the API that I created:
-            https://github.com/wonmor/ElectronVisualized
-            
-            Relevant links:
-            https://en.wikipedia.org/wiki/Density_functional_theory
-            https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method
-        */
+           if lastIsMolecularOrbitalHOMO == nil || isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
+               let spinner = uiView.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView
+               spinner?.startAnimating()
+               loadGLTFScene(sceneView: uiView, spinner: spinner)
+               lastIsMolecularOrbitalHOMO = isMolecularOrbitalHOMO
+           }
+       }
+    
+    func loadGLTFScene(sceneView: SCNView, spinner: UIActivityIndicatorView?) {
+        isLoading = true
         
-            let url = URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")!
-            let urlSession = URLSession(configuration: .default)
-            let task = urlSession.dataTask(with: url) { data, _, error in
-                if let error
-                    = error {
-                    DispatchQueue.main.async {
-                        self.error = error
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                    return
+        // Check if the isMolecularOrbitalHOMO property has changed
+        if isMolecularOrbitalHOMO != lastIsMolecularOrbitalHOMO {
+            let relativePath = "\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF"
+            guard let url = Bundle.main.url(forResource: relativePath, withExtension: "json") else {
+                DispatchQueue.main.async {
+                    self.error = NSError(domain: "MoleculeDetailView", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to locate GLTF file"])
+                    isLoading = false
+                    spinner?.stopAnimating()
                 }
-                
-                guard let data = data else {
-                    DispatchQueue.main.async {
-                        self.error = NSError(domain: "MoleculeDetailView", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data was received"])
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                    return
-                }
-                
-                do {
-                    let sceneSource = try GLTFSceneSource(data: data, options: nil)
-                    let scene = try sceneSource.scene()
-                    let rootNode = scene.rootNode
-                    
-                    rootNode.eulerAngles.y = angle
-                    
-                    // Add a rotation action to the root node to continuously rotate it
-                    let rotateAction = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 10))
-                    let rotationKey = "rotationKey"
-                    rootNode.removeAction(forKey: rotationKey) // remove existing action, if any
-                    rootNode.runAction(rotateAction, forKey: rotationKey)
-                    
-                    func applyMaterial(to node: SCNNode) {
-                        if let geometry = node.geometry {
-                            if let material = geometry.firstMaterial {
-                                material.lightingModel = .constant
-                                material.isDoubleSided = true
-                                geometry.materials = [material]
-                            }
-                        }
-                        for childNode in node.childNodes {
-                            applyMaterial(to: childNode)
-                        }
-                    }
-                    
-                    applyMaterial(to: rootNode)
-                    
-                    var scaleFactor = 0.3
-                    
-                    switch molecule.formula {
-                    case "C2H4":
-                        scaleFactor = 0.3
-                    case "H2O":
-                        scaleFactor = 0.4
-                    case "H2":
-                        scaleFactor = 0.6
-                    case "Cl2":
-                        scaleFactor = 0.4
-                    case "HCl":
-                        scaleFactor = 0.4
-                    default:
-                        scaleFactor = 0.3
-                    }
-                    
-                    let floatScaleFactor = Float(scaleFactor)
-                    
-                    // Scale down the root node
-                    rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
-                    
-                    DispatchQueue.main.async {
-                        uiView.scene = scene
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                    
-                } catch {
-                    DispatchQueue.main.async {
-                        self.error = error
-                        isLoading = false
-                        // Stop the spinner
-                        uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
-                    }
-                }
-                // Update the lastIsMolecularOrbitalHOMO variable to reflect
-                // the new value of isMolecularOrbitalHOMO.
-                lastIsMolecularOrbitalHOMO = isMolecularOrbitalHOMO
+                return
             }
             
-            task.resume()
+            do {
+                let data = try Data(contentsOf: url)
+                let sceneSource = try GLTFSceneSource(data: data, options: nil)
+                let scene = try sceneSource.scene()
+                let rootNode = scene.rootNode
+                
+                rootNode.eulerAngles.y = angle
+                
+                // Add a rotation action to the root node to continuously rotate it
+                let rotateAction = SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 10))
+                let rotationKey = "rotationKey"
+                rootNode.removeAction(forKey: rotationKey) // remove existing action, if any
+                rootNode.runAction(rotateAction, forKey: rotationKey)
+                
+                func applyMaterial(to node: SCNNode) {
+                    if let geometry = node.geometry {
+                        if let material = geometry.firstMaterial {
+                            material.lightingModel = .constant
+                            material.isDoubleSided = true
+                            geometry.materials = [material]
+                        }
+                    }
+                    for childNode in node.childNodes {
+                        applyMaterial(to: childNode)
+                    }
+                }
+                
+                applyMaterial(to: rootNode)
+                
+                var scaleFactor = 0.3
+                
+                switch molecule.formula {
+                case "C2H4":
+                    scaleFactor = 0.3
+                case "H2O":
+                    scaleFactor = 0.4
+                case "H2":
+                    scaleFactor = 0.6
+                case "Cl2":
+                    scaleFactor = 0.4
+                case "HCl":
+                    scaleFactor = 0.4
+                default:
+                    scaleFactor = 0.3
+                }
+                
+                let floatScaleFactor = Float(scaleFactor)
+                
+                // Scale down the root node
+                rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
+                
+                DispatchQueue.main.async {
+                    sceneView.scene = scene
+                    isLoading = false
+                    spinner?.stopAnimating()
+                }
+                
+            } catch {
+                DispatchQueue.main.async {
+                    self.error = error
+                    isLoading = false
+                    spinner?.stopAnimating()
+                }
+            }
+        } else {
+            // If the isMolecularOrbitalHOMO property hasn't changed, simply stop the spinner
+            spinner?.stopAnimating()
         }
     }
+
     
     class Coordinator: NSObject, SCNSceneRendererDelegate {
         var parent: Molecule3DView
@@ -201,7 +184,6 @@ struct Molecule3DView: UIViewRepresentable {
             let sceneView = gestureRecognizer.view as! SCNView
             let rootNode = sceneView.scene!.rootNode
             let rotationKey = "rotationKey"
-
             if gestureRecognizer.state == .began {
                 rootNode.removeAction(forKey: rotationKey)
             } else if gestureRecognizer.state == .ended {
@@ -222,6 +204,3 @@ struct Molecule3DView: UIViewRepresentable {
         }
     }
 }
-
-
-
