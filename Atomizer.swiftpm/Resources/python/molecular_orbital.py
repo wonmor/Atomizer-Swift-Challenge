@@ -1,6 +1,6 @@
 import pathlib, json, re
 
-# https://www.andersle.no/posts/2022/mo/mo.html
+# Tutorial used: https://www.andersle.no/posts/2022/mo/mo.html
 
 # RDKit imports:
 from rdkit import Chem
