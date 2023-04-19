@@ -15,6 +15,8 @@ struct AtomDetailView: View {
     @State private var isLoaded = false
     @State private var particleNodes: [SCNNode] = []
     @State private var isSpinnerVisible = true
+    @State private var showQuantumNum = false
+    @State private var quantumNum = ""
     
     let sphereGeometry = SCNSphere(radius: 0.02)
     let sphereMaterial = SCNMaterial()
@@ -56,39 +58,71 @@ struct AtomDetailView: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text("Electron Config.")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.horizontal)
-                
-                let electronConfigurationParts = element.electronConfiguration
-                    .components(separatedBy: " ")
-                
-                HStack(spacing: 8) {
-                    ForEach(electronConfigurationParts, id: \.self) { part in
-                        let subshell = part
-                            .replacingOccurrences(of: "[", with: "")
-                            .replacingOccurrences(of: "]", with: "")
+                        Text(showQuantumNum ? "Quantum Num." : "Electron Config.")
+                            .font(.title3)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.horizontal)
                         
-                        if subshell == electronConfigurationParts.last {
-                            Text(subshell)
-                                .font(.title)
-                                .fontWeight(.bold) // Set the font weight to bold
-                                .foregroundColor(.black)
-                                .padding(4)
-                                .background(Color(AtomView.hexStringToUIColor(hex: element.color)))
-                                .cornerRadius(8)
+                if (!showQuantumNum) {
+                    let parts = element.electronConfiguration
+                    let partsArray = parts.components(separatedBy: " ")
+                    
+                    HStack(spacing: 8) {
+                        ForEach(partsArray, id: \.self) { part in
+                            let subshell = part
+                                .replacingOccurrences(of: "[", with: "")
+                                .replacingOccurrences(of: "]", with: "")
                             
-                        } else {
-                            Text(part)
-                                .font(.title)
+                            if subshell == partsArray.last {
+                                Text(subshell)
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.black)
+                                    .padding(4)
+                                    .background(Color(AtomView.hexStringToUIColor(hex: element.color)))
+                                    .cornerRadius(8)
+                            } else {
+                                Text(part)
+                                    .font(.title)
+                            }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.horizontal)
+                    .padding(.bottom)
+                    
+                } else {
+                    let parts = quantumNum
+                    let partsArray = parts.components(separatedBy: "AND")
+                    
+                    HStack(spacing: 16) {
+                        ForEach(partsArray, id: \.self) { part in
+                            if part == partsArray[1] {
+                                Text(part)
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.black)
+                                    .padding(4)
+                                    .background(Color(AtomView.hexStringToUIColor(hex: element.color)))
+                                    .cornerRadius(8)
+                            } else {
+                                Text(part)
+                                    .font(.title)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal)
-                .padding(.bottom)
-            }
+                    }
+                    .onAppear {
+                        Timer.scheduledTimer(withTimeInterval: 4, repeats: true) { timer in
+                            withAnimation {
+                                self.showQuantumNum.toggle()
+                            }
+                        }
+                    }
             
             Spacer()
         }
@@ -132,6 +166,10 @@ struct AtomDetailView: View {
                 
                 // Parse the JSON data...
                 guard let object = jsonObject as? [String: Any],
+                      let n = object["n_value"] as? NSNumber,
+                      let l = object["l_value"] as? NSNumber,
+                      let m = object["m_value"] as? NSNumber,
+                      
                       let xArray = object["x_coords"] as? [NSNumber],
                       let yArray = object["y_coords"] as? [NSNumber],
                       let zArray = object["z_coords"] as? [NSNumber]
@@ -150,6 +188,12 @@ struct AtomDetailView: View {
                 let xFloatArray = xArray.map { $0.floatValue }
                 let yFloatArray = yArray.map { $0.floatValue }
                 let zFloatArray = zArray.map { $0.floatValue }
+                
+                let nString = n.stringValue
+                let lString = l.stringValue
+                let mString = m.stringValue
+
+                quantumNum = "N = \(nString)ANDL = \(lString)ANDML = \(mString)"
                 
                 let particlesNode = createParticleNodes(xFloatArray: xFloatArray, yFloatArray: yFloatArray, zFloatArray: zFloatArray, sphereGeometry: sphereGeometry, sphereMaterial: sphereMaterial)
                 
