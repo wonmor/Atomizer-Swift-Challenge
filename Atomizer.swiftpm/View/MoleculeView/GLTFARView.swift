@@ -1,5 +1,4 @@
 import SwiftUI
-import SmartHitTest
 import SceneKit
 import ARKit
 import GLTFSceneKit
