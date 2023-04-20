@@ -30,7 +30,7 @@ struct MoleculeARViewSheet: View {
             https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method
         */
         
-            GLTFARView(molecule: molecule, gltfURL: "\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF_AR")
+            GLTFARView(molecule: molecule, gltfURL: "\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")
             
             Image(systemName: "hand.point.up.fill")
                 .font(.system(size: 40))
