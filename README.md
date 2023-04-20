@@ -17,12 +17,13 @@ in which the molecule will come right into your hand like Thor's hammer, all in 
 
 ---
 
-Target audience:
+## Target Audience
+
 High school/Undergraduate students, computational chemists, or anyone who's interested in learning more about quantum mechanics.
 
----
 
-Disclaimer:
+## Disclaimer
+
 DON'T WORRY, INTERNET CONNECTION IS *NOT* REQUIRED TO RUN THIS APP.
 I PRE-LOADED ALL THE 3D ASSETS FOR PLOTTING.
 
