@@ -26,32 +26,6 @@
     "imageURL": "H2O-structure"
   },
   {
-    "formula": "H2",
-    "name": "Hydrogen Gas",
-    "description": "Hydrogen is the lightest element. At standard conditions hydrogen is a gas of diatomic molecules having the formula H2.",
-    "shape": "Linear",
-    "polarity": "Nonpolar",
-    "bondAngle": "180°",
-    "orbitals": "1 bonding orbital\n1 antibonding orbital",
-    "hybridization": "No",
-    "molecularGeometry": "AX2",
-    "bonds": "1 sigma bond",
-    "imageURL": "H2-structure"
-  },
-  {
-    "formula": "Cl2",
-    "name": "Chlorine Gas",
-    "description": "Chlorine is a yellow-green gas at room temperature. Chlorine has a pungent, irritating odor similar to bleach that is detectable at low concentrations.",
-    "shape": "Linear",
-    "polarity": "Nonpolar",
-    "bondAngle": "180°",
-    "orbitals": "1 bonding orbital\n1 antibonding orbital",
-    "hybridization": "No",
-    "molecularGeometry": "AX2",
-    "bonds": "1 sigma bond\n1 pi bond",
-    "imageURL": "Cl2-structure"
-  },
-  {
     "formula": "HCl",
     "name": "Hydrochloric Acid",
     "description": "Hydrochloric acid is the water-based, or aqueous, solution of hydrogen chloride gas.",
