@@ -39,6 +39,17 @@ struct ContentView: View {
                         Label("Molecules", systemImage: "drop.degreesign")
                     }
                 )
+                
+                Section(header: Text("Readings")) {
+                    NavigationLink(
+                        destination: ArticleDetailView(article: instruction1),
+                        tag: 3,
+                        selection: $selectedView,
+                        label: {
+                            Label("HOMO and LUMO?", systemImage: "bolt.horizontal.circle")
+                        }
+                    )
+                }
             }
             .navigationTitle("Atomizer")
             
