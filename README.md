@@ -5,6 +5,10 @@ Built using Xcode 14 on macOS Ventura, designed to run on iPhone, iPad, and ARM-
 
 ---
 
+![IMG_4585-2](https://user-images.githubusercontent.com/35755386/235809592-378717d7-3747-4c9f-8c62-a81d0e17df47.jpg)
+
+---
+
 Atomizer is a state-of-the-art SwiftUI app that visualizes atomic and molecular orbitals.
 It features atomic orbitals in the form of electron density, and molecular orbitals in which you can view it in AR.
 
@@ -14,18 +18,6 @@ It features atomic orbitals in the form of electron density, and molecular orbit
 in which the molecule will come right into your hand like Thor's hammer, all in Augmented Reality.
 
 - For the electron coordinate data, it uses the ElectronVisualized API I created from scratch by myself, using Python and Flask.
-
----
-
-## Target Audience
-
-High school/Undergraduate students, computational chemists, or anyone who's interested in learning more about quantum mechanics.
-
-
-## Disclaimer
-
-DON'T WORRY, INTERNET CONNECTION IS *NOT* REQUIRED TO RUN THIS APP.
-I PRE-LOADED ALL THE 3D ASSETS FOR PLOTTING.
 
 ---
 
