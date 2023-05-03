@@ -27,13 +27,11 @@ in which the molecule will come right into your hand like Thor's hammer, all in 
 
 ![IMG_1218](https://user-images.githubusercontent.com/35755386/235810213-0502e4d9-2e62-490b-b271-a6923d2e3042.jpg)
 
+GitHub repo of the ElectronVisualized API that I created:
+https://github.com/wonmor/ElectronVisualized
+
 - I used ASE and GPAW to get electron density data, using Density Functional Theory (DFT).
 For the molecular orbitals, I used PySCF to get the molecular orbitals, using Hartree–Fock (HF) theory.
 
 - For atomic orbitals, I used the spherical harmonics to compute the radial part of the atomic orbitals.
 Then, I sampled the wavefunction by using the Metropolis-Hastings algorithm.
-
----
-
-GitHub repo of the ElectronVisualized API that I created:
-https://github.com/wonmor/ElectronVisualized
