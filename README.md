@@ -9,7 +9,13 @@ Built using Xcode 14 on macOS Ventura, designed to run on iPhone, iPad, and ARM-
 
 ---
 
-![IMG_4585-2](https://user-images.githubusercontent.com/35755386/235809592-378717d7-3747-4c9f-8c62-a81d0e17df47.jpg)
+<table><tr>
+
+<td valign="center"><img width="600" alt="Screenshot-1" src="https://user-images.githubusercontent.com/35755386/235810213-0502e4d9-2e62-490b-b271-a6923d2e3042.jpg"></td>
+
+<td valign="center"><img width="600" alt="Screenshot-2" src="https://user-images.githubusercontent.com/35755386/235809592-378717d7-3747-4c9f-8c62-a81d0e17df47.jpg"></td>
+
+</tr></table>
 
 ---
 
@@ -22,10 +28,6 @@ It features atomic orbitals in the form of electron density, and molecular orbit
 in which the molecule will come right into your hand like Thor's hammer, all in Augmented Reality.
 
 - For the electron coordinate data, it uses the ElectronVisualized API I created from scratch by myself, using Python and Flask.
-
----
-
-![IMG_1218](https://user-images.githubusercontent.com/35755386/235810213-0502e4d9-2e62-490b-b271-a6923d2e3042.jpg)
 
 ---
 
