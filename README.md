@@ -37,3 +37,5 @@ For the molecular orbitals, I used PySCF to get the molecular orbitals, using Ha
 
 - For atomic orbitals, I used the spherical harmonics to compute the radial part of the atomic orbitals.
 Then, I sampled the wavefunction by using the Metropolis-Hastings algorithm.
+
+> *Watch the Demo: https://www.youtube.com/watch?v=kHcdvyaqslU*
