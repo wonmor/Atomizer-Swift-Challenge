@@ -39,10 +39,10 @@ struct ExploreView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)
-                            .background(Color.blue)
+                            .background(Color(.darkGray))
                             .cornerRadius(8)
                     }
-                    .padding(.top, 16)
+                    .padding(16)
                 }
                 .padding(.top, adaptiveSize.width * 0.1)
                 .multilineTextAlignment(.center)

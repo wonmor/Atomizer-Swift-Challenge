@@ -56,10 +56,23 @@ struct AtomDetailView: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text("Electron Config.")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.horizontal)
+                HStack(spacing: 4) {
+                    Text("Electron Config.")
+                        .font(.title3)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.horizontal)
+                    
+                    NavigationLink(destination: ArticleDetailView(article: instruction3)) {
+                        Circle()
+                            .fill(Color(UIColor.darkGray))
+                            .frame(width: 20, height: 20)
+                            .overlay(
+                                Text("?")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.black)
+                            )
+                    }
+                }
                 
                 let electronConfigurationParts = element.electronConfiguration
                     .components(separatedBy: " ")
