@@ -155,7 +155,7 @@ struct Molecule3DView: UIViewRepresentable {
                         if (isMolecularOrbitalHOMO) {
                             position = SCNVector3(x: 1.25, y: 0.75, z: 0)
                         } else {
-                            position = SCNVector3(x: 0, y: 0.75, z: 0)
+                            position = SCNVector3(x: 0.5, y: 0, z: 0)
                         }
                     case "C2H4":
                         scaleFactor = 0.3
