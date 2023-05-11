@@ -8,15 +8,15 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Atomizer",
+    name: "Atomizer AR",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "Atomizer",
+            name: "Atomizer AR",
             targets: ["AppModule"],
-            bundleIdentifier: "1",
+            bundleIdentifier: "2",
             teamIdentifier: "Z64KRUX3W3",
             displayVersion: "1.0",
             bundleVersion: "1",
