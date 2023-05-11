@@ -42,8 +42,17 @@ struct ContentView: View {
                 
                 Section(header: Text("Readings")) {
                     NavigationLink(
-                        destination: ArticleDetailView(article: instruction1),
+                        destination: ArticleDetailView(article: instruction2),
                         tag: 3,
+                        selection: $selectedView,
+                        label: {
+                            Label("Swift Student Challenge!", systemImage: "graduationcap.circle")
+                        }
+                    )
+                    
+                    NavigationLink(
+                        destination: ArticleDetailView(article: instruction1),
+                        tag: 4,
                         selection: $selectedView,
                         label: {
                             Label("HOMO and LUMO?", systemImage: "bolt.horizontal.circle")
