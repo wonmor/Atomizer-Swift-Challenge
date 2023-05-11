@@ -69,7 +69,7 @@ struct ContentView: View {
                     )
                 }
             }
-            .navigationTitle("Atomizer")
+            .navigationTitle("Atomizer AR")
             
             ZStack {
                 if selectedView == 0 {
