@@ -56,15 +56,10 @@ struct AtomDetailView: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 4) {
-                    Text("Electron Config.")
-                        .font(.title3)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.horizontal)
-                    
+                HStack(alignment: .center) {
                     NavigationLink(destination: ArticleDetailView(article: instruction3)) {
                         Circle()
-                            .fill(Color(UIColor.darkGray))
+                            .fill(Color(AtomView.hexStringToUIColor(hex: element.color)))
                             .frame(width: 20, height: 20)
                             .overlay(
                                 Text("?")
@@ -72,7 +67,12 @@ struct AtomDetailView: View {
                                     .foregroundColor(.black)
                             )
                     }
+                    
+                    Text("Electron Config.")
+                        .font(.title3)
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal)
                 
                 let electronConfigurationParts = element.electronConfiguration
                     .components(separatedBy: " ")
