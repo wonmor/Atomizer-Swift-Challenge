@@ -10,7 +10,7 @@
     "hybridization": "sp2",
     "molecularGeometry": "AX2E",
     "bonds": "1 sigma bond\n1 pi bond",
-    "imageURL": "C2H4-structure"
+    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C74851&Type=Color"
   },
   {
     "formula": "H2O",
@@ -23,7 +23,33 @@
     "hybridization": "sp3",
     "molecularGeometry": "AX2E2",
     "bonds": "2 sigma bonds\n2 lone pairs",
-    "imageURL": "H2O-structure"
+    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C7732185&Type=Color"
+  },
+  {
+    "formula": "H2",
+    "name": "Hydrogen Gas",
+    "description": "Hydrogen is the lightest element. At standard conditions hydrogen is a gas of diatomic molecules having the formula H2.",
+    "shape": "Linear",
+    "polarity": "Nonpolar",
+    "bondAngle": "180°",
+    "orbitals": "1 bonding orbital\n1 antibonding orbital",
+    "hybridization": "No",
+    "molecularGeometry": "AX2",
+    "bonds": "1 sigma bond",
+    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C1333740&Type=Color"
+  },
+  {
+    "formula": "Cl2",
+    "name": "Chlorine Gas",
+    "description": "Chlorine is a yellow-green gas at room temperature. Chlorine has a pungent, irritating odor similar to bleach that is detectable at low concentrations.",
+    "shape": "Linear",
+    "polarity": "Nonpolar",
+    "bondAngle": "180°",
+    "orbitals": "1 bonding orbital\n1 antibonding orbital",
+    "hybridization": "No",
+    "molecularGeometry": "AX2",
+    "bonds": "1 sigma bond\n1 pi bond",
+    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C7782505&Type=Color"
   },
   {
     "formula": "HCl",
@@ -36,6 +62,6 @@
     "hybridization": "sp",
     "molecularGeometry": "AX2E",
     "bonds": "1 sigma bond\n1 lone pair",
-    "imageURL": "HCl-structure"
+    "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C7647010&Type=Color"
   }
 ]
