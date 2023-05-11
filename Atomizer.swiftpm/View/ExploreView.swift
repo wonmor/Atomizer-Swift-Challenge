@@ -34,13 +34,18 @@ struct ExploreView: View {
                         .foregroundColor(.secondary)
                     
                     NavigationLink(destination: ArticleDetailView(article: instruction2)) {
-                        Text("Swift Student Challenge 2023 Winner")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(Color(.darkGray))
-                            .cornerRadius(8)
+                        VStack(spacing: 4) {
+                            Image(systemName: "medal")
+                                .foregroundColor(Color.white)
+                            
+                            Text("Swift Student Challenge 2023 Winner")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.indigo)
+                        .cornerRadius(8)
                     }
                     .padding(16)
                 }
