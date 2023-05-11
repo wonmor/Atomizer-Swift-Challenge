@@ -32,6 +32,17 @@ struct ExploreView: View {
                     Text("Quantum Mechanics")
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.secondary)
+                    
+                    NavigationLink(destination: ArticleDetailView(article: instruction2)) {
+                        Text("Swift Student Challenge 2023 Winner")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                    }
+                    .padding(.top, 16)
                 }
                 .padding(.top, adaptiveSize.width * 0.1)
                 .multilineTextAlignment(.center)
