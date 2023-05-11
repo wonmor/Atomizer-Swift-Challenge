@@ -12,6 +12,19 @@
       "bonds": "6 sigma bonds\n3 pi bonds",
       "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C71432&Type=Color"
     },
+    {
+      "formula": "CH3OH",
+      "name": "Methanol",
+      "description": "Methanol is a colorless, flammable liquid with a faintly sweet odor. It is the simplest alcohol, consisting of a methyl group linked to a hydroxyl group.",
+      "shape": "Tetrahedral",
+      "polarity": "Polar",
+      "bondAngle": "109.5°",
+      "orbitals": "4 bonding orbitals\n2 antibonding orbitals",
+      "hybridization": "sp3",
+      "molecularGeometry": "AX4E",
+      "bonds": "4 sigma bonds\n1 lone pair",
+      "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C67561&Type=Color"
+    },
   {
     "formula": "C2H4",
     "name": "Ethene",

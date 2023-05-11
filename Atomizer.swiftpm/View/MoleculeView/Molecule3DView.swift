@@ -148,6 +148,8 @@ struct Molecule3DView: UIViewRepresentable {
                     switch molecule.formula {
                     case "C6H6":
                         scaleFactor = 0.25
+                    case "CH3OH":
+                        scaleFactor = 0.3
                     case "C2H4":
                         scaleFactor = 0.3
                     case "H2O":
@@ -166,6 +168,66 @@ struct Molecule3DView: UIViewRepresentable {
                     
                     // Scale down the root node
                     rootNode.scale = SCNVector3(x: floatScaleFactor, y: floatScaleFactor, z: floatScaleFactor)
+                    
+                    func getBoundingBox(for node: SCNNode) -> (min: SCNVector3, max: SCNVector3) {
+                        var min = SCNVector3(Float.greatestFiniteMagnitude, Float.greatestFiniteMagnitude, Float.greatestFiniteMagnitude)
+                        var max = SCNVector3(-Float.greatestFiniteMagnitude, -Float.greatestFiniteMagnitude, -Float.greatestFiniteMagnitude)
+
+                        for childNode in node.childNodes {
+                            let childBoundingBox = getBoundingBox(for: childNode)
+                            min.x = childBoundingBox.min.x < min.x ? childBoundingBox.min.x : min.x
+                            min.y = childBoundingBox.min.y < min.y ? childBoundingBox.min.y : min.y
+                            min.z = childBoundingBox.min.z < min.z ? childBoundingBox.min.z : min.z
+
+                            max.x = childBoundingBox.max.x > max.x ? childBoundingBox.max.x : max.x
+                            max.y = childBoundingBox.max.y > max.y ? childBoundingBox.max.y : max.y
+                            max.z = childBoundingBox.max.z > max.z ? childBoundingBox.max.z : max.z
+                        }
+
+                        let nodeMin = SCNVector3(node.presentation.position.x - node.presentation.scale.x / 2, node.presentation.position.y - node.presentation.scale.y / 2, node.presentation.position.z - node.presentation.scale.z / 2)
+                        let nodeMax = SCNVector3(node.presentation.position.x + node.presentation.scale.x / 2, node.presentation.position.y + node.presentation.scale.y / 2, node.presentation.position.z + node.presentation.scale.z / 2)
+
+                        min.x = nodeMin.x < min.x ? nodeMin.x : min.x
+                        min.y = nodeMin.y < min.y ? nodeMin.y : min.y
+                        min.z = nodeMin.z < min.z ? nodeMin.z : min.z
+
+                        max.x = nodeMax.x > max.x ? nodeMax.x : max.x
+                        max.y = nodeMax.y > max.y ? nodeMax.y : max.y
+                        max.z = nodeMax.z > max.z ? nodeMax.z : max.z
+
+                        return (min, max)
+                    }
+
+                        DispatchQueue.main.async {
+                            uiView.scene = scene
+                            isLoading = false
+                            // Stop the spinner
+                            uiView.subviews.first(where: { $0 is UIActivityIndicatorView })?.removeFromSuperview()
+
+                            // Calculate the bounding box of the loaded model
+                            let boundingBox = getBoundingBox(for: rootNode)
+
+                            // Compute the center of the bounding box
+                            let centerX = (boundingBox.min.x + boundingBox.max.x) / 2
+                            let centerY = (boundingBox.min.y + boundingBox.max.y) / 2
+                            let centerZ = (boundingBox.min.z + boundingBox.max.z) / 2
+                            let center = SCNVector3(centerX, centerY, centerZ)
+
+                            // Set the camera's position to the center of the bounding box, with a certain distance along the z-axis
+                            let cameraNode = SCNNode()
+                            let camera = SCNCamera()
+                            cameraNode.camera = camera
+                            let distance = max(max(boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y), boundingBox.max.z - boundingBox.min.z) * 1.5
+                            cameraNode.position = SCNVector3(center.x, center.y, center.z + Float(distance))
+
+                            // Add the camera node to the scene
+                            scene.rootNode.addChildNode(cameraNode)
+
+                            // Point the camera at the center of the bounding box by setting the camera's lookAt constraint
+                            let constraint = SCNLookAtConstraint(target: rootNode)
+                            constraint.isGimbalLockEnabled = true
+                            cameraNode.constraints = [constraint]
+                        }
                     
                     DispatchQueue.main.async {
                         uiView.scene = scene
