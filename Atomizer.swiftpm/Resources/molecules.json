@@ -2,7 +2,7 @@
     {
       "formula": "C6H6",
       "name": "Benzene",
-      "description": "Benzene is an organic chemical compound with the molecular formula C6H6. It is a colorless, highly flammable liquid with a relatively low melting point.",
+      "description": "Benzene is an organic compound with the formula C6H6. It is a colorless, highly flammable liquid with a low melting point.",
       "shape": "Planar",
       "polarity": "Nonpolar",
       "bondAngle": "120°",
