@@ -16,7 +16,7 @@ struct MoleculeARViewSheet: View {
     var body: some View {
         ZStack(alignment: .center) {
            /**
-            Used the ElectronVisualized API to generate the GLB file of the molecule.
+            Uses the ElectronVisualized REST API to download the GLB file of the molecule.
             The API was created from scratch by me, using Python and Flask.
             I used ASE and GPAW to get electron density data, using Density Functional Theory (DFT).
             For the molecular orbitals, I used PySCF to get the molecular orbitals, using Hartree–Fock (HF) theory.
@@ -30,7 +30,7 @@ struct MoleculeARViewSheet: View {
             https://en.wikipedia.org/wiki/Hartree%E2%80%93Fock_method
         */
         
-            GLTFARView(molecule: molecule, gltfURL: "\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF")
+            GLTFARView(molecule: molecule, gltfURL: URL(string: "https://electronvisual.org/api/downloadGLB/\(molecule.formula)_\(isMolecularOrbitalHOMO ? "HOMO" : "LUMO")_GLTF_AR")!)
             
             Image(systemName: "hand.point.up.fill")
                 .font(.system(size: 40))
