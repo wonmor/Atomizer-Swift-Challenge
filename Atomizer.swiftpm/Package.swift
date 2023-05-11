@@ -16,7 +16,7 @@ let package = Package(
         .iOSApplication(
             name: "Atomizer AR",
             targets: ["AppModule"],
-            bundleIdentifier: "2",
+            bundleIdentifier: "com.johnseong.atomizer",
             teamIdentifier: "Z64KRUX3W3",
             displayVersion: "1.0",
             bundleVersion: "1",
