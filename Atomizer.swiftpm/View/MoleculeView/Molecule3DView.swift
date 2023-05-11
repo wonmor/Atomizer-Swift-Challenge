@@ -146,6 +146,8 @@ struct Molecule3DView: UIViewRepresentable {
                     var scaleFactor = 0.3
                     
                     switch molecule.formula {
+                    case "C6H6":
+                        scaleFactor = 0.2
                     case "C2H4":
                         scaleFactor = 0.3
                     case "H2O":

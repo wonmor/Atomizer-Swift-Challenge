@@ -1,9 +1,22 @@
 [
+    {
+      "formula": "C6H6",
+      "name": "Benzene",
+      "description": "Benzene is an organic chemical compound with the molecular formula C6H6. It is a colorless, highly flammable liquid with a sweet smell and a relatively low melting point.",
+      "shape": "Planar",
+      "polarity": "Nonpolar",
+      "bondAngle": "120°",
+      "orbitals": "3 bonding orbitals\n3 antibonding orbitals",
+      "hybridization": "sp2",
+      "molecularGeometry": "AX6",
+      "bonds": "6 sigma bonds\n3 pi bonds",
+      "imageURL": "https://webbook.nist.gov/cgi/cbook.cgi?Struct=C71432&Type=Color"
+    },
   {
     "formula": "C2H4",
     "name": "Ethene",
     "description": "Ethene is an organic compound having the formula C2H4. It is a colorless, flammable gas with a faint 'sweet and musky' odor.",
-    "shape": "Trigonal Planar",
+    "shape": "Planar",
     "polarity": "Nonpolar",
     "bondAngle": "120°",
     "orbitals": "3 bonding orbitals\n1 antibonding orbital",

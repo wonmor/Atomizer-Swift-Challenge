@@ -138,6 +138,8 @@ struct GLTFARView: UIViewRepresentable {
                     var scaleFactor = 0.03
                     
                     switch self?.molecule.formula {
+                    case "C6H6":
+                        scaleFactor = 0.01
                     case "C2H4":
                         scaleFactor = 0.02
                     case "H2O":
