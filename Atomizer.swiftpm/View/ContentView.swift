@@ -51,8 +51,17 @@ struct ContentView: View {
                     )
                     
                     NavigationLink(
-                        destination: ArticleDetailView(article: instruction1),
+                        destination: ArticleDetailView(article: instruction3),
                         tag: 4,
+                        selection: $selectedView,
+                        label: {
+                            Label("No More Bohr Diagrams.", systemImage: "globe")
+                        }
+                    )
+                    
+                    NavigationLink(
+                        destination: ArticleDetailView(article: instruction1),
+                        tag: 5,
                         selection: $selectedView,
                         label: {
                             Label("HOMO and LUMO?", systemImage: "bolt.horizontal.circle")
