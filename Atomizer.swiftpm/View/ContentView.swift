@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedView: Int? = 0
     
+    let localizationManager = LocalizationManager.shared
+    
     var body: some View {
         NavigationView {
             List {
@@ -18,7 +20,7 @@ struct ContentView: View {
                     tag: 0,
                     selection: $selectedView,
                     label: {
-                        Label("Explore", systemImage: "eyeglasses")
+                        Label(localizationManager.localizedString(for: "explore"), systemImage: "eyeglasses")
                     }
                 )
                 
@@ -27,7 +29,7 @@ struct ContentView: View {
                     tag: 1,
                     selection: $selectedView,
                     label: {
-                        Label("Atoms", systemImage: "atom")
+                        Label(localizationManager.localizedString(for: "atoms"), systemImage: "atom")
                     }
                 )
                 
@@ -36,11 +38,11 @@ struct ContentView: View {
                     tag: 2,
                     selection: $selectedView,
                     label: {
-                        Label("Molecules", systemImage: "drop.degreesign")
+                        Label(localizationManager.localizedString(for: "molecules"), systemImage: "drop.degreesign")
                     }
                 )
                 
-                Section(header: Text("Readings")) {
+                Section(header: Text(localizationManager.localizedString(for: "readings"))) {
                     NavigationLink(
                         destination: ArticleDetailView(article: instruction2),
                         tag: 3,
@@ -55,7 +57,7 @@ struct ContentView: View {
                         tag: 4,
                         selection: $selectedView,
                         label: {
-                            Label("No More Bohr Diagrams.", systemImage: "globe")
+                            Label(localizationManager.localizedString(for: "bohr-article-title"), systemImage: "globe")
                         }
                     )
                     
@@ -64,7 +66,7 @@ struct ContentView: View {
                         tag: 5,
                         selection: $selectedView,
                         label: {
-                            Label("HOMO and LUMO?", systemImage: "bolt.horizontal.circle")
+                            Label(localizationManager.localizedString(for: "homo-and-lumo-title"), systemImage: "bolt.horizontal.circle")
                         }
                     )
                 }

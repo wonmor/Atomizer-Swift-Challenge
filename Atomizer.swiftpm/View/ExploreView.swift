@@ -27,11 +27,11 @@ struct ExploreView: View {
                     .overlay(Color.black.opacity(0.4))
                 
                 VStack(alignment: .center) {
-                    Text("Visualizing")
+                    Text(localizationManager.localizedString(for: "promo-text"))
                         .font(.system(size: 28, weight: .bold))
                         .foregroundColor(.primary)
                     
-                    Text("Quantum Mechanics")
+                    Text(localizationManager.localizedString(for: "promo-text-2"))
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.secondary)
                     
@@ -40,7 +40,7 @@ struct ExploreView: View {
                             Image(systemName: "medal")
                                 .foregroundColor(Color.white)
                             
-                            Text("Swift Student Challenge 2023 Winner")
+                            Text(localizationManager.localizedString(for: "swift-winner"))
                                 .font(.system(size: 16, weight: .medium))
                                 .foregroundColor(.white)
                         }
