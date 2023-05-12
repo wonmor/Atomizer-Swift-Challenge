@@ -13,6 +13,8 @@ struct ExploreView: View {
     
     @ObservedObject var articleData = ArticleViewModel()
     
+    let localizationManager = LocalizationManager.shared
+    
     var body: some View {
         ScrollView {
             ZStack {
@@ -85,7 +87,7 @@ struct ExploreView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)
-        .navigationTitle("Explore")
+        .navigationTitle(localizationManager.localizedString(for: "explore"))
     }
 }
 
