@@ -85,7 +85,7 @@ struct ExploreView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)
-        .navigationTitle("/*#-localizable-zone(explore)*//*#-end-localizable-zone*/")
+        .navigationTitle("Explore")
     }
 }
 
