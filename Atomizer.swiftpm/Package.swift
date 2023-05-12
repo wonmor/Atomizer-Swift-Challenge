@@ -9,7 +9,6 @@ import AppleProductTypes
 
 let package = Package(
     name: "Atomizer AR",
-    defaultLocalization: "en",
     platforms: [
         .iOS("15.2")
     ],
@@ -29,8 +28,8 @@ let package = Package(
             ],
             supportedInterfaceOrientations: [
                 .portrait,
-                .landscapeRight(.when(deviceFamilies: [.pad])),
-                .landscapeLeft(.when(deviceFamilies: [.pad])),
+                .landscapeRight,
+                .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ],
             capabilities: [
