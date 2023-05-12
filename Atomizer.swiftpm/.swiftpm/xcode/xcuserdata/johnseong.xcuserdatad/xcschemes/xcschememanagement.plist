@@ -37,6 +37,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>Atomizer AR</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>Atomizer.swiftpm</key>
 		<dict>
 			<key>primary</key>

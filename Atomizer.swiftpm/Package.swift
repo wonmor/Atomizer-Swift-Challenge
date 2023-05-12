@@ -9,6 +9,7 @@ import AppleProductTypes
 
 let package = Package(
     name: "Atomizer AR",
+    defaultLocalization: "en",
     platforms: [
         .iOS("15.2")
     ],
