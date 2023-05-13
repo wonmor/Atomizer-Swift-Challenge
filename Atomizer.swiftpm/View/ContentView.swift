@@ -48,7 +48,7 @@ struct ContentView: View {
                         tag: 3,
                         selection: $selectedView,
                         label: {
-                            Label("Swift Student Challenge!", systemImage: "graduationcap.circle")
+                            Label(localizationManager.localizedString(for: "swift-challenge"), systemImage: "graduationcap.circle")
                         }
                     )
                     

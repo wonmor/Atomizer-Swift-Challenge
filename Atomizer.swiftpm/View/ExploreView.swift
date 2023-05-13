@@ -35,7 +35,7 @@ struct ExploreView: View {
                         .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.secondary)
                     
-                    NavigationLink(destination: ArticleDetailView(article: instruction2)) {
+                    NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2)) {
                         VStack(spacing: 4) {
                             Image(systemName: "medal")
                                 .foregroundColor(Color.white)
