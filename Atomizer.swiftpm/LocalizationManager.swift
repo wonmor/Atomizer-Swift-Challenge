@@ -11,11 +11,13 @@ class LocalizationManager {
     static let shared = LocalizationManager()
 
     private init() {}
+    
+    // Detect device language... https://stackoverflow.com/questions/67516514/how-to-get-system-device-language-swift-ios
 
     func localizedString(for key: String) -> String {
-        let locale = Locale.current
-        if let languageCode = locale.languageCode {
-            if languageCode.starts(with: "ko") {
+        let locale = UserDefaults.standard.stringArray(forKey: "AppleLanguages")!
+        if let languageCode: String? = locale[0] {
+            if languageCode!.starts(with: "ko") {
                 // Korean
                 let koreanDictionary: [String: String] = [
                     "explore": "둘러보기",
