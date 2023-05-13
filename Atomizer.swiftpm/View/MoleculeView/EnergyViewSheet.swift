@@ -37,9 +37,6 @@ struct EnergyViewSheet: View {
                 }
             
             VStack(alignment: .center) {
-                HSLColorBarLegend()
-                    .padding()
-                
                 KFImage(URL(string: "https://electronvisual.org/api/downloadPNG/\(moleculeName.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "_"))_energy_diagram"))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -54,6 +51,9 @@ struct EnergyViewSheet: View {
                     .font(.body)
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
+                
+                HSLColorBarLegend()
+                    .padding()
                 
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.5)) {
