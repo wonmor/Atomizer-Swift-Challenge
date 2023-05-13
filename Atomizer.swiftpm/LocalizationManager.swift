@@ -39,7 +39,8 @@ class LocalizationManager {
                     "bohr-article-title": "원자 모형의 변천사",
                     "homo-and-lumo-title": "결합/반결합 분자 오비탈",
                     "explore-explain": "모든 시각 자료들은 SciPy, PySCF, and GPAW을 이용해 만들어졌음을 알려드립니다.",
-                    "credit": "이용해주셔서 감사합니다, 개발자 성원모 올림."
+                    "credit": "이용해주셔서 감사합니다, 개발자 성원모 올림.",
+                    "molecules-promo-text": "Atomizer AR은 밀도범함수이론 (DFT) 을 이용해 전자 밀도를 계산합니다. 분자 오비탈의 경우에는, 바닥상태의 파동 함수와 에너지를 구할 때 사용되는 근사 방법인 하트리-폭 (HF) 방법을 이용합니다."
                     // Add more key-value pairs for Korean
                 ]
                 return koreanDictionary[key] ?? key
@@ -56,7 +57,8 @@ class LocalizationManager {
                     "bohr-article-title": "No More Bohr Diagrams.",
                     "homo-and-lumo-title": "HOMO and LUMO?",
                     "explore-explain": "All visuals were generated from scratch using SciPy, PySCF, and GPAW.",
-                    "credit": "Developed and Designed by John Seong"
+                    "credit": "Developed and Designed by John Seong",
+                    "molecules-promo-text": "Atomizer AR uses DFT calculations to derive electron density, and Hatree-Fock method to plot molecular orbitals."
                     
                     // Add more key-value pairs for English
                 ]

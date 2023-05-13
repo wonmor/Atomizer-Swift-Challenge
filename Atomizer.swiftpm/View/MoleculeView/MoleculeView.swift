@@ -10,6 +10,8 @@ struct MoleculeView: View {
     
     @State var molecules: [Molecule] = []
     
+    let localizationManager = LocalizationManager.shared
+    
     var body: some View {
         if sizeClass == .regular {
             let columns = [
@@ -19,7 +21,7 @@ struct MoleculeView: View {
             
             ScrollView {
                 VStack {
-                    Text("Atomizer uses DFT calculations to derive electron density,\nand Hatree-Fock method to plot molecular orbitals.")
+                    Text(localizationManager.localizedString(for: "molecules-promo-text"))
                         .font(.caption)
                         .padding(.horizontal)
                         .foregroundColor(Color.gray)
@@ -35,7 +37,7 @@ struct MoleculeView: View {
                 }
                 .edgesIgnoringSafeArea(.bottom)
                 .padding(.horizontal, 8)
-                .navigationTitle("Molecules")
+                .navigationTitle(localizationManager.localizedString(for: "molecules"))
                 .onAppear {
                     loadMolecules()
                 }
@@ -43,7 +45,7 @@ struct MoleculeView: View {
         } else {
             ScrollView {
                 VStack {
-                    Text("Atomizer uses DFT calculations to derive electron density,\nand Hatree-Fock method to plot molecular orbitals.")
+                    Text(localizationManager.localizedString(for: "molecules-promo-text"))
                         .font(.caption)
                         .padding(.horizontal)
                         .foregroundColor(Color.gray)
@@ -58,7 +60,7 @@ struct MoleculeView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Molecules")
+            .navigationTitle(localizationManager.localizedString(for: "molecules"))
             .onAppear {
                 loadMolecules()
             }
