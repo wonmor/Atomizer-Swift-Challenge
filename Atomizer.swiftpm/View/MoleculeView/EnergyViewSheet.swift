@@ -64,7 +64,7 @@ struct EnergyViewSheet: View {
                         Image(systemName: "x.circle.fill")
                             .font(.system(size: 24))
                             .foregroundColor(.black)
-                        Text("Close")
+                        Text(localizationManager.localizedString(for: "close"))
                             .foregroundColor(.black)
                             .font(.headline)
                     }

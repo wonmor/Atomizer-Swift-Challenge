@@ -49,7 +49,9 @@ class LocalizationManager {
                     "swift-challenge": "Swift 학생 챌린지",
                     "ar-instruction": "테이블 위나 바닥 등을 터치해 분자를 내려놓으세요.\n\n공중에 띄우시려면, 손을 카메라 앞에 놓으세요.",
                     "energy-level": "에너지 레벨",
-                    "energy-level-diagram": "에너지 레벨 다이어그램"
+                    "energy-level-diagram": "에너지 레벨 다이어그램",
+                    "electron-density": "전자 밀도",
+                    "close": "닫기"
                     // Add more key-value pairs for Korean
                 ]
                 return koreanDictionary[key] ?? key
@@ -76,7 +78,9 @@ class LocalizationManager {
                     "swift-challenge": "Swift Student Challenge!",
                     "ar-instruction": "Simply tap on any floor surface to place it on the ground.\n\nTo hover it in the air, hold up your hand in front of the camera.",
                     "energy-level": "Energy Level",
-                    "energy-level-diagram": "Energy Level Diagram"
+                    "energy-level-diagram": "Energy Level Diagram",
+                    "electron-density": "Electron Density",
+                    "close": "Close"
                     
                     // Add more key-value pairs for English
                 ]

@@ -79,7 +79,7 @@ struct MoleculeARViewSheet: View {
                         .font(.system(size: 24))
                         .foregroundColor(.white)
                         .padding(16)
-                    Text("Close")
+                    Text(localizationManager.localizedString(for: "close"))
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding(.trailing, 16)
