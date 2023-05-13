@@ -30,12 +30,13 @@ struct ColorBar: View {
     var body: some View {
         ZStack {
            RoundedRectangle(cornerRadius: 5) // Rounded corners
-               .stroke(Color.black, lineWidth: 3) // Border with black color
-               .shadow(radius: 10)
+                .stroke(Color.black, lineWidth: 1)
+                .shadow(radius: 10)
                .background(color)
            
            Text(label)
                .foregroundColor(.black)
        }
+
     }
 }
