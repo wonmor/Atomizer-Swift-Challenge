@@ -11,9 +11,17 @@ Built using Xcode 14 on macOS Ventura, designed to run on iPhone, iPad, and ARM-
 
 <table><tr>
 
-<td valign="center"><img width="600" alt="Screenshot-1" src="https://user-images.githubusercontent.com/35755386/235810213-0502e4d9-2e62-490b-b271-a6923d2e3042.jpg"></td>
+<td valign="center"><img width="200" alt="Screenshot-1" src="https://github.com/wonmor/wonmor/assets/35755386/d579ca34-5b00-48dc-9f85-6499ec1c1ce5"></td>
 
-<td valign="center"><img width="600" alt="Screenshot-2" src="https://user-images.githubusercontent.com/35755386/235809592-378717d7-3747-4c9f-8c62-a81d0e17df47.jpg"></td>
+<td valign="center"><img width="200" alt="Screenshot-2" src="https://github.com/wonmor/wonmor/assets/35755386/40cf5a27-95cb-4d44-bc2a-bdf5a934e241"></td>
+  
+  <td valign="center"><img width="200" alt="Screenshot-3" src="https://github.com/wonmor/wonmor/assets/35755386/3e8890a1-e14c-4cb0-84bb-686339c590b0"></td>
+  
+  <td valign="center"><img width="200" alt="Screenshot-4" src="https://github.com/wonmor/wonmor/assets/35755386/6ff53efb-ea4c-462f-80de-b9b6157ea7f5"></td>
+  
+  <td valign="center"><img width="200" alt="Screenshot-5" src="https://github.com/wonmor/wonmor/assets/35755386/a2c4b9f8-9690-4460-b576-beb427763ab0"></td>
+  
+  <td valign="center"><img width="200" alt="Screenshot-6" src="https://github.com/wonmor/wonmor/assets/35755386/440ff984-0c2a-4b0b-89b5-68fe6d81fbbf"></td>
 
 </tr></table>
 
