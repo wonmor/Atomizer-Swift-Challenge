@@ -19,6 +19,11 @@ struct EnergyViewSheet: View {
             KFImage(URL(string: "https://electronvisual.org/api/downloadPNG/ethene_energy_diagram"))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
+                .padding()
+            
+            Text(localizationManager.localizedString(for: "energy-level-diagram"))
+                .font(.largeTitle)
+                .padding()
             
             Button(action: {
                 isEnergyView = false
