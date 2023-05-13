@@ -51,7 +51,16 @@ class LocalizationManager {
                     "energy-level": "에너지 레벨",
                     "energy-level-diagram": "에너지 레벨 다이어그램",
                     "electron-density": "전자 밀도",
-                    "close": "닫기"
+                    "close": "닫기",
+                    "description": "설명",
+                    "molecular-formula": "분자식",
+                    "shape": "모양",
+                    "polarity": "물질의 구성",
+                    "bond-angle": "결합각",
+                    "orbitals": "오비탈",
+                    "hybridization": "혼성 오비탈",
+                    "molecular-geometry": "분자기하",
+                    "bonds": "결합 종류"
                     // Add more key-value pairs for Korean
                 ]
                 return koreanDictionary[key] ?? key
@@ -80,7 +89,16 @@ class LocalizationManager {
                     "energy-level": "Energy Level",
                     "energy-level-diagram": "Energy Level Diagram",
                     "electron-density": "Electron Density",
-                    "close": "Close"
+                    "close": "Close",
+                    "description": "Description",
+                    "molecular-formula": "Molecular Formula",
+                    "shape": "Shape",
+                    "polarity": "Polarity",
+                    "bond-angle": "Bond Angle",
+                    "orbitals": "Orbitals",
+                    "hybridization": "Hybridization",
+                    "molecular-geometry": "Molecular Geometry",
+                    "bonds": "Bonds"
                     
                     // Add more key-value pairs for English
                 ]

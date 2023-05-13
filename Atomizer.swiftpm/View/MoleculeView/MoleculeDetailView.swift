@@ -68,7 +68,7 @@ struct MoleculeDetailView: View {
                     ZStack(alignment: .bottom) {
                         TabView(selection: $selectedTab) {
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Description")
+                                Text(localizationManager.localizedString(for: "description"))
                                     .font(.headline)
                                 Text(molecule.description)
                                     .padding(.horizontal)
@@ -78,7 +78,7 @@ struct MoleculeDetailView: View {
                             .tag(0)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Molecular Formula")
+                                Text(localizationManager.localizedString(for: "molecular-formula"))
                                     .font(.headline)
                                 Text(molecule.formula)
                                 Spacer()
@@ -87,7 +87,7 @@ struct MoleculeDetailView: View {
                             .tag(1)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Shape")
+                                Text(localizationManager.localizedString(for: "shape"))
                                     .font(.headline)
                                 Text(molecule.shape)
                                 Spacer()
@@ -96,7 +96,7 @@ struct MoleculeDetailView: View {
                             .tag(2)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Polarity")
+                                Text(localizationManager.localizedString(for: "polarity"))
                                     .font(.headline)
                                 Text(molecule.polarity)
                                 Spacer()
@@ -105,7 +105,7 @@ struct MoleculeDetailView: View {
                             .tag(3)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Bond Angle")
+                                Text(localizationManager.localizedString(for: "bond-angle"))
                                     .font(.headline)
                                 Text(molecule.bondAngle)
                                 Spacer()
@@ -114,7 +114,7 @@ struct MoleculeDetailView: View {
                             .tag(4)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Orbitals")
+                                Text(localizationManager.localizedString(for: "orbitals"))
                                     .font(.headline)
                                 Text(molecule.orbitals)
                                 Spacer()
@@ -123,7 +123,7 @@ struct MoleculeDetailView: View {
                             .tag(5)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Hybridization")
+                                Text(localizationManager.localizedString(for: "hybridization"))
                                     .font(.headline)
                                 Text(molecule.hybridization)
                                 Spacer()
@@ -132,7 +132,7 @@ struct MoleculeDetailView: View {
                             .tag(6)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Molecular Geometry")
+                                Text(localizationManager.localizedString(for: "molecular-geometry"))
                                     .font(.headline)
                                 Text(molecule.molecularGeometry)
                                 Spacer()
@@ -141,7 +141,7 @@ struct MoleculeDetailView: View {
                             .tag(7)
                             
                             VStack(alignment: .center, spacing: 20) {
-                                Text("Bonds")
+                                Text(localizationManager.localizedString(for: "bonds"))
                                     .font(.headline)
                                 Text(molecule.bonds)
                                 Spacer()
