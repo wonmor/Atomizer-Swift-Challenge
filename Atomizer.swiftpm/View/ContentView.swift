@@ -44,7 +44,7 @@ struct ContentView: View {
                 
                 Section(header: Text(localizationManager.localizedString(for: "readings"))) {
                     NavigationLink(
-                        destination: ArticleDetailView(article: instruction2),
+                        destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2),
                         tag: 3,
                         selection: $selectedView,
                         label: {
@@ -53,7 +53,7 @@ struct ContentView: View {
                     )
                     
                     NavigationLink(
-                        destination: ArticleDetailView(article: instruction3),
+                        destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction3 : instruction3),
                         tag: 4,
                         selection: $selectedView,
                         label: {
@@ -62,7 +62,7 @@ struct ContentView: View {
                     )
                     
                     NavigationLink(
-                        destination: ArticleDetailView(article: instruction1),
+                        destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction1 : instruction1),
                         tag: 5,
                         selection: $selectedView,
                         label: {
