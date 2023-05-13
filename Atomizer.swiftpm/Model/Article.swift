@@ -23,6 +23,8 @@ struct Article: Codable, Identifiable {
     }
 }
 
+// English (Default)
+
 let instruction1 = Article(title: "HOMO and LUMO?",
                            subtitle: "Molecular Orbital Theory",
                            imageUrl: "molecular-orbital",
@@ -38,7 +40,19 @@ let instruction3 = Article(title: "No More Bohr Diagrams.",
                            imageUrl: "equation",
                            content: "> Bohr's atomic model, proposed in 1913, introduced the idea of electrons orbiting the nucleus in specific energy levels or shells.\n\nThis model was revolutionary at the time, as it explained the spectrum of light emitted by hydrogen atoms.\n\nHowever, Bohr's atomic model had limitations. For example, it failed to explain the spectrum of other elements and could not account for the behavior of atoms in chemical reactions. In addition, it did not account for the wave-like behavior of electrons.\n\n![Image1](atomic-models)\n\n> Modern atomic theory, on the other hand, builds upon Bohr's model and introduces the concept of atomic orbitals, which are regions of space around the nucleus where electrons are likely to be found.\n\nEach orbital can hold a maximum of two electrons with opposite spin. This theory also introduces the concept of electron density, which describes the probability of finding an electron at a given location around the nucleus.\n\nBy incorporating the wave-like behavior of electrons and introducing more precise descriptions of electron behavior and arrangement, modern atomic theory provides a more detailed and accurate understanding of the structure of atoms than Bohr's atomic model.")
 
+// Korean (한국어)
+
 let koInstruction1 = Article(title: "결합/반결합 분자 오비탈",
                            subtitle: "분자 오비탈 이론",
                            imageUrl: "molecular-orbital",
-                           content: "> HOMO는 최고 점유 분자 오비탈 (Highest Occupied Molecular Orbital) 를 의미하며, LUMO는 최저 미점유 분자 오비탈 (Lowest Unoccupied Molecular Orbital) 를 의미합니다.\n\nHOMO를 지상 3층에 있는 스터디카페로 생각하고, LUMO를 지하에 있는 PC방으로 생각해보세요. HOMO는 전자가 가장 많이 머무르는 곳이며, LUMO는 전자들이 들떠 있을 때 가장 가고 싶어하는 장소입니다.\n\n결합 궤도는 원자들 간의 우정의 포옹과 같습니다. 반결합 궤도는 두 사람이 서로 밀치는 것과 같습니다.\n\n따라서, 결합 궤도는 화학 결합 형성을 허용하며, 이는 HOMO에 해당합니다. 반결합 궤도는 결합을 방지하며, 이는 LUMO에 해당합니다.\n\n![Image1](homo-lumo-1)\n\n출처: UCalgary\n\n> 에테인은 두 개의 탄소 원자와 네 개의 수소 원자로 이루어진 분자입니다. 서로를 지지하는 친구처럼, 탄소 원자와 수소 원자는 전자를 공유하여 안정적인 분자를 형성합니다.\n\n에테인에서는 두 개의 탄소 구체가 '이중 결합'이라고 하는 강한 결합으로 연결됩니다. 이 결합은 시그마 결합과 파이 결합으로 이루어져 있습니다. 시그마 결합은 두 개의 탄소 구체 사이의 포옹과 같습니다. 파이 결합은 측면에서의 악수와 같습니다.\n\n파이 결합은 아령 모양의 p 궤도에 의해 형성됩니다. 그러나 강한 시그마 결합 때문에 p 궤도는 결합하기 위해 구부러져야 합니다. 두 개의 바나나가 서로 겹쳐진 모양처럼 보이며, 이를 '바나나 결합'이라고 합니다. 이것은 재미있는 이름이지만, 파이 결합을 강하게 만들고 두 개의 탄소 구체를 함께 유지하는 데 도움이 되는 중요한 역할을 합니다.\n\n")
+                           content: "> HOMO는 최고 점유 분자 오비탈 (Highest Occupied Molecular Orbital) 를 의미하며, LUMO는 최저 미점유 분자 오비탈 (Lowest Unoccupied Molecular Orbital) 를 의미합니다.\n\nHOMO를 지상 3층에 있는 스터디카페로 생각하고, LUMO를 지하에 있는 PC방으로 생각해보세요. HOMO는 전자가 가장 많이 머무르는 곳이며, LUMO는 전자들이 들떠 있을 때 가장 가고 싶어하는 장소입니다.\n\n결합 궤도는 원자들 간의 우정의 포옹과 같습니다. 반결합 궤도는 두 사람이 서로 밀치는 것과 같습니다.\n\n따라서, 결합 궤도는 화학 결합 형성을 허용하며, 이는 HOMO에 해당합니다. 반결합 궤도는 결합을 방지하며, 이는 LUMO에 해당합니다.\n\n![Image1](homo-lumo-1)\n\n출처: 캐나다 캘거리 대학교\n\n> 에테인은 두 개의 탄소 원자와 네 개의 수소 원자로 이루어진 분자입니다. 서로를 지지하는 친구처럼, 탄소 원자와 수소 원자는 전자를 공유하여 안정적인 분자를 형성합니다.\n\n에테인에서는 두 개의 탄소 구체가 '이중 결합'이라고 하는 강한 결합으로 연결됩니다. 이 결합은 시그마 결합과 파이 결합으로 이루어져 있습니다. 시그마 결합은 두 개의 탄소 구체 사이의 포옹과 같습니다. 파이 결합은 측면에서의 악수와 같습니다.\n\n파이 결합은 아령 모양의 p 궤도에 의해 형성됩니다. 그러나 강한 시그마 결합 때문에 p 궤도는 결합하기 위해 구부러져야 합니다. 두 개의 바나나가 서로 겹쳐진 모양처럼 보이며, 이를 '바나나 결합'이라고 합니다. 이것은 재미있는 이름이지만, 파이 결합을 강하게 만들고 두 개의 탄소 구체를 함께 유지하는 데 도움이 되는 중요한 역할을 합니다.\n\n")
+
+let koInstruction2 = Article(title: "Swift Student Challenge!",
+                            subtitle: "애플 본사 방문 및 CEO 팀쿡 만나기",
+                            imageUrl: "san-francisco",
+                            content: "저는 캐나다 토론토에서 고등학교 3학년에 재학 중인 성원모라고 합니다.\n\n2023년 9월부터 캘리포니아 대학교 어바인캠퍼스에 진학할 예정입니다.\n\n>저는 Swift 학생 챌린지 / WWDC23 장학생으로서 오는 6월 5일 샌프란시스코 애플 파크 본사에 참석할 예정입니다.\n\n이 상을 받은 전 세계 350명 중에도 이 행사에 초대받는 사람은 10명 이하입니다.\n\n![Image1](wwdc)\n\n> 팀 쿡과 크레이그 페더리기 같은 애플의 최고 엔지니어와 임원들을 만나기를 기대합니다!\n\n한국에서 보낸 어린 시절, 새벽 4시에 일어나 애플의 키노트를 지켜보며 혁신적인 디자인과 기술에 감탄을 금치 못했습니다. 곧 고등학교 졸업을 앞둔 무렵, 실제 이벤트에 참여하기 위해 샌프란시스코로 간다는 것이 도저히 믿기지 않습니다!\n\n질문이나 요청 사항은 johnseong@havit.space로 이메일을 보내주시면 됩니다.")
+
+let koInstruction3 = Article(title: "원자 모형의 변천사",
+                            subtitle: "보어 다이어그램부터 슈뢰딩거 방정식에 이르기까지",
+                            imageUrl: "equation",
+                            content: "> 1913년에 제안된 보어의 원자 모델은 전자들이 원자핵 주위에서 특정한 에너지 수준이나 껍질에서 공전한다는 개념을 도입했습니다.\n\n이 모델은 당시 혁신적이었으며 수소 원자가 방출하는 빛의 스펙트럼을 설명하는 데에 기여했습니다.\n\n하지만 보어의 원자 모델은 모든 물리적 반응을 이해하기에 한계가 있었습니다. 예를 들어, 다른 원소의 스펙트럼을 설명하지 못하고, 화학 반응에서의 원자의 행동을 설명할 수 없었습니다. 또한, 전자의 파동적 행동을 설명하지 못했습니다.\n\n![Image1](atomic-models)\n\n> 그러나 현대 원자 이론은 보어의 모델을 기반으로 하며, 전자가 발견될 가능성이 높은 원자 주위의 공간인 원자 궤도 개념을 도입합니다.\n\n각 궤도는 반대 방향으로 최대 두 개의 전자를 가질 수 있습니다. 이 이론은 또한 전자 밀도 개념을 도입하여 원자 주위의 특정 위치에서 전자를 발견할 확률을 설명합니다.\n\n전자의 파동적 행동을 통합하고 전자의 행동과 배열에 대해 더 정확하고 상세한 설명을 제공하는 현대 원자 이론은 보어의 원자 모델보다 원자의 구조에 대한 더욱 정확하고 상세한 이해를 제공합니다.")

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ArticleDetailView: View {
     let article: Article
+    let localizationManager = LocalizationManager.shared
     
     var body: some View {
         ScrollView {
@@ -87,6 +88,6 @@ struct ArticleDetailView: View {
             }
             .padding()
         }
-        .navigationTitle("Article")
+        .navigationTitle(localizationManager.localizedString(for: "article"))
     }
 }
