@@ -29,8 +29,6 @@ struct EnergyViewSheet: View {
                             }
                         }
                     } catch {}
-                    
-                    
                 }
             
             VStack(alignment: .center) {
