@@ -16,6 +16,7 @@ struct MoleculeDetailView: View {
     
     // Add a timer to automatically swipe through the tabs
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    let localizationManager = LocalizationManager.shared
     
     var body: some View {
         ZStack {
@@ -162,8 +163,8 @@ struct MoleculeDetailView: View {
                 
                 HStack {
                     Picker(selection: $selectedOrbital, label: Text("Orbital")) {
-                        Text("HOMO").tag(0)
-                        Text("LUMO").tag(1)
+                        Text(localizationManager.localizedString(for: "homo")).tag(0)
+                        Text(localizationManager.localizedString(for: "lumo")).tag(1)
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .padding(.horizontal)

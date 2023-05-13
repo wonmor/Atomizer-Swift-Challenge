@@ -18,6 +18,7 @@ struct AtomDetailView: View {
 
     let sphereGeometry = SCNSphere(radius: 0.02)
     let sphereMaterial = SCNMaterial()
+    let localizationManager = LocalizationManager.shared
     
     var body: some View {
         VStack {
@@ -68,7 +69,7 @@ struct AtomDetailView: View {
                             )
                     }
                     
-                    Text("Electron Config.")
+                    Text(localizationManager.localizedString(for: "electron-config"))
                         .font(.title3)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
