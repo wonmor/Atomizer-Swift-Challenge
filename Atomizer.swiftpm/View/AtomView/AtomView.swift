@@ -15,6 +15,8 @@ let elements = try! decoder.decode([Element].self, from: jsonData)
 struct AtomView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     
+    let localizationManager = LocalizationManager.shared
+    
     private var isIPad: Bool {
         return adaptiveSize.width >= 768
     }
@@ -53,7 +55,7 @@ struct AtomView: View {
                 .padding()
             }
         }
-        .navigationTitle("Atoms")
+        .navigationTitle(localizationManager.localizedString(for: "atoms"))
     }
     
     static func hexStringToUIColor (hex:String) -> UIColor {

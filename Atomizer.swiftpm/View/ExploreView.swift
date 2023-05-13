@@ -56,7 +56,7 @@ struct ExploreView: View {
             }
             .padding()
             
-            Text("All visuals were generated from scratch using SciPy, PySCF, and GPAW.")
+            Text(localizationManager.localizedString(for: "explore-explain"))
                 .font(.caption)
                 .padding(.horizontal)
                 .foregroundColor(Color.gray)
@@ -79,7 +79,7 @@ struct ExploreView: View {
             }
             .padding()
             
-            Text("Developed and Designed by John Seong.")
+            Text(localizationManager.localizedString(for: "credit"))
                 .font(.caption)
                 .padding(.horizontal)
                 .padding(.bottom)
