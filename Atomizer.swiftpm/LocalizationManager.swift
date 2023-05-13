@@ -13,6 +13,15 @@ class LocalizationManager {
     private init() {}
     
     // Detect device language... https://stackoverflow.com/questions/67516514/how-to-get-system-device-language-swift-ios
+    
+    func getCurrentLocale() -> String {
+        let locale = UserDefaults.standard.stringArray(forKey: "AppleLanguages")!
+        if let languageCode: String? = locale[0] {
+            return languageCode!
+        } else {
+            return "en"
+        }
+    }
 
     func localizedString(for key: String) -> String {
         let locale = UserDefaults.standard.stringArray(forKey: "AppleLanguages")!

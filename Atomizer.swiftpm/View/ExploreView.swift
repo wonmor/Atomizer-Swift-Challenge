@@ -64,7 +64,7 @@ struct ExploreView: View {
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 16)], spacing: 16) {
                 ForEach(articleData.articles) { article in
-                    if (article.title.contains("Atom") || article.title.contains("Atomic")) {
+                    if (article.title.contains("Atom") || article.title.contains("Atomic") || article.title.contains("원자")) {
                         NavigationLink(destination: AtomView()) {
                             ArticleCardView(article: article)
                         }
