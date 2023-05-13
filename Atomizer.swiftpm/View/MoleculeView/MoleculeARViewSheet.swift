@@ -13,6 +13,8 @@ struct MoleculeARViewSheet: View {
     @State private var showMessage = true
     @State private var fingerOffset: CGFloat = 0
     
+    let localizationManager = LocalizationManager.shared
+    
     var body: some View {
         ZStack(alignment: .center) {
            /**
@@ -52,7 +54,7 @@ struct MoleculeARViewSheet: View {
                 }
             
             if showMessage {
-                Text("Simply tap on any floor surface to place it on the ground.\n\nTo hover it in the air, hold up your hand in front of the camera.")
+                Text(localizationManager.localizedString(for: "ar-instruction"))
                     .font(.headline)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
