@@ -28,7 +28,7 @@ struct AtomView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack {
-                Text("Atomizer uses Spherical Harmonics and Metropolis-Hastings algorithm to plot atomic orbitals.")
+                Text(localizationManager.localizedString(for: "atoms-promo-text"))
                     .font(.caption)
                     .padding(.horizontal)
                     .foregroundColor(Color.gray)
