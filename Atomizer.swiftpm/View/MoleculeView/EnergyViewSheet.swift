@@ -7,16 +7,34 @@ struct EnergyViewSheet: View {
     
     @State private var showMessage = true
     @State private var fingerOffset: CGFloat = 0
-    
-    let localizationManager = LocalizationManager.shared
+    @State private var moleculeName = "ethene"
     
     var body: some View {
         ZStack {
             Color(.white)
                 .edgesIgnoringSafeArea(.all)
+                .onAppear {
+                    do {
+                        let localizationManager = LocalizationManager.shared
+                        let jsonURL = Bundle.main.url(forResource: "molecules", withExtension: "json")!
+                        let jsonData = try! Data(contentsOf: jsonURL)
+                        let decoder = JSONDecoder()
+                        
+                        let data = try Data(contentsOf: jsonURL)
+                        let molecules = try JSONDecoder().decode([Molecule].self, from: data)
+                        
+                        for item in molecules {
+                            if item.formula == self.molecule.formula {
+                                self.moleculeName = item.name
+                            }
+                        }
+                    } catch {}
+                    
+                    
+                }
             
             VStack(alignment: .center) {
-                KFImage(URL(string: "https://electronvisual.org/api/downloadPNG/\(molecule.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "_"))_energy_diagram"))
+                KFImage(URL(string: "https://electronvisual.org/api/downloadPNG/\(moleculeName.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "_"))_energy_diagram"))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
@@ -39,13 +57,13 @@ struct EnergyViewSheet: View {
                     HStack {
                         Image(systemName: "x.circle.fill")
                             .font(.system(size: 24))
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                         Text("Close")
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .font(.headline)
                     }
                     .padding(16)
-                    .background(BlurView(style: .systemMaterialDark).opacity(0.8))
+                    .background(BlurView(style: .systemMaterialLight).opacity(0.8))
                     .cornerRadius(20)
                     .shadow(radius: 10)
                 }
