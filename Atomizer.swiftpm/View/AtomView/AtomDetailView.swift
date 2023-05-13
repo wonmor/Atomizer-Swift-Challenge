@@ -58,7 +58,7 @@ struct AtomDetailView: View {
             
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .center) {
-                    NavigationLink(destination: ArticleDetailView(article: instruction3)) {
+                    NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction3 : instruction3)) {
                         Circle()
                             .fill(Color(AtomView.hexStringToUIColor(hex: element.color)))
                             .frame(width: 20, height: 20)

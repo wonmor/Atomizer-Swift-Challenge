@@ -32,7 +32,7 @@ class LocalizationManager {
                     "explore": "둘러보기",
                     "atoms": "원자 오비탈",
                     "molecules": "분자 오비탈",
-                    "article": "",
+                    "article": "아티클",
                     "swift-winner": "Swift Student Challenge 2023 수상작",
                     "promo-text": "양자역학과",
                     "promo-text-2": "증강현실의 만남",

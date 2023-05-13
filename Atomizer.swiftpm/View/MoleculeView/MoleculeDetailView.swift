@@ -176,7 +176,7 @@ struct MoleculeDetailView: View {
                         }
                     }
                     
-                    NavigationLink(destination: ArticleDetailView(article: instruction1)) {
+                    NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction1 : instruction1)) {
                         Circle()
                             .fill(Color(UIColor.darkGray))
                             .frame(width: 20, height: 20)
