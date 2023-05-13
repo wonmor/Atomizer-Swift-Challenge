@@ -39,7 +39,7 @@ class LocalizationManager {
                     "readings": "읽어보기",
                     "bohr-article-title": "원자 모형의 변천사",
                     "homo-and-lumo-title": "결합/반결합 분자 오비탈",
-                    "explore-explain": "모든 시각 자료들은 SciPy, PySCF, and GPAW을 이용해 만들어졌음을 알려드립니다.",
+                    "explore-explain": "모든 시각 자료들은 SciPy, PySCF, 그리고 GPAW를 이용해 만들어졌음을 알려드립니다.",
                     "credit": "이용해주셔서 감사합니다, 개발자 성원모 (John Seong) 올림.",
                     "atoms-promo-text": "Atomizer AR은 구면조화 함수를 이용해 파동함수를 표현합니다.\n또한, 메트로폴리스-해스팅스 알고리즘을 이용해 직접적으로 표본을 얻기 어려운 확률 분포로부터 수열을 생성합니다.",
                     "molecules-promo-text": "Atomizer AR은 밀도범함수이론 (DFT) 을 이용해 전자 밀도를 계산합니다.\n분자 오비탈의 경우에는, 바닥상태의 파동 함수와 에너지를 구할 때 사용되는 근사 방법인 하트리-폭 (HF) 방법을 이용합니다.",
