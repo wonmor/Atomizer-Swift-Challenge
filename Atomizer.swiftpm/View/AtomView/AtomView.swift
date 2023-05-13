@@ -1,6 +1,7 @@
 import SwiftUI
 
-let jsonURL = Bundle.main.url(forResource: "atoms", withExtension: "json")!
+let localizationManager = LocalizationManager.shared
+let jsonURL = Bundle.main.url(forResource: localizationManager.getCurrentLocale().starts(with: "ko") ? "ko_atoms" : "atoms", withExtension: "json")!
 let jsonData = try! Data(contentsOf: jsonURL)
 let decoder = JSONDecoder()
 let elements = try! decoder.decode([Element].self, from: jsonData)
@@ -14,8 +15,6 @@ let elements = try! decoder.decode([Element].self, from: jsonData)
 
 struct AtomView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
-    
-    let localizationManager = LocalizationManager.shared
     
     private var isIPad: Bool {
         return adaptiveSize.width >= 768

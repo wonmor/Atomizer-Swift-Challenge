@@ -68,7 +68,7 @@ struct MoleculeView: View {
     }
     
     func loadMolecules() {
-        guard let url = Bundle.main.url(forResource: "molecules", withExtension: "json") else { return }
+        guard let url = Bundle.main.url(forResource: localizationManager.getCurrentLocale().starts(with: "ko") ? "ko_molecules" : "molecules", withExtension: "json") else { return }
 
         do {
             let data = try Data(contentsOf: url)
