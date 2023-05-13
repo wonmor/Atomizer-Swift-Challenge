@@ -3,11 +3,13 @@ import Kingfisher
 
 struct EnergyViewSheet: View {
     let molecule: Molecule
+    
     @Binding var isEnergyView: Bool
     
     @State private var showMessage = true
     @State private var fingerOffset: CGFloat = 0
     @State private var moleculeName = "ethene"
+    @State private var description = ""
     
     var body: some View {
         ZStack {
@@ -28,10 +30,16 @@ struct EnergyViewSheet: View {
                                 self.moleculeName = item.name
                             }
                         }
+                        
+                        description = localizationManager.getCurrentLocale().starts(with: "ko") ? "이 다이어그램은 \(molecule.name.lowercased())의 에너지 수준을 보여줍니다. 다이어그램의 각 단계는 에너지 상태의 변화를 나타냅니다." : "This diagram depicts the energy levels of \(molecule.name.lowercased()). Each step in the diagram represents a change in energy state."
+                        
                     } catch {}
                 }
             
             VStack(alignment: .center) {
+                HSLColorBarLegend()
+                    .padding()
+                
                 KFImage(URL(string: "https://electronvisual.org/api/downloadPNG/\(moleculeName.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "_"))_energy_diagram"))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -42,7 +50,7 @@ struct EnergyViewSheet: View {
                     .padding()
                     .multilineTextAlignment(.center)
                 
-                Text("This diagram depicts the energy levels of \(molecule.name.lowercased()). Each step in the diagram represents a change in energy state.")
+                Text(description)
                     .font(.body)
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
