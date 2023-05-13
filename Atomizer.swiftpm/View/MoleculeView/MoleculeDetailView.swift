@@ -12,6 +12,7 @@ struct MoleculeDetailView: View {
     @State private var selectedOrbital = 0 // Add a state property for the selected orbital
     @State private var isMolecularOrbitalHOMO = true;
     @State private var isArView = false;
+    @State private var isEnergyView = false;
     @State private var showingPopup = false;
     
     // Add a timer to automatically swipe through the tabs
@@ -24,6 +25,7 @@ struct MoleculeDetailView: View {
                 Molecule3DView(molecule: molecule, isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
                     .edgesIgnoringSafeArea(.all)
                     .overlay(
+                        HStack {
                             Button(action: {
                                 isArView = true;
                             }) {
@@ -31,14 +33,31 @@ struct MoleculeDetailView: View {
                                     Image(systemName: "arkit")
                                     Text("AR")
                                 }
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .background(Color.white.opacity(0.1))
-                                    .cornerRadius(10)
+                                .font(.system(size: 20))
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background(Color.white.opacity(0.1))
+                                .cornerRadius(10)
+                            }
+                            .padding(.trailing, 10)
+                            
+                            Button(action: {
+                                isEnergyView = true;
+                            }) {
+                                HStack {
+                                    Image(systemName: "bolt.circle")
+                                    Text(localizationManager.localizedString(for: "energy-level"))
+                                }
+                                .font(.system(size: 20))
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background(Color.white.opacity(0.1))
+                                .cornerRadius(10)
                             }
                             .padding(.trailing, 20)
-                            , alignment: .bottomTrailing
+                            
+                        }
+                        , alignment: .bottomTrailing
                         )
                 
                 VStack {
@@ -202,6 +221,9 @@ struct MoleculeDetailView: View {
         }
         .sheet(isPresented: $isArView) {
             MoleculeARViewSheet(molecule: molecule, isArView: $isArView, isMolecularOrbitalHOMO: $isMolecularOrbitalHOMO)
+        }
+        .sheet(isPresented: $isEnergyView) {
+            EnergyViewSheet(molecule: molecule, isEnergyView: $isEnergyView)
         }
     }
 }

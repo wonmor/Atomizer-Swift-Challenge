@@ -48,7 +48,7 @@ struct ContentView: View {
                         tag: 3,
                         selection: $selectedView,
                         label: {
-                            Label(localizationManager.localizedString(for: "swift-challenge"), systemImage: "graduationcap.circle")
+                            Label(localizationManager.localizedString(for: "swift-challenge"), systemImage: "graduationcap")
                         }
                     )
                     
@@ -57,7 +57,7 @@ struct ContentView: View {
                         tag: 4,
                         selection: $selectedView,
                         label: {
-                            Label(localizationManager.localizedString(for: "bohr-article-title"), systemImage: "globe")
+                            Label(localizationManager.localizedString(for: "bohr-article-title"), systemImage: "function")
                         }
                     )
                     
@@ -66,7 +66,7 @@ struct ContentView: View {
                         tag: 5,
                         selection: $selectedView,
                         label: {
-                            Label(localizationManager.localizedString(for: "homo-and-lumo-title"), systemImage: "bolt.horizontal.circle")
+                            Label(localizationManager.localizedString(for: "homo-and-lumo-title"), systemImage: "figure.2.and.child.holdinghands")
                         }
                     )
                 }
