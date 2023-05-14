@@ -18,7 +18,7 @@ let package = Package(
             targets: ["AppModule"],
             bundleIdentifier: "com.johnseong.atomizer",
             teamIdentifier: "Z64KRUX3W3",
-            displayVersion: "1.0",
+            displayVersion: "1.2",
             bundleVersion: "1",
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.blue),
@@ -33,7 +33,6 @@ let package = Package(
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ],
             capabilities: [
-                .camera(purposeString: "For our augmented reality features, we need permission to use your device's camera."),
                 .outgoingNetworkConnections()
             ],
             appCategory: .education
@@ -41,7 +40,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher", "7.0.0"..<"8.0.0"),
-        .package(url: "https://github.com/magicien/GLTFSceneKit", "0.4.1"..<"1.0.0"),
         .package(url: "https://github.com/gonzalezreal/swift-markdown-ui", "2.0.0"..<"3.0.0"),
         .package(url: "https://github.com/exyte/ActivityIndicatorView.git", "1.0.0"..<"2.0.0")
     ],
@@ -50,7 +48,6 @@ let package = Package(
             name: "AppModule",
             dependencies: [
                 .product(name: "Kingfisher", package: "kingfisher"),
-                .product(name: "GLTFSceneKit", package: "gltfscenekit"),
                 .product(name: "MarkdownUI", package: "swift-markdown-ui"),
                 .product(name: "ActivityIndicatorView", package: "activityindicatorview")
             ],

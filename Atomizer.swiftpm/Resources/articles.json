@@ -5,13 +5,6 @@
       "subtitle": "A Beginner's Guide",
       "imageUrl": "atomic-orbital",
       "content": "Atomic orbitals are regions of space around an atom's nucleus where electrons are most likely to be found. **Quantum mechanics** provides the theoretical framework for understanding atomic orbitals. According to this theory, electrons can only occupy certain energy levels, or **quantum states**. These energy levels are described by a set of four quantum numbers: the principal quantum number, azimuthal quantum number, magnetic quantum number, and spin quantum number. \n\n![Atomic orbitals](atomic-orbital-2)\n\nThe shapes of atomic orbitals are determined by their quantum numbers. The principal quantum number determines the orbital's energy level and size, while the azimuthal quantum number determines the orbital's shape. The magnetic quantum number determines the orbital's orientation in space. \n\nIn summary, atomic orbitals are essential to understanding the behavior of electrons in atoms. They play a crucial role in chemical bonding and the formation of molecules. "
-    },
-    {
-      "id": "7E4DC4B4-0C0F-4A4B-A78A-91E99B9A3B3C",
-      "title": "Molecular Orbital Theory",
-      "subtitle": "A Comprehensive Guide",
-      "imageUrl": "molecular-orbital",
-      "content": "Molecular orbitals are formed from the combination of atomic orbitals when atoms bond together to form molecules. They are the **quantum mechanical** analog of the classical concept of chemical bonding. \n\nThe behavior of electrons in molecular orbitals can be described using the principles of quantum mechanics. The Schrödinger equation is used to calculate the energy and shape of molecular orbitals. Molecular orbitals can be bonding, non-bonding, or anti-bonding, depending on their energy levels. \n\n![Molecular Orbitals](molecular-orbital-2)\n\nMolecular orbitals are essential to understanding chemical bonding and the properties of molecules. They are used to explain why some molecules are stable while others are not, and why some molecules have unique properties such as color or magnetism. \n\nIn summary, molecular orbitals are a key concept in chemistry that provides insight into the behavior of electrons in molecules."
-     } 
+    }
 ]
   

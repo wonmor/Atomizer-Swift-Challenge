@@ -69,11 +69,6 @@ struct ExploreView: View {
                             ArticleCardView(article: article)
                         }
                         .id(article.id)
-                    } else {
-                        NavigationLink(destination: MoleculeView()) {
-                            ArticleCardView(article: article)
-                        }
-                        .id(article.id)
                     }
                 }
             }

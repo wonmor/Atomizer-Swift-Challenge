@@ -62,27 +62,7 @@ struct ArticleDetailView: View {
                             }
                             Spacer()
                         }
-                    } else if article.title.lowercased().contains("molecule") || article.title.lowercased().contains("molecular") {
-                        // For "Explore molecules" button
-                        HStack {
-                            Spacer()
-                            NavigationLink(destination: MoleculeView()) {
-                                Text("View in AR")
-                                    .font(.title3)
-                                    .foregroundColor(.white)
-                                    .padding(.vertical, 16)
-                                    .frame(maxWidth: 200, minHeight: 50)
-                                    .cornerRadius(8)
-                                    .overlay(RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.white, lineWidth: 2))
-                                    .shadow(color: Color(red: 0, green: 0, blue: 139/255).opacity(0.3), radius: 3, x: 0, y: 3)
-                                    .padding(.horizontal, 32)
-                            }
-                            Spacer()
-                        }
                     }
-
-
                 }
 
             }
