@@ -4,6 +4,10 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     static let shared = StoreManager() // Singleton instance
     
     @Published var purchasedProductIds: Set<String> = []
+    @Published var buttonClickCount: Int = 0
+    @Published var timeUntilReset: TimeInterval = 0 // in seconds
+    private var resetTimer: Timer?
+    
     private var products: [SKProduct] = []
     private var productRequest: SKProductsRequest?
     
@@ -43,6 +47,32 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
             self.products = response.products
         }
     }
+    
+    func incrementButtonClickCount() {
+           buttonClickCount += 1
+           if buttonClickCount >= 3 {
+               startResetTimer()
+           }
+       }
+       
+   private func startResetTimer() {
+       timeUntilReset = 2 * 60 * 60 // 2 hours in seconds
+       resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+           guard let self = self else { return }
+           if self.timeUntilReset > 0 {
+               self.timeUntilReset -= 1
+           } else {
+               self.resetButtonClickCount()
+           }
+       }
+   }
+   
+   private func resetButtonClickCount() {
+       buttonClickCount = 0
+       resetTimer?.invalidate()
+       resetTimer = nil
+       timeUntilReset = 0
+   }
 
     private func complete(transaction: SKPaymentTransaction) {
         // Handle successful purchase or restoration
