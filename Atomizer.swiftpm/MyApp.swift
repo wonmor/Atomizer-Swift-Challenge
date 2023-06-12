@@ -47,7 +47,7 @@ import SwiftUI
 @main
 struct MyApp: App {
     init() {
-        let productIdentifiers = Set(arrayLiteral: "com.Atomizer.product1", "com.yourapp.product2")
+        let productIdentifiers = Set(arrayLiteral: "monthly", "yearly")
         StoreManager.shared.requestProducts(withIdentifiers: productIdentifiers)
 
     }

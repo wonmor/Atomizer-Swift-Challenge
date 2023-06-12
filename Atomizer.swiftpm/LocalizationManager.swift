@@ -61,7 +61,8 @@ class LocalizationManager {
                     "hybridization": "혼성 오비탈",
                     "molecular-geometry": "분자기하",
                     "bonds": "결합 종류",
-                    "nomenclature": "유기화학 명명법"
+                    "nomenclature": "유기화학 명명법",
+                    "restore-purchase": "구매 복원하기"
                     // Add more key-value pairs for Korean
                 ]
                 return koreanDictionary[key] ?? key
@@ -79,7 +80,7 @@ class LocalizationManager {
                     "bohr-article-title": "No More Bohr Diagrams.",
                     "homo-and-lumo-title": "HOMO and LUMO?",
                     "explore-explain": "All visuals were generated from scratch using SciPy, PySCF, and GPAW.",
-                    "credit": "Developed and Designed by John Seong",
+                    "credit": "Developed and Designed by John Seong.",
                     "atoms-promo-text": "Atomizer AR uses Spherical Harmonics and Metropolis-Hastings algorithm to plot atomic orbitals.",
                     "molecules-promo-text": "Atomizer AR uses DFT calculations to derive electron density, and Hatree-Fock method to plot molecular orbitals.",
                     "homo": "HOMO",
@@ -100,7 +101,8 @@ class LocalizationManager {
                     "hybridization": "Hybridization",
                     "molecular-geometry": "Molecular Geometry",
                     "bonds": "Bonds",
-                    "nomenclature": "Nomenclature"
+                    "nomenclature": "Nomenclature",
+                    "restore-purchase": "Restore Purchase",
                     
                     // Add more key-value pairs for English
                 ]
