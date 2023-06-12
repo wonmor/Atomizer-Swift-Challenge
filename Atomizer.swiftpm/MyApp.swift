@@ -46,6 +46,12 @@ import SwiftUI
 
 @main
 struct MyApp: App {
+    init() {
+        let productIdentifiers = Set(arrayLiteral: "com.Atomizer.product1", "com.yourapp.product2")
+        StoreManager.shared.requestProducts(withIdentifiers: productIdentifiers)
+
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

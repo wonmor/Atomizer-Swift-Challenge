@@ -6,6 +6,8 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     @Published var purchasedProductIds: Set<String> = []
     @Published var buttonClickCount: Int = 0
     @Published var timeUntilReset: TimeInterval = 0 // in seconds
+    @Published var subscriptionExpirationDate: Date?
+    
     private var resetTimer: Timer?
     
     private var products: [SKProduct] = []
@@ -74,9 +76,18 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
        timeUntilReset = 0
    }
 
-    private func complete(transaction: SKPaymentTransaction) {
-        // Handle successful purchase or restoration
+    func complete(transaction: SKPaymentTransaction) {
+        if let productIdentifier: String? = transaction.payment.productIdentifier {
+            purchasedProductIds.insert(productIdentifier!)
+        }
+        
+        if let expiryDate = transaction.transactionDate?.addingTimeInterval(1 * 60 * 60 * 24 * 30) { // assuming the subscription is for 1 month
+            subscriptionExpirationDate = expiryDate
+        }
+        
+        SKPaymentQueue.default().finishTransaction(transaction)
     }
+
 
     private func fail(transaction: SKPaymentTransaction) {
         // Handle failed transaction
