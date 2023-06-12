@@ -60,7 +60,8 @@ class LocalizationManager {
                     "orbitals": "오비탈",
                     "hybridization": "혼성 오비탈",
                     "molecular-geometry": "분자기하",
-                    "bonds": "결합 종류"
+                    "bonds": "결합 종류",
+                    "nomenclature": "유기화학 명명법"
                     // Add more key-value pairs for Korean
                 ]
                 return koreanDictionary[key] ?? key
@@ -98,7 +99,8 @@ class LocalizationManager {
                     "orbitals": "Orbitals",
                     "hybridization": "Hybridization",
                     "molecular-geometry": "Molecular Geometry",
-                    "bonds": "Bonds"
+                    "bonds": "Bonds",
+                    "nomenclature": "Nomenclature"
                     
                     // Add more key-value pairs for English
                 ]
