@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedView: Int? = 0
+    @State private var lastHostingView: UIView!
     
     let localizationManager = LocalizationManager.shared
     
@@ -72,6 +73,26 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Atomizer AR")
+            .introspectNavigationController { navController in
+                            let bar = navController.navigationBar
+                            let hosting = UIHostingController(rootView: BarContent())
+                            
+                            guard let hostingView = hosting.view else { return }
+                            // bar.addSubview(hostingView)                                          // <--- OPTION 1
+                            // bar.subviews.first(where: \.clipsToBounds)?.addSubview(hostingView)  // <--- OPTION 2
+                            hostingView.backgroundColor = .clear
+                            
+                            lastHostingView?.removeFromSuperview()
+                            bar.addSubview(hostingView) // Add the hostingView as a subview first
+                            lastHostingView = hostingView
+                                                    
+                            hostingView.translatesAutoresizingMaskIntoConstraints = false
+                            NSLayoutConstraint.activate([
+                                hostingView.trailingAnchor.constraint(equalTo: bar.trailingAnchor),
+                                hostingView.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -8)
+                            ])
+
+                        }
             
             ZStack {
                 if selectedView == 0 {
@@ -85,3 +106,31 @@ struct ContentView: View {
         }
     }
 }
+
+struct BarContent: View {
+    var body: some View {
+        Button {
+            print("Profile tapped")
+        } label: {
+            ProfilePicture()
+        }
+    }
+}
+
+struct ProfilePicture: View {
+    var body: some View {
+        Image(systemName: "person")
+            .resizable()
+            .scaledToFit()
+            .padding(8) // Change this value to add more or less padding
+            .frame(width: 40, height: 40)
+            .padding(.horizontal)
+            .clipShape(Circle())
+            .overlay(
+                Circle()
+                .stroke(Color.blue, lineWidth: 2)
+            )
+    }
+}
+
+

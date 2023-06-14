@@ -12,8 +12,6 @@ struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     @Environment(\.colorScheme) var colorScheme
     
-    @State private var lastHostingView: UIView!
-    
     @ObservedObject var articleData = ArticleViewModel()
     
     let localizationManager = LocalizationManager.shared
@@ -91,26 +89,6 @@ struct ExploreView: View {
         }
         .padding(.horizontal)
         .navigationTitle(localizationManager.localizedString(for: "explore"))
-        .introspectNavigationController { navController in
-                        let bar = navController.navigationBar
-                        let hosting = UIHostingController(rootView: BarContent())
-                        
-                        guard let hostingView = hosting.view else { return }
-                        // bar.addSubview(hostingView)                                          // <--- OPTION 1
-                        // bar.subviews.first(where: \.clipsToBounds)?.addSubview(hostingView)  // <--- OPTION 2
-                        hostingView.backgroundColor = .clear
-                        
-                        lastHostingView?.removeFromSuperview()
-                        bar.addSubview(hostingView) // Add the hostingView as a subview first
-                        lastHostingView = hostingView
-                                                
-                        hostingView.translatesAutoresizingMaskIntoConstraints = false
-                        NSLayoutConstraint.activate([
-                            hostingView.trailingAnchor.constraint(equalTo: bar.trailingAnchor),
-                            hostingView.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -8)
-                        ])
-
-                    }
     }
 }
 
@@ -133,33 +111,3 @@ extension EnvironmentValues {
 private struct AdaptiveSizeKey: EnvironmentKey {
     static let defaultValue: CGSize = UIScreen.main.bounds.size
 }
-
-
-struct BarContent: View {
-    var body: some View {
-        Button {
-            print("Profile tapped")
-        } label: {
-            ProfilePicture()
-        }
-    }
-}
-
-struct ProfilePicture: View {
-    var body: some View {
-        Image(systemName: "person")
-            .resizable()
-            .scaledToFit()
-            .padding(8) // Change this value to add more or less padding
-            .frame(width: 40, height: 40)
-            .padding(.horizontal)
-            .clipShape(Circle())
-            .overlay(
-                Circle()
-                .stroke(Color.blue, lineWidth: 2)
-            )
-    }
-}
-
-
-
