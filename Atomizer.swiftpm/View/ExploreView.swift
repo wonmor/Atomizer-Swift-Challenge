@@ -59,13 +59,13 @@ struct ExploreView: View {
             }
             .padding()
             
-            SearchBar()
-            
             Text(localizationManager.localizedString(for: "explore-explain"))
                 .font(.caption)
                 .padding(.horizontal)
                 .foregroundColor(Color.gray)
                 .multilineTextAlignment(.center)
+            
+            SearchBar()
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 16)], spacing: 16) {
                 ForEach(articleData.articles) { article in
