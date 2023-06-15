@@ -44,7 +44,8 @@ let package = Package(
         .package(url: "https://github.com/magicien/GLTFSceneKit", "0.4.1"..<"1.0.0"),
         .package(url: "https://github.com/gonzalezreal/swift-markdown-ui", "2.0.0"..<"3.0.0"),
         .package(url: "https://github.com/exyte/ActivityIndicatorView.git", "1.0.0"..<"2.0.0"),
-        .package(url: "https://github.com/siteline/SwiftUI-Introspect.git", "0.6.1"..<"1.0.0")
+        .package(url: "https://github.com/siteline/SwiftUI-Introspect.git", "0.6.1"..<"1.0.0"),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", "5.0.0"..<"6.0.0")
     ],
     targets: [
         .executableTarget(
@@ -55,7 +56,8 @@ let package = Package(
                 .product(name: "MarkdownUI", package: "swift-markdown-ui"),
                 .product(name: "ActivityIndicatorView", package: "activityindicatorview"),
                 .product(name: "Introspect", package: "swiftui-introspect"),
-                .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")
+                .product(name: "SwiftUIIntrospect", package: "swiftui-introspect"),
+                .product(name: "Alamofire", package: "alamofire")
             ],
             path: ".",
             resources: [
