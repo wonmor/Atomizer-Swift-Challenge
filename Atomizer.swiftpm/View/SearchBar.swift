@@ -38,20 +38,13 @@ struct SearchBar: View {
             }
             .padding()
 
-            if results.isEmpty {
+            if self.results.isEmpty {
                 Text("No results found")
                     .foregroundColor(.gray)
             } else {
-                List(results) { result in
-                    VStack(alignment: .leading) {
-                        Text(result.name)
-                            .font(.headline)
-                        Text(result.formula)
-                            .font(.subheadline)
-                        // Add more properties as needed
-                    }
-                    .padding()
-                }
+                Text(self.results.map { "\($0.name) (\($0.formula))" }.joined(separator: ", "))
+                    .foregroundColor(.gray)
+
             }
         }
         .padding(.bottom)
