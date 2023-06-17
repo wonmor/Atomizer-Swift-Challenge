@@ -1,11 +1,19 @@
 import SwiftUI
 import Alamofire
+import Kingfisher
 
 struct ChemicalResult: Identifiable {
     let id = UUID()
     let name: String
     let formula: String
-    // Add more properties as needed
+    let imageUrl: URL?
+    
+    var imageView: KFImage? {
+        guard let imageUrl = imageUrl else { return nil }
+        let processedUrl = imageUrl.absoluteString.trimmingCharacters(in: .whitespacesAndNewlines)
+        let url = URL(string: processedUrl)
+        return url.map { KFImage($0) }
+    }
 }
 
 struct SearchBar: View {
@@ -42,9 +50,23 @@ struct SearchBar: View {
                 Text("No results found")
                     .foregroundColor(.gray)
             } else {
-                Text(self.results.map { "\($0.name) (\($0.formula))" }.joined(separator: ", "))
-                    .foregroundColor(.gray)
-
+                ScrollView {
+                    LazyVStack {
+                        ForEach(self.results) { result in
+                            VStack {
+                                if let imageView = result.imageView {
+                                    imageView
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 200, height: 200)
+                                }
+                                
+                                Text("\(result.name) (\(result.formula))")
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }
+                }
             }
         }
         .padding(.bottom)
@@ -65,11 +87,13 @@ struct SearchBar: View {
                             let properties = extractProperties(compound: compound)
 
                             guard let name = properties["IUPAC Name"],
-                                  let formula = properties["Molecular Formula"] else {
+                                  let formula = properties["Molecular Formula"],
+                                  let cid: Int? = compound.id.id.cid,
+                                  let imageUrl = URL(string: "https://electronvisual.org/api/get_chemistry_image?cid=\(cid)") else {
                                 return nil
                             }
 
-                            return ChemicalResult(name: name, formula: formula)
+                            return ChemicalResult(name: name, formula: formula, imageUrl: imageUrl)
                         }
 
                         if self.results.isEmpty {
