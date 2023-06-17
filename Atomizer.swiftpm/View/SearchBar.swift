@@ -10,6 +10,7 @@ struct ChemicalResult: Identifiable {
     
     var imageView: KFImage? {
         guard let imageUrl = imageUrl else { return nil }
+        print(imageUrl)
         let processedUrl = imageUrl.absoluteString.trimmingCharacters(in: .whitespacesAndNewlines)
         let url = URL(string: processedUrl)
         return url.map { KFImage($0) }
@@ -87,10 +88,10 @@ struct SearchBar: View {
                             let properties = extractProperties(compound: compound)
 
                             guard let name = properties["IUPAC Name"],
-                                  let formula = properties["Molecular Formula"],
+                                let formula = properties["Molecular Formula"],
                                   let cid: Int? = compound.id.id.cid,
-                                  let imageUrl = URL(string: "https://electronvisual.org/api/get_chemistry_image?cid=\(cid)") else {
-                                return nil
+                                let imageUrl = URL(string: "https://electronvisual.org/api/get_chemistry_image?cid=\(cid!)") else {
+                                    return nil
                             }
 
                             return ChemicalResult(name: name, formula: formula, imageUrl: imageUrl)
@@ -110,6 +111,7 @@ struct SearchBar: View {
                 }
             }
     }
+
 
     func extractProperties(compound: PubChemCompound) -> [String: String] {
         var properties: [String: String] = [:]
