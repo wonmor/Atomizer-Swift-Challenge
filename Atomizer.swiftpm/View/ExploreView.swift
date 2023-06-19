@@ -27,8 +27,15 @@ struct ExploreView: View {
     ]
     
     // Computed property to select a random quote
-    var randomQuote: String {
-        inspirationalQuotes.randomElement() ?? ""
+    var randomQuote: (quote: String, author: String) {
+        let randomElement = inspirationalQuotes.randomElement()
+        let components = randomElement?.components(separatedBy: " - ")
+        
+        if let quote = components?.first, let author = components?.last {
+            return (quote, author)
+        } else {
+            return ("", "")
+        }
     }
     
     var body: some View {
@@ -43,9 +50,14 @@ struct ExploreView: View {
                     .overlay(Color.black.opacity(0.4))
                 
                 VStack(alignment: .center) {
-                    Text(randomQuote) // Display a random quote
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(.primary)
+                        Text(randomQuote.quote) // Display the quote segment
+                            .font(.system(.largeTitle, design: .rounded))
+                            .foregroundColor(.white)
+                        
+                        Text(randomQuote.author) // Display the author
+                            .font(.system(.body, design: .rounded))
+                            .foregroundColor(.white)
+                            .padding(.top, 4)
                     
                     NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2)) {
                         VStack(spacing: 4) {
