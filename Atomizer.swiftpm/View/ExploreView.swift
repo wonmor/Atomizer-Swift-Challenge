@@ -18,6 +18,19 @@ struct ExploreView: View {
     
     let localizationManager = LocalizationManager.shared
     
+    // Array of inspirational quotes
+    let inspirationalQuotes = [
+        "The atoms become like a moth, seeking out the region of higher laser intensity. - Steven Chu",
+        "Chemistry is necessarily an experimental science: its conclusions are drawn from data, and its principles supported by evidence from facts. - Michael Faraday",
+        "The grand aim of all science is to cover the greatest number of empirical facts by logical deduction from the smallest number of hypotheses or axioms. - Dmitri Mendeleev",
+        // Add more quotes as needed
+    ]
+    
+    // Computed property to select a random quote
+    var randomQuote: String {
+        inspirationalQuotes.randomElement() ?? ""
+    }
+    
     var body: some View {
         ScrollView {
             ZStack {
@@ -30,13 +43,9 @@ struct ExploreView: View {
                     .overlay(Color.black.opacity(0.4))
                 
                 VStack(alignment: .center) {
-                    Text(localizationManager.localizedString(for: "promo-text"))
+                    Text(randomQuote) // Display a random quote
                         .font(.system(size: 28, weight: .bold))
                         .foregroundColor(.primary)
-                    
-                    Text(localizationManager.localizedString(for: "promo-text-2"))
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.secondary)
                     
                     NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2)) {
                         VStack(spacing: 4) {
