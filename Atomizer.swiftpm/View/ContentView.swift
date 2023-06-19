@@ -12,6 +12,22 @@ struct ContentView: View {
     
     let localizationManager = LocalizationManager.shared
     
+    init() {
+        var titleFont = UIFont.preferredFont(forTextStyle: .largeTitle) /// the default large title font
+        titleFont = UIFont(
+            descriptor:
+                titleFont.fontDescriptor
+                .withDesign(.rounded)? /// make rounded
+                .withSymbolicTraits(.traitBold) /// make bold
+            ??
+            titleFont.fontDescriptor, /// return the normal title if customization failed
+            size: titleFont.pointSize
+        )
+        
+        /// set the rounded font
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font: titleFont]
+    }
+    
     var body: some View {
         NavigationView {
             List {
@@ -82,7 +98,7 @@ struct ContentView: View {
                     MoleculeView()
                 }
             }
-        }
+        }.environment(\.font, Font.system(.body, design: .rounded))
     }
 }
 
