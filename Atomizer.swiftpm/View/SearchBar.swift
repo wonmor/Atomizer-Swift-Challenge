@@ -70,7 +70,6 @@ struct SearchBar: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 200, height: 200)
-                                        .background(Color.white)
                                         .clipShape(Rectangle().inset(by: 10))
                                         .overlay(
                                             GeometryReader { geometry in
@@ -81,9 +80,10 @@ struct SearchBar: View {
                                                     .clipped()
                                             }
                                         )
+                                        .colorInvert() // Apply color inversion
                                 }
                                 
-                                Text("\(result.name) (\(result.formula))")
+                                Text("\(result.name.capitalized) (\(result.formula))")
                                     .foregroundColor(.gray)
                             }
                         }
