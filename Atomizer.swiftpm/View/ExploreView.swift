@@ -20,9 +20,9 @@ struct ExploreView: View {
     
     // Array of inspirational quotes
     let inspirationalQuotes = [
-        "The atoms become like a moth, seeking out the region of higher laser intensity. - Steven Chu",
-        "Chemistry is necessarily an experimental science: its conclusions are drawn from data, and its principles supported by evidence from facts. - Michael Faraday",
-        "The grand aim of all science is to cover the greatest number of empirical facts by logical deduction from the smallest number of hypotheses or axioms. - Dmitri Mendeleev",
+        "In chemistry, we like to say 'like dissolves like.' - Gilbert N. Lewis",
+        "The only way to do great work is to love what you do. - Steve Jobs",
+        "Chemistry can be a good and bad thing. Chemistry is good when you make love with it. - Mira Grant",
         // Add more quotes as needed
     ]
     
@@ -51,13 +51,13 @@ struct ExploreView: View {
                 
                 VStack(alignment: .center) {
                         Text(randomQuote.quote) // Display the quote segment
-                            .font(.system(.largeTitle, design: .rounded))
-                            .foregroundColor(.white)
+                        .font(.system(.largeTitle, design: .rounded))
+                        .foregroundColor(.white)
                         
                         Text(randomQuote.author) // Display the author
                             .font(.system(.body, design: .rounded))
                             .foregroundColor(.white)
-                            .padding(.top, 4)
+                            .padding(.top, 2)
                     
                     NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2)) {
                         VStack(spacing: 4) {
