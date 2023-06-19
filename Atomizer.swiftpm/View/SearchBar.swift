@@ -21,7 +21,7 @@ struct ChemicalResult: Identifiable {
             guard let imageUrl = imageUrl else { return nil }
             if let imageData = try? Data(contentsOf: imageUrl),
                let image = UIImage(data: imageData) {
-                return image.trim()
+                return image.trim(padding: 10)
             }
             return nil
         }
@@ -228,14 +228,13 @@ struct PropertyValue: Codable {
 }
 
 extension UIImage {
-
-    func trim() -> UIImage {
-        let newRect = self.cropRect
-        if let imageRef = self.cgImage!.cropping(to: newRect) {
-            return UIImage(cgImage: imageRef)
+    func trim(padding: CGFloat) -> UIImage {
+            let newRect = self.cropRect.insetBy(dx: -padding, dy: -padding) // Adjust the crop rectangle with padding
+            if let imageRef = self.cgImage!.cropping(to: newRect) {
+                return UIImage(cgImage: imageRef)
+            }
+            return self
         }
-        return self
-    }
 
     var cropRect: CGRect {
         let cgImage = self.cgImage
