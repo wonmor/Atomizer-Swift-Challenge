@@ -8,6 +8,11 @@ import Introspect
     Developed and Designed by John Seong.
  */
 
+struct Quote {
+    let text: String
+    let author: String
+}
+
 struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     @Environment(\.colorScheme) var colorScheme
@@ -20,22 +25,17 @@ struct ExploreView: View {
     
     // Array of inspirational quotes
     let inspirationalQuotes = [
-        "In chemistry, we like to say 'like dissolves like.' - Gilbert N. Lewis",
-        "The only way to do great work is to love what you do. - Steve Jobs",
-        "Chemistry can be a good and bad thing. Chemistry is good when you make love with it. - Mira Grant",
+        Quote(text: "In chemistry, we like to say 'like dissolves like.'", author: "Gilbert N. Lewis"),
+        Quote(text: "The only way to do great work is to love what you do.", author: "Steve Jobs"),
+        Quote(text: "Chemistry can be a good and bad thing. Chemistry is good when you make love with it.", author: "Mira Grant")
         // Add more quotes as needed
     ]
     
+    var randomQuote: Quote?
+    
     // Computed property to select a random quote
-    var randomQuote: (quote: String, author: String) {
-        let randomElement = inspirationalQuotes.randomElement()
-        let components = randomElement?.components(separatedBy: " - ")
-        
-        if let quote = components?.first, let author = components?.last {
-            return (quote, author)
-        } else {
-            return ("", "")
-        }
+    init() {
+        randomQuote = inspirationalQuotes.randomElement()
     }
     
     var body: some View {
@@ -50,14 +50,14 @@ struct ExploreView: View {
                     .overlay(Color.black.opacity(0.4))
                 
                 VStack(alignment: .center) {
-                        Text(randomQuote.quote) // Display the quote segment
-                        .font(.system(.largeTitle, design: .rounded))
-                        .foregroundColor(.white)
-                        
-                        Text(randomQuote.author) // Display the author
-                            .font(.system(.body, design: .rounded))
-                            .foregroundColor(.white)
-                            .padding(.top, 2)
+                    Text(randomQuote?.text ?? "")
+                           .font(.system(.largeTitle, design: .rounded))
+                           .foregroundColor(.white)
+                       
+                   Text(randomQuote?.author ?? "")
+                       .font(.system(.body, design: .rounded))
+                       .foregroundColor(.white)
+                       .padding(.top, 2)
                     
                     NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2)) {
                         VStack(spacing: 4) {

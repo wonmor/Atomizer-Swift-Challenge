@@ -34,7 +34,7 @@ struct SearchBar: View {
     var body: some View {
         VStack {
             HStack {
-                TextField("Search", text: $searchText)
+                TextField("Search by IUPAC Name or Formula", text: $searchText)
                     .padding(.leading, 16)
                     .padding(.vertical, 8)
                     .background(Color(.darkGray))
