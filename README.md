@@ -4,7 +4,7 @@
 
 > **Visualizing Quantum Mechanics, Reimagined.**
 
-Developed by John Seong, 2023. A WWDC 2023 Swift Student Challenge Submission.
+Developed by John Seong, 2023. A WWDC23 Swift Student Challenge Submission.
 Built using Xcode 14 on macOS Ventura, designed to run on iPhone, iPad, and ARM-based Macs.
 
 ---
