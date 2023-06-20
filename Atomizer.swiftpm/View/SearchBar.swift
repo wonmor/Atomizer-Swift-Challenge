@@ -2,6 +2,8 @@ import SwiftUI
 import Alamofire
 import Kingfisher
 import UIKit
+import CoreImage
+import CoreImage.CIFilterBuiltins
 
 struct ChemicalResult: Identifiable {
     let id = UUID()
@@ -30,72 +32,117 @@ struct ChemicalResult: Identifiable {
 struct SearchBar: View {
     @State private var searchText = ""
     @State private var results: [ChemicalResult] = []
+    @State private var isShowingResults = false
+    
+    let context = CIContext()
+     let colorFilter = CIFilter.colorControls()
+     
+    func processImage(_ image: UIImage) -> UIImage? {
+        guard let ciImage = CIImage(image: image) else { return nil }
+
+        // Adjust brightness and contrast to darken the gray areas
+        colorFilter.inputImage = ciImage
+        colorFilter.brightness = -1.0 // Decrease brightness
+        colorFilter.contrast = 5.0 // Increase contrast
+
+        guard let outputCIImage = colorFilter.outputImage else { return nil }
+
+        // Render the filtered image
+        if let outputCGImage = context.createCGImage(outputCIImage, from: outputCIImage.extent) {
+            // Create a black and white filter to convert the image to black and white
+            let blackAndWhiteFilter = CIFilter(name: "CIColorControls")
+            blackAndWhiteFilter?.setDefaults()
+            blackAndWhiteFilter?.setValue(CIImage(cgImage: outputCGImage), forKey: "inputImage")
+            blackAndWhiteFilter?.setValue(0.0, forKey: "inputSaturation")
+
+            if let blackAndWhiteImage = blackAndWhiteFilter?.outputImage,
+               let processedCGImage = context.createCGImage(blackAndWhiteImage, from: blackAndWhiteImage.extent) {
+                return UIImage(cgImage: processedCGImage)
+            }
+        }
+
+        return nil
+    }
+     
 
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Search by IUPAC Name or Formula", text: $searchText)
-                    .padding(.leading, 16)
-                    .padding(.vertical, 8)
-                    .background(Color(.darkGray))
-                    .cornerRadius(8)
-                    .shadow(color: Color.white.opacity(0.1), radius: 2, x: 0, y: 2)
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
 
-                Button(action: {
-                    searchPubChem(term: searchText)
-                }) {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                        .padding(.horizontal, 12)
-                        .frame(height: 36)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray, lineWidth: 1)
-                        )
+            VStack {
+                HStack {
+                    TextField("Search by IUPAC Name or Formula", text: $searchText)
+                        .padding(.leading, 16)
+                        .padding(.vertical, 8)
+                        .background(Color(.darkGray))
+                        .cornerRadius(8)
+                        .shadow(color: Color.white.opacity(0.1), radius: 2, x: 0, y: 2)
+
+                    Button(action: {
+                        searchPubChem(term: searchText)
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal, 12)
+                            .frame(height: 36)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.gray, lineWidth: 1)
+                            )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .padding()
+                .padding()
 
-            if self.results.isEmpty {
-                Text("No results found")
-                    .foregroundColor(.gray)
-            } else {
-                ScrollView {
-                    LazyVStack {
-                        ForEach(self.results) { result in
-                            VStack {
-                                if let trimmedImage = result.trimmedImage {
-                                    Image(uiImage: trimmedImage)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 200, height: 200)
-                                        .clipShape(Rectangle().inset(by: 10))
-                                        .overlay(
-                                            GeometryReader { geometry in
-                                                Image(uiImage: trimmedImage)
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: geometry.size.width, height: geometry.size.height)
-                                                    .clipped()
-                                            }
-                                        )
-                                        .colorInvert() // Apply color inversion
+                if results.isEmpty {
+                    Text("No results found")
+                        .foregroundColor(.gray)
+                        .font(.headline)
+                } else {
+                    VStack {
+                        ForEach(results) { result in
+                            Button(action: {
+                                isShowingResults = true
+                            }) {
+                                VStack {
+                                    if let trimmedImage = result.trimmedImage,
+                                        let processedImage = processImage(trimmedImage) {
+                                            Image(uiImage: processedImage)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 200, height: 200)
+                                                .clipShape(Rectangle().inset(by: 10))
+                                                .overlay(
+                                                    GeometryReader { geometry in
+                                                        Image(uiImage: trimmedImage)
+                                                            .resizable()
+                                                            .scaledToFit()
+                                                            .frame(width: geometry.size.width, height: geometry.size.height)
+                                                            .clipped()
+                                                    }
+                                                )
+                                                .colorInvert() // Apply color inversion
+                                        
+                                    }
+                                    Text("\(result.name.capitalized) (\(result.formula))")
+                                        .foregroundColor(.white)
+                                        .font(.headline)
                                 }
-                                
-                                Text("\(result.name.capitalized) (\(result.formula))")
-                                    .foregroundColor(.gray)
+                                .padding()
+                                .border(Color.gray, width: 2)
+                                .cornerRadius(10)
+                            }
+                            .sheet(isPresented: $isShowingResults) {
+                                ResultsView(results: results)
                             }
                         }
                     }
                 }
             }
         }
-        .padding(.bottom)
-        .padding(.leading)
-        .padding(.trailing)
     }
-
+    
     func searchPubChem(term: String) {
         let url = "https://electronvisual.org/api/get_chemistry_data?term=\(term)"
 
@@ -145,6 +192,73 @@ struct SearchBar: View {
         }
 
         return properties
+    }
+}
+
+struct ResultsView: View {
+    @Environment(\.presentationMode) var presentationMode
+
+    let results: [ChemicalResult]
+
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color.black
+                    .ignoresSafeArea()
+
+                if results.isEmpty {
+                    Text("No results found")
+                        .foregroundColor(.gray)
+                        .font(.headline)
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            ForEach(results) { result in
+                                ResultRow(result: result)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            }
+            .navigationBarTitle("Search Results")
+            .navigationBarItems(trailing: Button(action: dismiss) {
+                Text("Close")
+            })
+
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+
+    func dismiss() {
+        presentationMode.wrappedValue.dismiss()
+    }
+
+}
+
+struct ResultRow: View {
+    let result: ChemicalResult
+
+    var body: some View {
+        VStack {
+            if let trimmedImage = result.trimmedImage {
+                Image(uiImage: trimmedImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .clipShape(Rectangle().inset(by: 10))
+                    .overlay(
+                        GeometryReader { geometry in
+                            Image(uiImage: trimmedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .clipped()
+                        }
+                    )
+                    .colorInvert() // Apply color inversion
+            }
+        }
     }
 }
 
