@@ -2,6 +2,7 @@ import SwiftUI
 import Alamofire
 import Kingfisher
 import UIKit
+import Combine
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
@@ -10,6 +11,7 @@ struct ChemicalResult: Identifiable {
     let name: String
     let formula: String
     let imageUrl: URL?
+    let otherNames: [String]
     
     var imageView: KFImage? {
             guard let imageUrl = imageUrl else { return nil }
@@ -33,6 +35,8 @@ struct SearchBar: View {
     @State private var searchText = ""
     @State private var results: [ChemicalResult] = []
     @State private var isShowingResults = false
+    
+    private var searchCancellable: AnyCancellable?
     
     let context = CIContext()
      let colorFilter = CIFilter.colorControls()
@@ -134,7 +138,7 @@ struct SearchBar: View {
                                 .cornerRadius(10)
                             }
                             .sheet(isPresented: $isShowingResults) {
-                                ResultsView(results: results)
+                                ResultsView(results: [result])
                             }
                         }
                     }
@@ -157,12 +161,21 @@ struct SearchBar: View {
 
                             guard let name = properties["IUPAC Name"],
                                 let formula = properties["Molecular Formula"],
-                                  let cid: Int? = compound.id.id.cid,
+                                let cid: Int? = compound.id.id.cid,
                                 let imageUrl = URL(string: "https://electronvisual.org/api/get_chemistry_image?cid=\(cid!)") else {
                                     return nil
                             }
+                            
+                            var otherNames: [String] = []
 
-                            return ChemicalResult(name: name, formula: formula, imageUrl: imageUrl)
+                            compound.props.forEach { prop in
+                                if prop.urn.label == "IUPAC Name",
+                                   let otherName = prop.value.sval {
+                                    otherNames.append(otherName.lowercased())
+                                }
+                            }
+
+                            return ChemicalResult(name: name, formula: formula, imageUrl: imageUrl, otherNames: otherNames)
                         }
 
                         if self.results.isEmpty {
@@ -179,6 +192,7 @@ struct SearchBar: View {
                 }
             }
     }
+
 
 
     func extractProperties(compound: PubChemCompound) -> [String: String] {
