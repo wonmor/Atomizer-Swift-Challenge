@@ -134,8 +134,10 @@ struct SearchBar: View {
                                         .font(.headline)
                                 }
                                 .padding()
-                                .border(Color.gray, width: 2)
-                                .cornerRadius(10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                )
                             }
                             .sheet(isPresented: $isShowingResults) {
                                 ResultsView(results: [result])
