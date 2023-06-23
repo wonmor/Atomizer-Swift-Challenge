@@ -172,13 +172,14 @@ struct ProfilePicture: View {
         Image(systemName: "person")
             .resizable()
             .scaledToFit()
+            .foregroundColor(.indigo)
             .padding(8) // Change this value to add more or less padding
             .frame(width: 40, height: 40)
             .padding(.horizontal)
             .clipShape(Circle())
             .overlay(
                 Circle()
-                .stroke(Color.blue, lineWidth: 2)
+                    .stroke(Color.indigo, lineWidth: 2)
             )
     }
 }

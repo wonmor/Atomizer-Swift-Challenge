@@ -13,23 +13,29 @@ struct ChemicalResult: Identifiable {
     let imageUrl: URL?
     let otherNames: [String]
     
-    var imageView: KFImage? {
-            guard let imageUrl = imageUrl else { return nil }
-            print(imageUrl)
-            let processedUrl = imageUrl.absoluteString.trimmingCharacters(in: .whitespacesAndNewlines)
-            let url = URL(string: processedUrl)
-            return url.map { KFImage($0) }
-        }
-
-        var trimmedImage: UIImage? {
-            guard let imageUrl = imageUrl else { return nil }
-            if let imageData = try? Data(contentsOf: imageUrl),
-               let image = UIImage(data: imageData) {
-                return image.trim(padding: 10)
+    var imageView: URLSessionDataTask? {
+        guard let imageUrl = imageUrl else { return nil }
+        return URLSession.shared.dataTask(with: imageUrl) { data, _, error in
+            if let error = error {
+                print("Error downloading image: \(error)")
+                return
             }
-            return nil
+            
+            if let data = data, let image = UIImage(data: data) {
+                // Use the downloaded image here
+            }
         }
     }
+    
+    var trimmedImage: UIImage? {
+        guard let imageUrl = imageUrl else { return nil }
+        if let imageData = try? Data(contentsOf: imageUrl),
+           let image = UIImage(data: imageData) {
+            return image.trim(padding: 10)
+        }
+        return nil
+    }
+}
 
 struct SearchBar: View {
     @State private var searchText = ""
@@ -76,23 +82,40 @@ struct SearchBar: View {
 
             VStack {
                 HStack {
-                    TextField("Search by IUPAC Name or Formula", text: $searchText)
-                        .padding(.leading, 16)
-                        .padding(.vertical, 8)
-                        .background(Color(.darkGray))
-                        .cornerRadius(8)
-                        .shadow(color: Color.white.opacity(0.1), radius: 2, x: 0, y: 2)
-
+                    ZStack(alignment: .leading) {
+                        if searchText.isEmpty {
+                            Text("Search by IUPAC Name or Formula")
+                                .padding(.leading, 16)
+                                .padding(.vertical, 8)
+                                .foregroundColor(.indigo)
+                        }
+                        
+                        TextField("", text: $searchText)
+                            .padding(.leading, 16)
+                            .padding(.vertical, 8)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.indigo, lineWidth: 2)
+                            )
+                            .foregroundColor(.indigo)
+                            .cornerRadius(8)
+                            .shadow(color: Color.indigo.opacity(0.1), radius: 2, x: 0, y: 2)
+                            .onSubmit {
+                                // Triggered when "Enter" is pressed
+                                searchPubChem(term: searchText)
+                            }
+                    }
+                    
                     Button(action: {
                         searchPubChem(term: searchText)
                     }) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.indigo)
                             .padding(.horizontal, 12)
                             .frame(height: 36)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 1)
+                                    .stroke(Color.indigo, lineWidth: 1)
                             )
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -101,8 +124,7 @@ struct SearchBar: View {
 
                 if results.isEmpty {
                     Text("No results found")
-                        .foregroundColor(.gray)
-                        .font(.headline)
+                        .foregroundColor(.indigo)
                 } else {
                     VStack {
                         ForEach(results) { result in
@@ -110,33 +132,44 @@ struct SearchBar: View {
                                 isShowingResults = true
                             }) {
                                 VStack {
+                                    HStack(spacing: 5) {
+                                        Text(result.formula)
+                                            .foregroundColor(.indigo)
+                                            .font(.largeTitle)
+                                        
+                                        Text(result.name.capitalized)
+                                            .foregroundColor(.gray)
+                                            .font(.title2)
+                                    }
+                                    
                                     if let trimmedImage = result.trimmedImage,
                                         let processedImage = processImage(trimmedImage) {
-                                            Image(uiImage: processedImage)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 200, height: 200)
-                                                .clipShape(Rectangle().inset(by: 10))
-                                                .overlay(
-                                                    GeometryReader { geometry in
-                                                        Image(uiImage: trimmedImage)
-                                                            .resizable()
-                                                            .scaledToFit()
-                                                            .frame(width: geometry.size.width, height: geometry.size.height)
-                                                            .clipped()
-                                                    }
-                                                )
-                                                .colorInvert() // Apply color inversion
-                                        
+                                        Image(uiImage: processedImage)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 100) // Set the width and let height adjust automatically
+                                            .clipShape(Rectangle().inset(by: 10))
+                                            .overlay(
+                                                GeometryReader { geometry in
+                                                    Image(uiImage: trimmedImage)
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: geometry.size.width) // Use the width from the parent's geometry
+                                                        .clipped()
+                                                }
+                                            )
+                                            .colorInvert() // Apply color inversion
+                                            .background(
+                                                Rectangle()
+                                                    .stroke(Color.indigo, lineWidth: 2)
+                                            )
+
                                     }
-                                    Text("\(result.name.capitalized) (\(result.formula))")
-                                        .foregroundColor(.white)
-                                        .font(.headline)
                                 }
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray, lineWidth: 1)
+                                        .stroke(Color.indigo, lineWidth: 2)
                                 )
                             }
                             .sheet(isPresented: $isShowingResults) {
