@@ -1,16 +1,30 @@
 import SwiftUI
 import Introspect
+import WebKit
 
 /**
-    A view that displays an article.
+ A view that displays an article.
  
-    ATOMIZER
-    Developed and Designed by John Seong.
+ ATOMIZER
+ Developed and Designed by John Seong.
  */
 
-struct Quote {
-    let text: String
-    let author: String
+struct WebView: UIViewRepresentable {
+    let urlString: String
+    
+    func makeUIView(context: Context) -> WKWebView {
+        guard let url = URL(string: urlString) else {
+            return WKWebView()
+        }
+        let request = URLRequest(url: url)
+        let webView = WKWebView()
+        webView.load(request)
+        return webView
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        // No updates needed
+    }
 }
 
 struct ExploreView: View {
@@ -21,119 +35,33 @@ struct ExploreView: View {
     
     @ObservedObject var articleData = ArticleViewModel()
     
-    let localizationManager = LocalizationManager.shared
-    
-    // Array of inspirational quotes
-    let inspirationalQuotes = [
-        Quote(text: "In chemistry, we like to say 'like dissolves like.'", author: "Gilbert N. Lewis"),
-        Quote(text: "The only way to do great work is to love what you do.", author: "Steve Jobs"),
-        Quote(text: "Chemistry can be a good and bad thing. Chemistry is good when you make love with it.", author: "Mira Grant")
-        // Add more quotes as needed
-    ]
-    
-    var randomQuote: Quote?
-    
-    // Computed property to select a random quote
-    init() {
-        randomQuote = inspirationalQuotes.randomElement()
-    }
-    
     var body: some View {
-        ScrollView {
-            ZStack {
-                Image("background-image")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: UIScreen.main.bounds.width < 500 ? adaptiveSize.width * 0.4 : adaptiveSize.width * 0.2)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .brightness(-0.2)
-                    .overlay(Color.black.opacity(0.4))
+        
+        WebView(urlString: "https://electronvisual.org?fullscreen=true")
+            .ignoresSafeArea()
+            .padding(.horizontal)
+            .ignoresSafeArea()
+            .navigationTitle(localizationManager.localizedString(for: "explore"))
+            .introspectNavigationController { navController in
+                let bar = navController.navigationBar
+                let hosting = UIHostingController(rootView: BarContent())
                 
-                VStack(alignment: .center) {
-                    Text(randomQuote?.text ?? "")
-                           .font(.system(.largeTitle, design: .rounded))
-                           .foregroundColor(.white)
-                       
-                   Text(randomQuote?.author ?? "")
-                       .font(.system(.body, design: .rounded))
-                       .foregroundColor(.white)
-                       .padding(.top, 2)
-                    
-                    NavigationLink(destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2)) {
-                        VStack(spacing: 4) {
-                            Image(systemName: "medal")
-                                .foregroundColor(Color.white)
-                            
-                            Text(localizationManager.localizedString(for: "swift-winner"))
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.white)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.indigo)
-                        .cornerRadius(8)
-                    }
-                    .padding(16)
-                }
-                .padding(.top, adaptiveSize.width * 0.1)
-                .multilineTextAlignment(.center)
+                guard let hostingView = hosting.view else { return }
+                // bar.addSubview(hostingView)                                          // <--- OPTION 1
+                // bar.subviews.first(where: \.clipsToBounds)?.addSubview(hostingView)  // <--- OPTION 2
+                hostingView.backgroundColor = .clear
+                
+                lastHostingView?.removeFromSuperview()
+                bar.addSubview(hostingView) // Add the hostingView as a subview first
+                lastHostingView = hostingView
+                
+                hostingView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    hostingView.trailingAnchor.constraint(equalTo: bar.trailingAnchor),
+                    hostingView.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -8)
+                ])
+                
             }
-            .padding()
-            
-            Text(localizationManager.localizedString(for: "explore-explain"))
-                .font(.caption)
-                .padding(.horizontal)
-                .foregroundColor(Color.gray)
-                .multilineTextAlignment(.center)
-            
-            SearchBar()
-            
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 16)], spacing: 16) {
-                ForEach(articleData.articles) { article in
-                    if (article.title.contains("Atom") || article.title.contains("Atomic") || article.title.contains("원자")) {
-                        NavigationLink(destination: AtomView()) {
-                            ArticleCardView(article: article)
-                        }
-                        .id(article.id)
-                    } else {
-                        NavigationLink(destination: MoleculeView()) {
-                            ArticleCardView(article: article)
-                        }
-                        .id(article.id)
-                    }
-                }
-            }
-            .padding()
-            
-            Text(localizationManager.localizedString(for: "credit"))
-                .font(.caption)
-                .padding(.horizontal)
-                .padding(.bottom)
-                .foregroundColor(Color.gray)
-                .multilineTextAlignment(.center)
-        }
-        .padding(.horizontal)
-        .navigationTitle(localizationManager.localizedString(for: "explore"))
-        .introspectNavigationController { navController in
-                        let bar = navController.navigationBar
-                        let hosting = UIHostingController(rootView: BarContent())
-                        
-                        guard let hostingView = hosting.view else { return }
-                        // bar.addSubview(hostingView)                                          // <--- OPTION 1
-                        // bar.subviews.first(where: \.clipsToBounds)?.addSubview(hostingView)  // <--- OPTION 2
-                        hostingView.backgroundColor = .clear
-                        
-                        lastHostingView?.removeFromSuperview()
-                        bar.addSubview(hostingView) // Add the hostingView as a subview first
-                        lastHostingView = hostingView
-                                                
-                        hostingView.translatesAutoresizingMaskIntoConstraints = false
-                        NSLayoutConstraint.activate([
-                            hostingView.trailingAnchor.constraint(equalTo: bar.trailingAnchor),
-                            hostingView.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -8)
-                        ])
-
-                    }
     }
 }
 
