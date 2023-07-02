@@ -101,4 +101,3 @@ struct ContentView: View {
         }.environment(\.font, Font.system(.body, design: .rounded))
     }
 }
-

@@ -112,3 +112,20 @@ struct ProfilePicture: View {
     }
 }
 
+extension Font {
+    static func customFont(_ name: String, size: CGFloat) -> Font {
+        guard let fontURL = Bundle.main.url(forResource: name, withExtension: "ttf") else {
+            // Handle if the font file cannot be found
+            return Font.system(size: size)
+        }
+        
+        if let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
+           let font = CGFont(fontDataProvider) {
+            CTFontManagerRegisterGraphicsFont(font, nil)
+            return Font.custom(name, size: size)
+        } else {
+            // Handle if the font file cannot be loaded
+            return Font.system(size: size)
+        }
+    }
+}

@@ -52,9 +52,6 @@ struct EnergyViewSheet: View {
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
                 
-                HSLColorBarLegend()
-                    .padding()
-                
                 Button(action: {
                     withAnimation(Animation.easeInOut(duration: 0.5)) {
                         isEnergyView = false
