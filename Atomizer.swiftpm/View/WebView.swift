@@ -13,7 +13,7 @@ protocol WebViewHandlerDelegate {
     func receivedJsonValueFromWebView(value: [String: Any?])
 }
 
-struct WebView: UIViewRepresentable {
+struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
     let urlString: String
     
     @ObservedObject var viewModel: WebViewModel
@@ -29,19 +29,33 @@ struct WebView: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> WKWebView {
-        guard let url = URL(string: urlString) else {
-            return WKWebView()
-        }
-        let request = URLRequest(url: url)
-        let webView = WKWebView()
-        webView.load(request)
-        return webView
-    }
-    
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        // No updates needed
-    }
-    
+           let prefs = WKWebpagePreferences()
+           prefs.allowsContentJavaScript = true
+           
+           let config = WKWebViewConfiguration()
+           config.defaultWebpagePreferences = prefs
+           config.userContentController.add(self.makeCoordinator(), name: "IOS_BRIDGE")
+           
+           let webview = WKWebView(frame: .zero, configuration: config)
+           
+           webview.navigationDelegate = context.coordinator
+           webview.allowsBackForwardNavigationGestures = false
+           webview.scrollView.isScrollEnabled = true
+           
+           return webview
+   }
+   
+   func updateUIView(_ uiView: WKWebView, context: Context) {
+       let url = URL(string: urlString)
+       
+       guard let myUrl = url else {
+           return
+       }
+       
+       let request = URLRequest(url: myUrl)
+       uiView.load(request)
+   }
+
     class Coordinator : NSObject, WKNavigationDelegate {
         var parent: WebView
         var callbackValueFromNative: AnyCancellable? = nil
