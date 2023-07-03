@@ -70,7 +70,7 @@ struct ContentView: View {
                 Section(header: Text(localizationManager.localizedString(for: "readings"))) {
                     NavigationLink(
                         destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2),
-                        tag: 3,
+                        tag: 4,
                         selection: $selectedView,
                         label: {
                             Label(localizationManager.localizedString(for: "swift-challenge"), systemImage: "graduationcap")
@@ -79,7 +79,7 @@ struct ContentView: View {
                     
                     NavigationLink(
                         destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction3 : instruction3),
-                        tag: 4,
+                        tag: 5,
                         selection: $selectedView,
                         label: {
                             Label(localizationManager.localizedString(for: "bohr-article-title"), systemImage: "function")
@@ -88,7 +88,7 @@ struct ContentView: View {
                     
                     NavigationLink(
                         destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction1 : instruction1),
-                        tag: 5,
+                        tag: 6,
                         selection: $selectedView,
                         label: {
                             Label(localizationManager.localizedString(for: "homo-and-lumo-title"), systemImage: "figure.2.and.child.holdinghands")
@@ -105,6 +105,8 @@ struct ContentView: View {
                     AtomView()
                 } else if selectedView == 2 {
                     MoleculeView()
+                } else if selectedView == 3 {
+                    PlaygroundView()
                 }
             }
         }.environment(\.font, Font.system(.body, design: .rounded))
