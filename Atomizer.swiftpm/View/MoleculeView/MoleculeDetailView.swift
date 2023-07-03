@@ -1,8 +1,8 @@
 import SwiftUI
 
 /**
-    A view that displays an article.
-*/
+ A view that displays an article.
+ */
 
 struct MoleculeDetailView: View {
     let molecule: Molecule
@@ -58,11 +58,12 @@ struct MoleculeDetailView: View {
                             
                         }
                         , alignment: .bottomTrailing
-                        )
+                    )
                 
                 VStack {
                     Text(molecule.name)
                         .font(.largeTitle)
+                        .fontWeight(.bold)
                         .padding()
                     
                     ZStack(alignment: .bottom) {
@@ -206,8 +207,8 @@ struct MoleculeDetailView: View {
                             )
                     }
                 }
-            .frame(width: 200)
-            .padding(.bottom)
+                .frame(width: 200)
+                .padding(.bottom)
             }
         }
         .onAppear {

@@ -44,6 +44,7 @@ struct EnergyViewSheet: View {
                 
                 Text(localizationManager.localizedString(for: "energy-level-diagram"))
                     .font(.largeTitle)
+                    .fontWeight(.bold)
                     .padding()
                     .multilineTextAlignment(.center)
                 

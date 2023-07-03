@@ -5,33 +5,34 @@ struct MemberView: View {
         VStack {
             Spacer()
             
-            Text("Unlock Premium Content")
-                .font(.title)
+            Text("Get Atomizer Tenure")
+                .font(.largeTitle)
                 .fontWeight(.bold)
             
-            Text("Become a member to access exclusive content and features.")
-                .font(.body)
+            Text("Become a member to have unlimited access to all content.")
+                .font(.headline)
                 .multilineTextAlignment(.center)
+                .padding(.vertical)
             
             Button(action: {
                 // Implement your payment logic here
             }) {
                 Text("Subscribe")
-                    .font(.title)
-                    .fontWeight(.bold)
                     .foregroundColor(.white)
+                    .font(.title2)
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.indigo)
                     .cornerRadius(10)
             }
             
             Spacer()
         }
         .padding()
-        .background(Color.gray.opacity(0.1))
         .edgesIgnoringSafeArea(.all)
     }
 }
+
 
 struct MemberView_Previews: PreviewProvider {
     static var previews: some View {
