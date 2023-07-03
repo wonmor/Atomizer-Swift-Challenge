@@ -25,7 +25,25 @@ struct ExploreView: View {
         // A basic finite-state machine
         switch webViewModel.intention {
         case "":
-            webViewWrapper()
+            if (webViewModel.metadata == nil) {
+                webViewWrapper()
+            
+            } else {
+                switch webViewModel.metadata?["type"] {
+                case let type as String where type == "molecule":
+                    if let formula = webViewModel.metadata?["formula"] as? String {
+                        MoleculeDetailView(molecule: loadMolecule(formula: formula)!)
+                    }
+                    
+                case let type as String where type == "atom":
+                    if let formula = webViewModel.metadata?["formula"] as? String {
+                        AtomDetailView(element: loadElement(formula: formula)!)
+                    }
+                    
+                default:
+                    webViewWrapper()
+                }
+            }
            
         case "OPEN_ATOM_PAGE":
             AtomView()
@@ -41,6 +59,44 @@ struct ExploreView: View {
             
         default:
             webViewWrapper()
+        }
+    }
+    
+    func loadElement(formula: String) -> Element? {
+        let localizationManager = LocalizationManager.shared
+        let jsonURL = Bundle.main.url(forResource: localizationManager.getCurrentLocale().starts(with: "ko") ? "ko_atoms" : "atoms", withExtension: "json")!
+        let jsonData = try! Data(contentsOf: jsonURL)
+        let decoder = JSONDecoder()
+        let elements = try! decoder.decode([Element].self, from: jsonData)
+        
+        for element in elements {
+            if (element.symbol == formula) {
+                return element
+            }
+        }
+        
+        return nil
+    }
+    
+    func loadMolecule(formula: String) -> Molecule? {
+        guard let url = Bundle.main.url(forResource: localizationManager.getCurrentLocale().starts(with: "ko") ? "ko_molecules" : "molecules", withExtension: "json") else { return nil }
+
+        do {
+            let data = try Data(contentsOf: url)
+            let molecules: [Molecule] = try JSONDecoder().decode([Molecule].self, from: data)
+            
+            for molecule in molecules {
+                if (molecule.formula == formula) {
+                    return molecule
+                }
+            }
+            
+            return nil
+            
+        } catch {
+            print("Error loading JSON: \(error.localizedDescription)")
+            
+            return nil
         }
     }
     
