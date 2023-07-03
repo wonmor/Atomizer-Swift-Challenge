@@ -22,6 +22,10 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
         if let message = value["message"] as? String {
             viewModel.setIntention(message: message)
         }
+        
+        if let metadata = value["metadata"] as? String {
+            viewModel.setMetadata(data: metadata)
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -34,7 +38,11 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
         
         let config = WKWebViewConfiguration()
         config.defaultWebpagePreferences = prefs
-        config.userContentController.add(self.makeCoordinator(), name: "IOS_BRIDGE")
+        
+        let userContentController = WKUserContentController()
+        userContentController.add(context.coordinator, name: "IOS_BRIDGE")
+        userContentController.add(context.coordinator, name: "IOS_BRIDGE_METADATA")
+        config.userContentController = userContentController
         
         let webview = WKWebView(frame: .zero, configuration: config)
         
@@ -75,7 +83,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 
 extension WebView.Coordinator: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "IOS_BRIDGE" {
+        if message.name == "IOS_BRIDGE" || message.name == "IOS_BRIDGE_METADATA" {
             delegate?.receivedJsonValueFromWebView(value: message.body as! [String : Any?])
         }
     }
