@@ -2,9 +2,12 @@ import Foundation
 import Combine
 
 class WebViewModel: ObservableObject {
+    // Javascript to iOS
     @Published var intention: String = ""
-
-    func updateIntention(value: String) {
-        intention = value
+    
+    func setIntention(message: String) -> Void {
+        DispatchQueue.main.async {
+            self.intention = message
+        }
     }
 }

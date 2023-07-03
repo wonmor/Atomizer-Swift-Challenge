@@ -1,3 +1,10 @@
+//
+//  SwiftUIView.swift
+//
+//
+//  Created by John Seong on 2023-07-02.
+//
+
 import SwiftUI
 import WebKit
 import Combine
@@ -13,10 +20,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
     
     func receivedJsonValueFromWebView(value: [String : Any?]) {
         if let message = value["message"] as? String {
-            viewModel.updateIntention(value: message)
-            
-            let intentionValue = viewModel.intention
-            print("Intention value: \(intentionValue)")
+            viewModel.setIntention(message: message)
         }
     }
     
@@ -51,8 +55,8 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
         let request = URLRequest(url: myUrl)
         uiView.load(request)
     }
-
-    class Coordinator : NSObject, WKNavigationDelegate {
+    
+    class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebView
         var callbackValueFromNative: AnyCancellable? = nil
         

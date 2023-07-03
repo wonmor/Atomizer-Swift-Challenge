@@ -20,23 +20,40 @@ struct ExploreView: View {
     @ObservedObject var webViewModel = WebViewModel()
     
     var body: some View {
+        // A basic finite-state machine
+        switch webViewModel.intention {
+        case "":
+            webViewWrapper()
+           
+        case "OPEN_ATOM_PAGE":
+            AtomView()
+        
+        case "OPEN_MOLECULE_PAGE":
+            MoleculeView()
+            
+        default:
+            webViewWrapper()
+        }
+    }
+    
+    func webViewWrapper() -> some View {
+        return (
             WebView(urlString: "https://electronvisual.org?fullscreen=true", viewModel: webViewModel)
                 .ignoresSafeArea()
                 .padding(.horizontal)
                 .ignoresSafeArea()
-                .onReceive(webViewModel.$intention) { intention in
-                    self.intention = intention
-                }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
                 .introspectNavigationController { navController in
                     let bar = navController.navigationBar
                     let hosting = UIHostingController(rootView: BarContent())
                     
                     guard let hostingView = hosting.view else { return }
+                    // bar.addSubview(hostingView)                                          // <--- OPTION 1
+                    // bar.subviews.first(where: \.clipsToBounds)?.addSubview(hostingView)  // <--- OPTION 2
                     hostingView.backgroundColor = .clear
                     
                     lastHostingView?.removeFromSuperview()
-                    bar.addSubview(hostingView)
+                    bar.addSubview(hostingView) // Add the hostingView as a subview first
                     lastHostingView = hostingView
                     
                     hostingView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,10 +63,7 @@ struct ExploreView: View {
                     ])
                     
                 }
-                .onAppear {
-                    lastHostingView = nil // Reset the lastHostingView state
-                }
-        
+        )
     }
 }
 
