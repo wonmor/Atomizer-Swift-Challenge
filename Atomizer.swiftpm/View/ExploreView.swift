@@ -33,11 +33,13 @@ struct ExploreView: View {
                 case let type as String where type == "molecule":
                     if let formula = webViewModel.metadata?["formula"] as? String {
                         MoleculeDetailView(molecule: loadMolecule(formula: formula)!)
+                        // Do NOT change selectedView variable here. It will break the code.
                     }
                     
                 case let type as String where type == "atom":
                     if let formula = webViewModel.metadata?["formula"] as? String {
                         AtomDetailView(element: loadElement(formula: formula)!)
+                        // Do NOT change selectedView variable here. It will break the code.
                     }
                     
                 default:
