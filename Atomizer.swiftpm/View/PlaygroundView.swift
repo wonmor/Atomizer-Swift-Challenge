@@ -12,6 +12,7 @@ struct PlaygroundView: View {
     
     // Required param
     @Binding var isShowingSheet: Bool
+    @Binding var selectedView: Int?
     
     // Treated as an optional param
     @ObservedObject var webViewModel = WebViewModel()
@@ -24,7 +25,7 @@ struct PlaygroundView: View {
             .navigationTitle(localizationManager.localizedString(for: "playground"))
             .introspectNavigationController { navController in
                 let bar = navController.navigationBar
-                let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet))
+                let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView))
                 
                 guard let hostingView = hosting.view else { return }
                 // bar.addSubview(hostingView)                                          // <--- OPTION 1

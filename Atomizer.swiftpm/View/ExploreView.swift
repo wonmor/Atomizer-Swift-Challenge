@@ -136,7 +136,7 @@ struct ExploreView: View {
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
                 .introspectNavigationController { navController in
                     let bar = navController.navigationBar
-                    let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet))
+                    let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView))
                     
                     guard let hostingView = hosting.view else { return }
                     // bar.addSubview(hostingView)                                          // <--- OPTION 1
@@ -171,12 +171,15 @@ private struct AdaptiveSizeKey: EnvironmentKey {
 
 struct BarContent: View {
     @Binding var isShowingSheet: Bool
+    @Binding var selectedView: Int?
     
     var body: some View {
-        Button {
-            isShowingSheet = true
-        } label: {
-            ProfilePicture()
+        if selectedView == 0 {
+            Button {
+                isShowingSheet = true
+            } label: {
+                ProfilePicture()
+            }
         }
     }
 }
