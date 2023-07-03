@@ -58,6 +58,15 @@ struct ContentView: View {
                     }
                 )
                 
+                NavigationLink(
+                    destination: MoleculeView(),
+                    tag: 2,
+                    selection: $selectedView,
+                    label: {
+                        Label(localizationManager.localizedString(for: "playground"), systemImage: "hammer")
+                    }
+                )
+                
                 Section(header: Text(localizationManager.localizedString(for: "readings"))) {
                     NavigationLink(
                         destination: ArticleDetailView(article: localizationManager.getCurrentLocale().starts(with: "ko") ? koInstruction2 : instruction2),

@@ -62,7 +62,8 @@ class LocalizationManager {
                     "molecular-geometry": "분자기하",
                     "bonds": "결합 종류",
                     "nomenclature": "유기화학 명명법",
-                    "restore-purchase": "구매 복원하기"
+                    "restore-purchase": "구매 복원하기",
+                    "playground": "유기화학 공작소"
                     // Add more key-value pairs for Korean
                 ]
                 return koreanDictionary[key] ?? key
@@ -103,6 +104,7 @@ class LocalizationManager {
                     "bonds": "Bonds",
                     "nomenclature": "Nomenclature",
                     "restore-purchase": "Restore Purchase",
+                    "playground": "Organic Playground"
                     
                     // Add more key-value pairs for English
                 ]
