@@ -32,7 +32,7 @@ struct ContentView: View {
         NavigationView {
             List {
                 NavigationLink(
-                    destination: ExploreView(),
+                    destination: ExploreView(selectedView: $selectedView),
                     tag: 0,
                     selection: $selectedView,
                     label: {
@@ -91,7 +91,7 @@ struct ContentView: View {
             
             ZStack {
                 if selectedView == 0 {
-                    ExploreView()
+                    ExploreView(selectedView: $selectedView)
                 } else if selectedView == 1 {
                     AtomView()
                 } else if selectedView == 2 {

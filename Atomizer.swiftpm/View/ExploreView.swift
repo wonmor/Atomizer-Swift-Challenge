@@ -13,6 +13,8 @@ struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     @Environment(\.colorScheme) var colorScheme
     
+    @Binding var selectedView: Int?
+    
     @State private var lastHostingView: UIView!
     @State private var intention: String = ""
     
@@ -27,9 +29,15 @@ struct ExploreView: View {
            
         case "OPEN_ATOM_PAGE":
             AtomView()
+                .onAppear() {
+                    selectedView = 1
+                }
         
         case "OPEN_MOLECULE_PAGE":
             MoleculeView()
+                .onAppear() {
+                    selectedView = 2
+                }
             
         default:
             webViewWrapper()
@@ -42,6 +50,9 @@ struct ExploreView: View {
                 .ignoresSafeArea()
                 .padding(.horizontal)
                 .ignoresSafeArea()
+                .onAppear() {
+                    selectedView = 0;
+                }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
                 .introspectNavigationController { navController in
                     let bar = navController.navigationBar
@@ -64,15 +75,6 @@ struct ExploreView: View {
                     
                 }
         )
-    }
-}
-
-struct ExploreView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ExploreView()
-        }
-        .preferredColorScheme(.light)
     }
 }
 
