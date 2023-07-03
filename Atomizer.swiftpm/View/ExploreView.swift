@@ -26,9 +26,7 @@ struct ExploreView: View {
             .padding(.horizontal)
             .ignoresSafeArea()
             .onReceive(webViewModel.$intention) { intention in
-                DispatchQueue.main.async {
-                    self.intention = intention
-                }
+                self.intention = intention
             }
             .navigationTitle(localizationManager.localizedString(for: "explore"))
             .introspectNavigationController { navController in
