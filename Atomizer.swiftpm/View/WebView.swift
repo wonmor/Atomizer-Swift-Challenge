@@ -25,6 +25,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
         
         if let metadata = value["metadata"] as? String {
             viewModel.setMetadata(data: metadata)
+            print(metadata)
         }
     }
     

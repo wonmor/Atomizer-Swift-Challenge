@@ -109,6 +109,8 @@ struct ContentView: View {
                     PlaygroundView()
                 }
             }
-        }.environment(\.font, Font.system(.body, design: .rounded))
+        }
+        .environment(\.font, Font.system(.body, design: .rounded))
+        .tint(.indigo)
     }
 }
