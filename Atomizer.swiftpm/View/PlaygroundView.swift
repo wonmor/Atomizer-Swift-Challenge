@@ -10,6 +10,10 @@ import SwiftUI
 struct PlaygroundView: View {
     @State private var lastHostingView: UIView!
     
+    // Required param
+    @Binding var isShowingSheet: Bool
+    
+    // Treated as an optional param
     @ObservedObject var webViewModel = WebViewModel()
     
     var body: some View {
@@ -20,7 +24,7 @@ struct PlaygroundView: View {
             .navigationTitle(localizationManager.localizedString(for: "playground"))
             .introspectNavigationController { navController in
                 let bar = navController.navigationBar
-                let hosting = UIHostingController(rootView: BarContent())
+                let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet))
                 
                 guard let hostingView = hosting.view else { return }
                 // bar.addSubview(hostingView)                                          // <--- OPTION 1

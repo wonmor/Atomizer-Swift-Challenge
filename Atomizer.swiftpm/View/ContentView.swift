@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedView: Int? = 0
+    @State private var isShowingSheet = false
     
     let localizationManager = LocalizationManager.shared
     
@@ -32,7 +33,7 @@ struct ContentView: View {
         NavigationView {
             List {
                 NavigationLink(
-                    destination: ExploreView(selectedView: $selectedView),
+                    destination: ExploreView(selectedView: $selectedView, isShowingSheet: $isShowingSheet),
                     tag: 0,
                     selection: $selectedView,
                     label: {
@@ -59,7 +60,7 @@ struct ContentView: View {
                 )
                 
                 NavigationLink(
-                    destination: PlaygroundView(),
+                    destination: PlaygroundView(isShowingSheet: $isShowingSheet),
                     tag: 3,
                     selection: $selectedView,
                     label: {
@@ -100,13 +101,13 @@ struct ContentView: View {
             
             ZStack {
                 if selectedView == 0 {
-                    ExploreView(selectedView: $selectedView)
+                    ExploreView(selectedView: $selectedView, isShowingSheet: $isShowingSheet)
                 } else if selectedView == 1 {
                     AtomView()
                 } else if selectedView == 2 {
                     MoleculeView()
                 } else if selectedView == 3 {
-                    PlaygroundView()
+                    PlaygroundView(isShowingSheet: $isShowingSheet)
                 }
             }
         }

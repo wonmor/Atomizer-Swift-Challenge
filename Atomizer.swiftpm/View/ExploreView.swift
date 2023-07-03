@@ -14,6 +14,7 @@ struct ExploreView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var selectedView: Int?
+    @Binding var isShowingSheet: Bool
     
     @State private var lastHostingView: UIView!
     @State private var intention: String = ""
@@ -27,7 +28,7 @@ struct ExploreView: View {
         case "":
             if (webViewModel.metadata == nil) {
                 webViewWrapper()
-            
+                
             } else {
                 switch webViewModel.metadata?["type"] {
                 case let type as String where type == "molecule":
@@ -47,13 +48,13 @@ struct ExploreView: View {
                     webViewWrapper()
                 }
             }
-           
+            
         case "OPEN_ATOM_PAGE":
             AtomView()
                 .onAppear() {
                     selectedView = 1
                 }
-        
+            
         case "OPEN_MOLECULE_PAGE":
             MoleculeView()
                 .onAppear() {
@@ -83,7 +84,7 @@ struct ExploreView: View {
     
     func loadMolecule(formula: String) -> Molecule? {
         guard let url = Bundle.main.url(forResource: localizationManager.getCurrentLocale().starts(with: "ko") ? "ko_molecules" : "molecules", withExtension: "json") else { return nil }
-
+        
         do {
             let data = try Data(contentsOf: url)
             let molecules: [Molecule] = try JSONDecoder().decode([Molecule].self, from: data)
@@ -112,10 +113,30 @@ struct ExploreView: View {
                 .onAppear() {
                     selectedView = 0;
                 }
+                .sheet(isPresented: $isShowingSheet) {
+                    VStack {
+                        HStack {
+                            Button(action: {
+                                isShowingSheet = false
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(.primary)
+                                Text("Back")
+                                    .foregroundColor(.primary)
+                                    .font(.headline)
+                            }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                        
+                        MemberView()
+                    }
+                }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
                 .introspectNavigationController { navController in
                     let bar = navController.navigationBar
-                    let hosting = UIHostingController(rootView: BarContent())
+                    let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet))
                     
                     guard let hostingView = hosting.view else { return }
                     // bar.addSubview(hostingView)                                          // <--- OPTION 1
@@ -149,9 +170,11 @@ private struct AdaptiveSizeKey: EnvironmentKey {
 }
 
 struct BarContent: View {
+    @Binding var isShowingSheet: Bool
+    
     var body: some View {
         Button {
-            print("Profile tapped")
+            isShowingSheet = true
         } label: {
             ProfilePicture()
         }
