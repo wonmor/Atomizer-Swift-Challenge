@@ -59,7 +59,7 @@ struct ContentView: View {
                 )
                 
                 NavigationLink(
-                    destination: MoleculeView(),
+                    destination: PlaygroundView(),
                     tag: 2,
                     selection: $selectedView,
                     label: {
