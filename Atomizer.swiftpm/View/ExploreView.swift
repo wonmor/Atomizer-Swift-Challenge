@@ -25,9 +25,11 @@ struct ExploreView: View {
             .ignoresSafeArea()
             .padding(.horizontal)
             .ignoresSafeArea()
-            .onReceive(self.webViewModel.intention, perform: { result in
-                                self.intention = result
-                            })
+            .onReceive(webViewModel.$intention) { intention in
+                DispatchQueue.main.async {
+                    self.intention = intention
+                }
+            }
             .navigationTitle(localizationManager.localizedString(for: "explore"))
             .introspectNavigationController { navController in
                 let bar = navController.navigationBar

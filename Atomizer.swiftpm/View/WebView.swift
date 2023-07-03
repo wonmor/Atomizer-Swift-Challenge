@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by John Seong on 2023-07-02.
-//
-
 import SwiftUI
 import WebKit
 import Combine
@@ -19,9 +12,12 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
     @ObservedObject var viewModel: WebViewModel
     
     func receivedJsonValueFromWebView(value: [String : Any?]) {
-        print("JSON from React app")
-        print(value)
-        viewModel.intention.send("hello world!")
+        if let message = value["message"] as? String {
+            viewModel.updateIntention(value: message)
+            
+            let intentionValue = viewModel.intention
+            print("Intention value: \(intentionValue)")
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -29,32 +25,32 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
     }
     
     func makeUIView(context: Context) -> WKWebView {
-           let prefs = WKWebpagePreferences()
-           prefs.allowsContentJavaScript = true
-           
-           let config = WKWebViewConfiguration()
-           config.defaultWebpagePreferences = prefs
-           config.userContentController.add(self.makeCoordinator(), name: "IOS_BRIDGE")
-           
-           let webview = WKWebView(frame: .zero, configuration: config)
-           
-           webview.navigationDelegate = context.coordinator
-           webview.allowsBackForwardNavigationGestures = false
-           webview.scrollView.isScrollEnabled = true
-           
-           return webview
-   }
-   
-   func updateUIView(_ uiView: WKWebView, context: Context) {
-       let url = URL(string: urlString)
-       
-       guard let myUrl = url else {
-           return
-       }
-       
-       let request = URLRequest(url: myUrl)
-       uiView.load(request)
-   }
+        let prefs = WKWebpagePreferences()
+        prefs.allowsContentJavaScript = true
+        
+        let config = WKWebViewConfiguration()
+        config.defaultWebpagePreferences = prefs
+        config.userContentController.add(self.makeCoordinator(), name: "IOS_BRIDGE")
+        
+        let webview = WKWebView(frame: .zero, configuration: config)
+        
+        webview.navigationDelegate = context.coordinator
+        webview.allowsBackForwardNavigationGestures = false
+        webview.scrollView.isScrollEnabled = true
+        
+        return webview
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        let url = URL(string: urlString)
+        
+        guard let myUrl = url else {
+            return
+        }
+        
+        let request = URLRequest(url: myUrl)
+        uiView.load(request)
+    }
 
     class Coordinator : NSObject, WKNavigationDelegate {
         var parent: WebView
@@ -64,7 +60,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
         
         init(_ uiWebView: WebView) {
             self.parent = uiWebView
-            self.delegate = parent as? any WebViewHandlerDelegate
+            self.delegate = parent as? WebViewHandlerDelegate
         }
         
         deinit {
