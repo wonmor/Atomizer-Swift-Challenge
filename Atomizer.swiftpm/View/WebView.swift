@@ -49,6 +49,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
         webview.navigationDelegate = context.coordinator
         webview.allowsBackForwardNavigationGestures = false
         webview.scrollView.isScrollEnabled = true
+        webview.allowsLinkPreview = true
         
         return webview
     }
