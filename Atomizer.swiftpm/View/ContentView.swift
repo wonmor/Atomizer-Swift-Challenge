@@ -60,7 +60,7 @@ struct ContentView: View {
                 
                 NavigationLink(
                     destination: PlaygroundView(),
-                    tag: 2,
+                    tag: 3,
                     selection: $selectedView,
                     label: {
                         Label(localizationManager.localizedString(for: "playground"), systemImage: "hammer")
