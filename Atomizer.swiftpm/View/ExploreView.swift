@@ -9,38 +9,25 @@ import WebKit
  Developed and Designed by John Seong.
  */
 
-struct WebView: UIViewRepresentable {
-    let urlString: String
-    
-    func makeUIView(context: Context) -> WKWebView {
-        guard let url = URL(string: urlString) else {
-            return WKWebView()
-        }
-        let request = URLRequest(url: url)
-        let webView = WKWebView()
-        webView.load(request)
-        return webView
-    }
-    
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        // No updates needed
-    }
-}
-
 struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
     @Environment(\.colorScheme) var colorScheme
     
     @State private var lastHostingView: UIView!
+    @State private var intention: String = ""
     
     @ObservedObject var articleData = ArticleViewModel()
+    @ObservedObject var webViewModel = WebViewModel()
     
     var body: some View {
         
-        WebView(urlString: "https://electronvisual.org?fullscreen=true")
+        WebView(urlString: "https://electronvisual.org?fullscreen=true", viewModel: webViewModel)
             .ignoresSafeArea()
             .padding(.horizontal)
             .ignoresSafeArea()
+            .onReceive(self.webViewModel.intention, perform: { result in
+                                self.intention = result
+                            })
             .navigationTitle(localizationManager.localizedString(for: "explore"))
             .introspectNavigationController { navController in
                 let bar = navController.navigationBar
