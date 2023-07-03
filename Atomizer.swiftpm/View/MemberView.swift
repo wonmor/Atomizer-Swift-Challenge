@@ -12,15 +12,14 @@ struct MemberView: View {
             Text("Become a member to have unlimited access to all content.")
                 .font(.headline)
                 .multilineTextAlignment(.center)
-                .padding(.vertical)
+                .padding()
             
             Button(action: {
                 // Implement your payment logic here
             }) {
                 Text("Subscribe")
                     .foregroundColor(.white)
-                    .font(.title2)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    .font(.headline)
                     .padding()
                     .background(Color.indigo)
                     .cornerRadius(10)
