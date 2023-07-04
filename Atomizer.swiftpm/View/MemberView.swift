@@ -1,62 +1,67 @@
 import SwiftUI
-import AVFoundation
+import AVKit
 
 struct MemberView: View {
-    @State private var audioPlayer: AVAudioPlayer?
+    @State private var isPlaying = false
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            Text("Get Atomizer Tenure")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            
-            Text("Become a member to have unlimited access to all content.")
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .padding()
-            
-            Button(action: {
-                // Implement your payment logic here
-                playAudio()
-            }) {
-                Text("Subscribe")
-                    .foregroundColor(.white)
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                
+                Text("Get AR Tenure")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
+                Text("Become a member to have unlimited access to all content.")
                     .font(.headline)
+                    .multilineTextAlignment(.center)
                     .padding()
-                    .background(Color.indigo)
-                    .cornerRadius(10)
+                
+                if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
+                    PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
+                        .frame(width: geometry.size.width, height: geometry.size.width * 9/16) // Set height based on width and aspect ratio
+                        
+                        .onAppear {
+                            isPlaying = true
+                        }
+                        .onDisappear {
+                            isPlaying = false
+                        }
+                } else {
+                    Text("Video not found")
+                }
+                
+                
+                
+                Spacer()
             }
-            
-            Spacer()
-        }
-        .padding()
-        .edgesIgnoringSafeArea(.all)
-        .onAppear {
-            playAudio()
-        }
-        .onDisappear {
-            stopAudio()
+            .edgesIgnoringSafeArea(.all)
         }
     }
+}
+
+struct PlayerView: UIViewControllerRepresentable {
+    var videoURL: URL
+    @Binding var isPlaying: Bool
     
-    func playAudio() {
-        guard let url = Bundle.main.url(forResource: "narration", withExtension: "mp3") else {
-            return
-        }
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let player = AVPlayer(url: videoURL)
+        player.isMuted = false
         
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.play()
-        } catch {
-            print("Failed to play audio: \(error.localizedDescription)")
-        }
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        playerViewController.showsPlaybackControls = false
+        
+        return playerViewController
     }
     
-    func stopAudio() {
-        audioPlayer?.stop()
-        audioPlayer = nil
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+        if isPlaying {
+            uiViewController.player?.play()
+        } else {
+            uiViewController.player?.pause()
+        }
     }
 }
 
