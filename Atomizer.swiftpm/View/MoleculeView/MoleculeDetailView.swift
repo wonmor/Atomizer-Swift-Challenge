@@ -62,7 +62,7 @@ struct MoleculeDetailView: View {
                 
                 VStack {
                     Text(molecule.name)
-                        .font(.largeTitle)
+                        .font(Font.system(.largeTitle, design: .rounded))
                         .fontWeight(.bold)
                         .padding()
                     
@@ -70,7 +70,7 @@ struct MoleculeDetailView: View {
                         TabView(selection: $selectedTab) {
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "description"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.description)
                                     .padding(.horizontal)
                                 Spacer()
@@ -80,7 +80,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "molecular-formula"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.formula)
                                 Spacer()
                             }
@@ -89,7 +89,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "shape"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.shape)
                                 Spacer()
                             }
@@ -98,7 +98,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "polarity"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.polarity)
                                 Spacer()
                             }
@@ -107,7 +107,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "bond-angle"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.bondAngle)
                                 Spacer()
                             }
@@ -116,7 +116,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "orbitals"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.orbitals)
                                 Spacer()
                             }
@@ -125,7 +125,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "hybridization"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.hybridization)
                                 Spacer()
                             }
@@ -134,7 +134,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "molecular-geometry"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.molecularGeometry)
                                 Spacer()
                             }
@@ -143,7 +143,7 @@ struct MoleculeDetailView: View {
                             
                             VStack(alignment: .center, spacing: 20) {
                                 Text(localizationManager.localizedString(for: "bonds"))
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                                 Text(molecule.bonds)
                                 Spacer()
                             }

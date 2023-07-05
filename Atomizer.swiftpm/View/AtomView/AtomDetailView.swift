@@ -23,10 +23,10 @@ struct AtomDetailView: View {
     var body: some View {
         VStack {
             Text(element.symbol)
-                .font(.system(size: 96, weight: .bold))
+                .font(.system(size: 96, weight: .bold, design: .rounded))
                 .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
             Text(String(format: "%.2f", element.atomicMass))
-                .font(.title)
+                .font(Font.system(.title, design: .rounded))
                 .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
                 .padding(.bottom)
             Text(element.description)
@@ -64,13 +64,13 @@ struct AtomDetailView: View {
                             .frame(width: 20, height: 20)
                             .overlay(
                                 Text("?")
-                                    .font(.system(size: 20, weight: .bold))
+                                    .font(.system(size: 20, weight: .bold, design: .rounded))
                                     .foregroundColor(.black)
                             )
                     }
                     
                     Text(localizationManager.localizedString(for: "electron-config"))
-                        .font(.title3)
+                        .font(Font.system(.title3, design: .rounded))
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.horizontal)
@@ -86,7 +86,7 @@ struct AtomDetailView: View {
                         
                         if subshell == electronConfigurationParts.last {
                             Text(subshell)
-                                .font(.title)
+                                .font(Font.system(.title, design: .rounded))
                                 .fontWeight(.bold) // Set the font weight to bold
                                 .foregroundColor(.black)
                                 .padding(4)
@@ -95,7 +95,7 @@ struct AtomDetailView: View {
                             
                         } else {
                             Text(part)
-                                .font(.title)
+                                .font(Font.system(.title, design: .rounded))
                         }
                     }
                 }
