@@ -173,7 +173,7 @@ struct ExploreView: View {
                                     .foregroundColor(.primary)
                                 Text("Back")
                                     .foregroundColor(.primary)
-                                    .font(.headline)
+                                    .font(Font.system(.headline, design: .rounded))
                             }
                             Spacer()
                         }
