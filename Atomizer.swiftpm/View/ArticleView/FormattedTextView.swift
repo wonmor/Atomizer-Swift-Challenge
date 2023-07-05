@@ -117,7 +117,7 @@ struct SegmentView: View {
             } else {
                 return AnyView(
                     Markdown(segment.content as? String ?? "")
-                        .font(.body)
+                        .font(Font.system(.body, design: .rounded))
                 )
             }
 

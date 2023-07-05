@@ -28,11 +28,11 @@ struct ArticleDetailView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(article.title)
-                        .font(.title)
+                        .font(Font.system(.title, design: .rounded))
                         .fontWeight(.bold)
                     
                     Text(article.subtitle)
-                        .font(.subheadline)
+                        .font(Font.system(.subheadline, design: .rounded))
                         .foregroundColor(.secondary)
                     
                     Divider()
@@ -50,7 +50,7 @@ struct ArticleDetailView: View {
                             Spacer()
                             NavigationLink(destination: AtomView()) {
                                 Text("View in AR")
-                                    .font(.title3)
+                                    .font(Font.system(.title3, design: .rounded))
                                     .foregroundColor(.white)
                                     .padding(.vertical, 16)
                                     .frame(maxWidth: 200, minHeight: 50)
@@ -68,7 +68,7 @@ struct ArticleDetailView: View {
                             Spacer()
                             NavigationLink(destination: MoleculeView()) {
                                 Text("View in AR")
-                                    .font(.title3)
+                                    .font(Font.system(.title3, design: .rounded))
                                     .foregroundColor(.white)
                                     .padding(.vertical, 16)
                                     .frame(maxWidth: 200, minHeight: 50)

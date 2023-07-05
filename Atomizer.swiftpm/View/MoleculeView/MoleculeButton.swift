@@ -50,7 +50,7 @@ struct MoleculeButton: View {
                             .blur(radius: 4)
                         
                         Text(molecule.name)
-                            .font(.title2)
+                            .font(Font.system(.title2, design: .rounded))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .shadow(color: .black, radius: 3)

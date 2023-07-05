@@ -64,7 +64,7 @@ struct EnergyViewSheet: View {
                             .foregroundColor(.black)
                         Text(localizationManager.localizedString(for: "close"))
                             .foregroundColor(.black)
-                            .font(.headline)
+                            .font(Font.system(.headline, design: .rounded))
                     }
                     .padding(16)
                     .background(BlurView(style: .systemMaterialLight).opacity(0.8))
