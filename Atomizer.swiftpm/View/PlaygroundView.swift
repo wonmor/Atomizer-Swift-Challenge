@@ -10,10 +10,6 @@ import SwiftUI
 struct PlaygroundView: View {
     @State private var lastHostingView: UIView!
     
-    // Required param
-    @Binding var isShowingSheet: Bool
-    @Binding var selectedView: Int?
-    
     // Treated as an optional param
     @ObservedObject var webViewModel = WebViewModel()
     
@@ -25,11 +21,7 @@ struct PlaygroundView: View {
                     .padding(.horizontal)
                     .ignoresSafeArea()
                     .navigationTitle(localizationManager.localizedString(for: "playground"))
-                    .toolbar {
-                        ToolbarItem(placement: .primaryAction) {
-                            BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView)
-                        }
-                    }
+                
             } else {
                 NoNetworkView()
             }
