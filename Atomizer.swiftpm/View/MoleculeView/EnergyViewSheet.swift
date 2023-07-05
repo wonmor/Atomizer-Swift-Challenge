@@ -43,7 +43,7 @@ struct EnergyViewSheet: View {
                     .padding()
                 
                 Text(localizationManager.localizedString(for: "energy-level-diagram"))
-                    .font(.largeTitle)
+                    .font(Font.system(.largeTitle, design: .rounded))
                     .fontWeight(.bold)
                     .padding()
                     .multilineTextAlignment(.center)

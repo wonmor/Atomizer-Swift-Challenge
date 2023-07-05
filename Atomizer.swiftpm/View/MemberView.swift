@@ -10,11 +10,11 @@ struct MemberView: View {
                 Spacer()
                 
                 Text("Get AR Tenure")
-                    .font(.largeTitle)
+                    .font(Font.system(.largeTitle, design: .rounded))
                     .fontWeight(.bold)
                 
                 Text("Become a member to have unlimited access to all content.")
-                    .font(.headline)
+                    .font(Font.system(.headline, design: .rounded))
                     .multilineTextAlignment(.center)
                     .padding()
                 
