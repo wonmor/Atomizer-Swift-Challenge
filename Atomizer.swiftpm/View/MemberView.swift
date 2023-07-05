@@ -25,8 +25,31 @@ struct MemberView: View {
                 } else {
                     Text("Video not found")
                 }
-
+                
+                HStack(spacing: 20) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.indigo, lineWidth: 2)
+                        .frame(width: 150, height: 50)
+                        .overlay(
+                            Text("$20\nevery month")
+                                .foregroundColor(.indigo)
+                                .font(Font.system(.headline, design: .rounded))
+                        )
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.blue, lineWidth: 2)
+                        .frame(width: 150, height: 50)
+                        .overlay(
+                            Text("$40\nevery year")
+                                .foregroundColor(.blue)
+                                .font(Font.system(.headline, design: .rounded))
+                        )
+                }
+                .multilineTextAlignment(.center)
+                .padding(.vertical, 20)
+                
                 Spacer()
+                
             }
             .edgesIgnoringSafeArea(.all)
         }
