@@ -1,6 +1,7 @@
 import SwiftUI
 import Introspect
 import WebKit
+import Network
 
 /**
  A view that displays an article.
@@ -8,6 +9,18 @@ import WebKit
  ATOMIZER
  Developed and Designed by John Seong.
  */
+
+struct NoNetworkView: View {
+    var body: some View {
+        ZStack {
+            Color.black // Set the background color to black
+            
+            Text("No network connection")
+                .foregroundColor(.white) // Set the text color to white
+                .font(.title) // Adjust the font size if needed
+        }
+    }
+}
 
 struct ExploreView: View {
     @Environment(\.adaptiveSize) var adaptiveSize
@@ -61,6 +74,13 @@ struct ExploreView: View {
                     selectedView = 2
                 }
             
+        case "NO_NETWORK":
+            NoNetworkView()
+                .onAppear() {
+                    selectedView = nil
+                }
+
+            
         default:
             webViewWrapper()
         }
@@ -104,14 +124,44 @@ struct ExploreView: View {
         }
     }
     
+    static func isNetworkAvailable() -> Bool {
+        let monitor = NWPathMonitor()
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        var isAvailable = false
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                isAvailable = true
+            }
+            semaphore.signal()
+        }
+        
+        let queue = DispatchQueue(label: "NetworkMonitor")
+        monitor.start(queue: queue)
+        
+        _ = semaphore.wait(timeout: .now() + 5) // Wait for 5 seconds to check network availability
+        
+        return isAvailable
+    }
+    
     func webViewWrapper() -> some View {
         return (
-            WebView(urlString: "https://electronvisual.org?fullscreen=true", viewModel: webViewModel)
-                .ignoresSafeArea()
-                .padding(.horizontal)
-                .ignoresSafeArea()
-                .onAppear() {
-                    selectedView = 0;
+            ZStack {
+                Color.black // Set the background color to black
+                
+                WebView(urlString: "https://electronvisual.org?fullscreen=true", viewModel: webViewModel)
+                    .ignoresSafeArea()
+                    .padding(.horizontal)
+                    .onAppear() {
+                        selectedView = 0
+                    }
+            }
+                .onAppear {
+                    // Handle no network condition
+                    if !ExploreView.isNetworkAvailable() {
+                        webViewModel.intention = "NO_NETWORK"
+                    }
                 }
                 .sheet(isPresented: $isShowingSheet) {
                     VStack {
@@ -134,26 +184,7 @@ struct ExploreView: View {
                     }
                 }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
-                .introspectNavigationController { navController in
-                    let bar = navController.navigationBar
-                    let hosting = UIHostingController(rootView: BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView))
-                    
-                    guard let hostingView = hosting.view else { return }
-                    // bar.addSubview(hostingView)                                          // <--- OPTION 1
-                    // bar.subviews.first(where: \.clipsToBounds)?.addSubview(hostingView)  // <--- OPTION 2
-                    hostingView.backgroundColor = .clear
-                    
-                    lastHostingView?.removeFromSuperview()
-                    bar.addSubview(hostingView) // Add the hostingView as a subview first
-                    lastHostingView = hostingView
-                    
-                    hostingView.translatesAutoresizingMaskIntoConstraints = false
-                    NSLayoutConstraint.activate([
-                        hostingView.trailingAnchor.constraint(equalTo: bar.trailingAnchor),
-                        hostingView.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -8)
-                    ])
-                    
-                }
+                .navigationBarItems(trailing: BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView))
         )
     }
 }
