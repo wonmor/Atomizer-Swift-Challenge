@@ -185,7 +185,7 @@ struct ExploreView: View {
                 }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
                 .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
+                    ToolbarItem(placement: .automatic) {
                         BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView)
                     }
                 }
@@ -221,18 +221,11 @@ struct BarContent: View {
 
 struct ProfilePicture: View {
     var body: some View {
-        Image(systemName: "person")
+        Image(systemName: "person.circle.fill")
             .resizable()
             .scaledToFit()
             .foregroundColor(.indigo)
-            .padding(8) // Change this value to add more or less padding
             .frame(width: 40, height: 40)
-            .padding(.horizontal)
-            .clipShape(Circle())
-            .overlay(
-                Circle()
-                    .stroke(Color.indigo, lineWidth: 2)
-            )
     }
 }
 
