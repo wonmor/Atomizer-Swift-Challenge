@@ -2,7 +2,7 @@ import SwiftUI
 import AVKit
 
 struct MemberView: View {
-    @State private var isPlaying = false
+    @Binding var isPlaying: Bool
     
     var body: some View {
         GeometryReader { geometry in
@@ -22,12 +22,6 @@ struct MemberView: View {
                     PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
                         .frame(width: geometry.size.width, height: geometry.size.width * 9/16) // Set height based on width and aspect ratio
                     
-                        .onAppear {
-                            isPlaying = true
-                        }
-                        .onDisappear {
-                            isPlaying = false
-                        }
                 } else {
                     Text("Video not found")
                 }
@@ -60,11 +54,5 @@ struct PlayerView: UIViewControllerRepresentable {
         } else {
             uiViewController.player?.pause()
         }
-    }
-}
-
-struct MemberView_Previews: PreviewProvider {
-    static var previews: some View {
-        MemberView()
     }
 }

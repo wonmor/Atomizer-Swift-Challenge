@@ -180,7 +180,7 @@ struct ExploreView: View {
                         .padding(.horizontal, 16)
                         .padding(.top, 16)
                         
-                        MemberView()
+                        MemberView(isPlaying: $isShowingSheet)
                     }
                 }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
