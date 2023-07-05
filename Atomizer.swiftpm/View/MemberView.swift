@@ -12,11 +12,7 @@ struct MemberView: View {
                 Text("Get AR Tenure")
                     .font(Font.system(.largeTitle, design: .rounded))
                     .fontWeight(.bold)
-                
-                Text("Become a member to have unlimited access to all content.")
-                    .font(Font.system(.headline, design: .rounded))
-                    .multilineTextAlignment(.center)
-                    .padding()
+                    .padding(.bottom)
                 
                 if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
                     PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
@@ -33,7 +29,7 @@ struct MemberView: View {
                         .overlay(
                             Text("$20\nevery month")
                                 .foregroundColor(.indigo)
-                                .font(Font.system(.headline, design: .rounded))
+                                .font(Font.system(size: 32, weight: .bold, design: .rounded))
                         )
                     
                     RoundedRectangle(cornerRadius: 10)
@@ -42,11 +38,15 @@ struct MemberView: View {
                         .overlay(
                             Text("$40\nevery year")
                                 .foregroundColor(.blue)
-                                .font(Font.system(.headline, design: .rounded))
+                                .font(Font.system(size: 32, weight: .bold, design: .rounded))
                         )
                 }
                 .multilineTextAlignment(.center)
-                .padding(.vertical, 20)
+                .padding(.vertical)
+                
+                Text("Become a member to have unlimited access to all content.")
+                    .font(Font.system(.body, design: .rounded))
+                    .multilineTextAlignment(.center)
                 
                 Spacer()
                 
