@@ -21,7 +21,7 @@ struct MemberView: View {
                 if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
                     PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
                         .frame(width: geometry.size.width, height: geometry.size.width * 9/16) // Set height based on width and aspect ratio
-                        
+                    
                         .onAppear {
                             isPlaying = true
                         }
@@ -31,9 +31,7 @@ struct MemberView: View {
                 } else {
                     Text("Video not found")
                 }
-                
-                
-                
+
                 Spacer()
             }
             .edgesIgnoringSafeArea(.all)

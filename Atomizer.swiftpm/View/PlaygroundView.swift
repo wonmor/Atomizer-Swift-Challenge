@@ -25,7 +25,11 @@ struct PlaygroundView: View {
                     .padding(.horizontal)
                     .ignoresSafeArea()
                     .navigationTitle(localizationManager.localizedString(for: "playground"))
-                    .navigationBarItems(trailing: BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView))
+                    .toolbar {
+                        ToolbarItem(placement: .primaryAction) {
+                            BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView)
+                        }
+                    }
             } else {
                 NoNetworkView()
             }

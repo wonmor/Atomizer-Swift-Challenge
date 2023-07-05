@@ -184,7 +184,11 @@ struct ExploreView: View {
                     }
                 }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
-                .navigationBarItems(trailing: BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView))
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        BarContent(isShowingSheet: $isShowingSheet, selectedView: $selectedView)
+                    }
+                }
         )
     }
 }
