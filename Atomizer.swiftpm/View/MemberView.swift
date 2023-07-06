@@ -29,38 +29,60 @@ struct MemberView: View {
                     }
                     
                     HStack(spacing: 20) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.indigo, lineWidth: 2)
-                            .frame(width: 150, height: 150)
-                            .overlay(
-                                VStack(spacing: 10) {
-                                    Text("$20")
-                                        .foregroundColor(.indigo)
-                                        .font(Font.system(size: 32, weight: .bold, design: .rounded))
-                                    
-                                    Text("every month")
-                                        .foregroundColor(.indigo)
-                                        .font(Font.system(size: 18, weight: .bold, design: .rounded))
-                                }
-                            )
+                        Button(action: {
+                            
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.indigo, lineWidth: 2)
+                                .frame(width: 150, height: 150)
+                                .overlay(
+                                    VStack(spacing: 10) {
+                                        Text("$20")
+                                            .foregroundColor(.indigo)
+                                            .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                                        
+                                        Text("every month")
+                                            .foregroundColor(.indigo)
+                                            .font(Font.system(size: 18, weight: .bold, design: .rounded))
+                                    }
+                                )
+                        }
                         
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.blue, lineWidth: 2)
-                            .frame(width: 150, height: 150)
-                            .overlay(
-                                VStack(spacing: 10) {
-                                    Text("$40")
-                                        .foregroundColor(.blue)
-                                        .font(Font.system(size: 32, weight: .bold, design: .rounded))
-                                    
-                                    Text("every year")
-                                        .foregroundColor(.blue)
-                                        .font(Font.system(size: 18, weight: .bold, design: .rounded))
-                                }
-                            )
+                        Button(action: {
+                            
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: 2)
+                                .frame(width: 150, height: 150)
+                                .overlay(
+                                    VStack(spacing: 10) {
+                                        Text("$40")
+                                            .foregroundColor(.blue)
+                                            .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                                        
+                                        Text("every year")
+                                            .foregroundColor(.blue)
+                                            .font(Font.system(size: 18, weight: .bold, design: .rounded))
+                                    }
+                                )
+                        }
+                        
+                        
                     }
                     .multilineTextAlignment(.center)
                     .padding(.vertical)
+                    
+                    Button(action: {
+                        
+                    }) {
+                        Text("Restore Purchase")
+                            .foregroundColor(.white)
+                            .font(Font.system(size: 16, weight: .bold, design: .rounded))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 20)
+                            .background(Color.indigo)
+                            .cornerRadius(10)
+                    }
                 }
                 .padding(.vertical)
                 
