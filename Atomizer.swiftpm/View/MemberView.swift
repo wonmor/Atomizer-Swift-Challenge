@@ -10,9 +10,14 @@ struct MemberView: View {
                 Spacer()
                 
                 Text("Get AR Tenure")
-                    .font(Font.system(.largeTitle, design: .rounded))
+                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
                     .fontWeight(.bold)
-                    .padding(.bottom)
+                    
+                
+                Text("Become a member to have unlimited access to all content.")
+                    .font(Font.system(.headline, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .padding()
                 
                 if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
                     PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
@@ -25,33 +30,44 @@ struct MemberView: View {
                 HStack(spacing: 20) {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.indigo, lineWidth: 2)
-                        .frame(width: 150, height: 50)
+                        .frame(width: 150, height: 150)
                         .overlay(
-                            Text("$20\nevery month")
-                                .foregroundColor(.indigo)
-                                .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                            VStack(spacing: 10) {
+                                Text("$20")
+                                    .foregroundColor(.indigo)
+                                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                                
+                                Text("every month")
+                                    .foregroundColor(.indigo)
+                                    .font(Font.system(size: 18, weight: .bold, design: .rounded))
+                            }
                         )
                     
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.blue, lineWidth: 2)
-                        .frame(width: 150, height: 50)
+                        .frame(width: 150, height: 150)
                         .overlay(
-                            Text("$40\nevery year")
-                                .foregroundColor(.blue)
-                                .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                            VStack(spacing: 10) {
+                                Text("$40")
+                                    .foregroundColor(.blue)
+                                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                                
+                                Text("every year")
+                                    .foregroundColor(.blue)
+                                    .font(Font.system(size: 18, weight: .bold, design: .rounded))
+                            }
                         )
                 }
                 .multilineTextAlignment(.center)
                 .padding(.vertical)
                 
-                Text("Become a member to have unlimited access to all content.")
-                    .font(Font.system(.body, design: .rounded))
-                    .multilineTextAlignment(.center)
+                
                 
                 Spacer()
                 
             }
             .edgesIgnoringSafeArea(.all)
+            .background(.black)
         }
     }
 }
