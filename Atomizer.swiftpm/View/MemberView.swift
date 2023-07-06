@@ -6,65 +6,65 @@ struct MemberView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                Spacer()
-                
-                Text("Get AR Tenure")
-                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
-                    .fontWeight(.bold)
+            ScrollView {
+                VStack {
+                    Spacer()
                     
-                
-                Text("Become a member to have unlimited access to all content.")
-                    .font(Font.system(.headline, design: .rounded))
+                    Text("Get AR Tenure")
+                        .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                        .fontWeight(.bold)
+                    
+                    
+                    Text("Become a member to have unlimited access to all content.")
+                        .font(Font.system(.headline, design: .rounded))
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
+                        PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
+                            .frame(width: geometry.size.width, height: geometry.size.width * 9/16) // Set height based on width and aspect ratio
+                        
+                    } else {
+                        Text("Video not found")
+                    }
+                    
+                    HStack(spacing: 20) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.indigo, lineWidth: 2)
+                            .frame(width: 150, height: 150)
+                            .overlay(
+                                VStack(spacing: 10) {
+                                    Text("$20")
+                                        .foregroundColor(.indigo)
+                                        .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                                    
+                                    Text("every month")
+                                        .foregroundColor(.indigo)
+                                        .font(Font.system(size: 18, weight: .bold, design: .rounded))
+                                }
+                            )
+                        
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue, lineWidth: 2)
+                            .frame(width: 150, height: 150)
+                            .overlay(
+                                VStack(spacing: 10) {
+                                    Text("$40")
+                                        .foregroundColor(.blue)
+                                        .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                                    
+                                    Text("every year")
+                                        .foregroundColor(.blue)
+                                        .font(Font.system(size: 18, weight: .bold, design: .rounded))
+                                }
+                            )
+                    }
                     .multilineTextAlignment(.center)
-                    .padding()
-                
-                if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
-                    PlayerView(videoURL: videoURL, isPlaying: $isPlaying)
-                        .frame(width: geometry.size.width, height: geometry.size.width * 9/16) // Set height based on width and aspect ratio
-                    
-                } else {
-                    Text("Video not found")
+                    .padding(.vertical)
                 }
-                
-                HStack(spacing: 20) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.indigo, lineWidth: 2)
-                        .frame(width: 150, height: 150)
-                        .overlay(
-                            VStack(spacing: 10) {
-                                Text("$20")
-                                    .foregroundColor(.indigo)
-                                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
-                                
-                                Text("every month")
-                                    .foregroundColor(.indigo)
-                                    .font(Font.system(size: 18, weight: .bold, design: .rounded))
-                            }
-                        )
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.blue, lineWidth: 2)
-                        .frame(width: 150, height: 150)
-                        .overlay(
-                            VStack(spacing: 10) {
-                                Text("$40")
-                                    .foregroundColor(.blue)
-                                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
-                                
-                                Text("every year")
-                                    .foregroundColor(.blue)
-                                    .font(Font.system(size: 18, weight: .bold, design: .rounded))
-                            }
-                        )
-                }
-                .multilineTextAlignment(.center)
                 .padding(.vertical)
                 
-                
-                
                 Spacer()
-                
             }
             .edgesIgnoringSafeArea(.all)
             .background(.black)
