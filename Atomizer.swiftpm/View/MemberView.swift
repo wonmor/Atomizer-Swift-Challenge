@@ -72,16 +72,18 @@ struct MemberView: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical)
                     
-                    Button(action: {
-                        
-                    }) {
-                        Text("Restore Purchase")
-                            .foregroundColor(.white)
-                            .font(Font.system(size: 16, weight: .bold, design: .rounded))
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 20)
-                            .background(Color.indigo)
-                            .cornerRadius(10)
+                    VStack(spacing: 10) {
+                        Button(action: {
+                            
+                        }) {
+                            Text("Restore Purchases")
+                                .foregroundColor(.white)
+                                .font(Font.system(size: 16, weight: .bold, design: .rounded))
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 20)
+                                .background(Color.indigo)
+                                .cornerRadius(10)
+                        }
                     }
                 }
                 .padding(.vertical)

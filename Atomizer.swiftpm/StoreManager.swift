@@ -1,95 +1,138 @@
+import Foundation
+import Combine
 import StoreKit
 
-class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SKProductsRequestDelegate {
-    static let shared = StoreManager() // Singleton instance
-    
-    @Published var purchasedProductIds: Set<String> = []
-    @Published var buttonClickCount: Int = 0
-    @Published var timeUntilReset: TimeInterval = 0 // in seconds
-    @Published var subscriptionExpirationDate: Date?
-    
-    private var resetTimer: Timer?
-    
-    private var products: [SKProduct] = []
-    private var productRequest: SKProductsRequest?
-    
-    func requestProducts(withIdentifiers identifiers: Set<String>) {
-        productRequest?.cancel()
-        productRequest = SKProductsRequest(productIdentifiers: identifiers)
-        productRequest?.delegate = self
-        productRequest?.start()
+typealias Transaction = StoreKit.Transaction
+typealias RenewalInfo = StoreKit.Product.SubscriptionInfo.RenewalInfo
+typealias RenewalState = StoreKit.Product.SubscriptionInfo.RenewalState
+
+public enum StoreError: Error {
+    case failedVerification
+}
+
+class StoreManager {
+    static let shared = StoreManager(productIds: [])
+    private(set) var nonConsumables: [Product] = []
+    private(set) var consumables: [Product] = []
+    private(set) var subscriptions: [Product] = []
+    var purchasedIdentifiers = Set<String>()
+
+    var updateListenerTask: Task<Void, Error>? = nil
+
+    private let productIds: [String]
+
+    init(productIds: [String]) {
+        self.productIds = productIds
+
+        //Start a transaction listener as close to app launch as possible so you don't miss any transactions.
+        updateListenerTask = listenForTransactionsThatHappenedOutsideTheApp()
     }
-    
-    func buyProduct(_ product: SKProduct) {
-        let payment = SKPayment(product: product)
-        SKPaymentQueue.default().add(payment)
+
+    deinit {
+        updateListenerTask?.cancel()
     }
-    
-    func restorePurchases() {
-        SKPaymentQueue.default().restoreCompletedTransactions()
-    }
-    
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        for transaction in transactions {
-            switch transaction.transactionState {
-            case .purchased, .restored:
-                complete(transaction: transaction)
-            case .failed:
-                fail(transaction: transaction)
-            case .deferred, .purchasing:
-                break
-            @unknown default:
-                break
+
+    func listenForTransactionsThatHappenedOutsideTheApp() -> Task<Void, Error> {
+        return Task.detached {
+            for await result in Transaction.updates {
+                do {
+                    let transaction = try self.checkVerified(result)
+                    await self.updatePurchasedIdentifiers(transaction)
+
+                    //Always finish a transaction.
+                    await transaction.finish()
+                } catch {
+                    //StoreKit has a receipt it can read but it failed verification. Don't deliver content to the user.
+                }
             }
         }
     }
-    
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        DispatchQueue.main.async {
-            self.products = response.products
+
+    func requestProducts() async {
+        do {
+            let storeProducts = try await Product.products(for: productIds)
+            var newNonConsumables: [Product] = []
+            var newSubscriptions: [Product] = []
+            var newConsumables: [Product] = []
+
+            for product in storeProducts {
+                switch product.type {
+                case .consumable:
+                    newConsumables.append(product)
+                case .nonConsumable:
+                    newNonConsumables.append(product)
+                case .autoRenewable:
+                    newSubscriptions.append(product)
+                default:
+                    break
+                }
+            }
+
+            nonConsumables = sortByPrice(newNonConsumables)
+            subscriptions = sortByPrice(newSubscriptions)
+            consumables = sortByPrice(newConsumables)
+        } catch {
+            // Handle error here.
         }
     }
-    
-    func incrementButtonClickCount() {
-           buttonClickCount += 1
-           if buttonClickCount >= 3 {
-               startResetTimer()
-           }
-       }
-       
-   private func startResetTimer() {
-       timeUntilReset = 2 * 60 * 60 // 2 hours in seconds
-       resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-           guard let self = self else { return }
-           if self.timeUntilReset > 0 {
-               self.timeUntilReset -= 1
-           } else {
-               self.resetButtonClickCount()
-           }
-       }
-   }
-   
-   private func resetButtonClickCount() {
-       buttonClickCount = 0
-       resetTimer?.invalidate()
-       resetTimer = nil
-       timeUntilReset = 0
-   }
 
-    func complete(transaction: SKPaymentTransaction) {
-        if let productIdentifier: String? = transaction.payment.productIdentifier {
-            purchasedProductIds.insert(productIdentifier!)
+    func purchase(_ product: Product?) async throws -> Transaction? {
+        guard let result = try? await product?.purchase() else {
+            return nil
         }
-        
-        if let expiryDate = transaction.transactionDate?.addingTimeInterval(1 * 60 * 60 * 24 * 30) { // assuming the subscription is for 1 month
-            subscriptionExpirationDate = expiryDate
+
+        switch result {
+        case .success(let verification):
+            let transaction = try checkVerified(verification)
+            await updatePurchasedIdentifiers(transaction)
+            await transaction.finish()
+            return transaction
+        case .userCancelled, .pending:
+            return nil
+        default:
+            return nil
         }
-        
-        SKPaymentQueue.default().finishTransaction(transaction)
     }
 
+    func isPurchased(_ productIdentifier: String) async throws -> Bool {
+        guard let result = await Transaction.latest(for: productIdentifier) else {
+            return false
+        }
 
-    private func fail(transaction: SKPaymentTransaction) {
-        // Handle failed transaction
+        let transaction = try checkVerified(result)
+
+        //Ignore revoked transactions, they're no longer purchased.
+        //For subscriptions, a user can upgrade in the middle of their subscription period. The lower service
+        //tier will then have the `isUpgraded` flag set and there will be a new transaction for the higher service
+        //tier. Ignore the lower service tier transactions which have been upgraded.
+        return transaction.revocationDate == nil && !transaction.isUpgraded
+    }
+
+    func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
+        switch result {
+        case .unverified:
+            //StoreKit has parsed the JWS but failed verification. Don't deliver content to the user.
+            throw StoreError.failedVerification
+        case .verified(let safe):
+            return safe
+        }
+    }
+
+    func updatePurchasedIdentifiers(_ transaction: Transaction) async {
+        if transaction.revocationDate == nil {
+            purchasedIdentifiers.insert(transaction.productID)
+        } else {
+            purchasedIdentifiers.remove(transaction.productID)
+        }
+    }
+
+    func sortByPrice(_ products: [Product]) -> [Product] {
+        products.sorted(by: { return $0.price < $1.price })
+    }
+
+    func restorePurchases() {
+        Task {
+            try? await AppStore.sync()
+        }
     }
 }
