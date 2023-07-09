@@ -1,78 +1,52 @@
-import Foundation
-import Combine
 import StoreKit
 
-typealias Transaction = StoreKit.Transaction
-typealias RenewalInfo = StoreKit.Product.SubscriptionInfo.RenewalInfo
-typealias RenewalState = StoreKit.Product.SubscriptionInfo.RenewalState
-
-public enum StoreError: Error {
-    case failedVerification
-}
-
-class StoreManager {
-    static let shared = StoreManager(productIds: [])
-    private(set) var nonConsumables: [Product] = []
-    private(set) var consumables: [Product] = []
-    private(set) var subscriptions: [Product] = []
-    var purchasedIdentifiers = Set<String>()
-
-    var updateListenerTask: Task<Void, Error>? = nil
-
-    private let productIds: [String]
-
-    init(productIds: [String]) {
-        self.productIds = productIds
-
-        //Start a transaction listener as close to app launch as possible so you don't miss any transactions.
-        updateListenerTask = listenForTransactionsThatHappenedOutsideTheApp()
+class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SKProductsRequestDelegate {
+    static let shared = StoreManager() // Singleton instance
+    
+    @Published var purchasedProductIds: Set<String> = []
+    @Published var buttonClickCount: Int = 0
+    @Published var timeUntilReset: TimeInterval = 0 // in seconds
+    @Published var subscriptionExpirationDate: Date?
+    
+    private var resetTimer: Timer?
+    
+    private var products: [SKProduct] = []
+    private var productRequest: SKProductsRequest?
+    
+    func requestProducts(withIdentifiers identifiers: Set<String>) {
+        productRequest?.cancel()
+        productRequest = SKProductsRequest(productIdentifiers: identifiers)
+        productRequest?.delegate = self
+        productRequest?.start()
     }
-
-    deinit {
-        updateListenerTask?.cancel()
+    
+    func buyProduct(_ product: SKProduct) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
     }
-
-    func listenForTransactionsThatHappenedOutsideTheApp() -> Task<Void, Error> {
-        return Task.detached {
-            for await result in Transaction.updates {
-                do {
-                    let transaction = try self.checkVerified(result)
-                    await self.updatePurchasedIdentifiers(transaction)
-
-                    //Always finish a transaction.
-                    await transaction.finish()
-                } catch {
-                    //StoreKit has a receipt it can read but it failed verification. Don't deliver content to the user.
-                }
+    
+    func restorePurchases() {
+        SKPaymentQueue.default().restoreCompletedTransactions()
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchased, .restored:
+                complete(transaction: transaction)
+            case .failed:
+                fail(transaction: transaction)
+            case .deferred, .purchasing:
+                break
+            @unknown default:
+                break
             }
         }
     }
-
-    func requestProducts() async {
-        do {
-            let storeProducts = try await Product.products(for: productIds)
-            var newNonConsumables: [Product] = []
-            var newSubscriptions: [Product] = []
-            var newConsumables: [Product] = []
-
-            for product in storeProducts {
-                switch product.type {
-                case .consumable:
-                    newConsumables.append(product)
-                case .nonConsumable:
-                    newNonConsumables.append(product)
-                case .autoRenewable:
-                    newSubscriptions.append(product)
-                default:
-                    break
-                }
-            }
-
-            nonConsumables = sortByPrice(newNonConsumables)
-            subscriptions = sortByPrice(newSubscriptions)
-            consumables = sortByPrice(newConsumables)
-        } catch {
-            // Handle error here.
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        DispatchQueue.main.async {
+            self.products = response.products
         }
     }
     
@@ -124,6 +98,8 @@ class StoreManager {
                 print("Expiry Date: \(expiryDate)")
             }
         }
+        
+        SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     private func calendarComponent(for unit: SKProduct.PeriodUnit) -> Calendar.Component? {
