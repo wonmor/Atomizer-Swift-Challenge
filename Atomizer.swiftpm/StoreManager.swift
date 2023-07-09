@@ -13,7 +13,7 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     private var productRequest: SKProductsRequest?
     
     private let resetTimerKey = "resetTimer"
-    private let timeDelay: Double = 90 // in seconds, 2 * 60 * 60 for 2 hours
+    private let timeDelay: Double = 0.9 * 60 * 60 // in seconds, 2 * 60 * 60 for 2 hours
     
     func requestProducts(withIdentifiers identifiers: Set<String>) {
         productRequest?.cancel()
