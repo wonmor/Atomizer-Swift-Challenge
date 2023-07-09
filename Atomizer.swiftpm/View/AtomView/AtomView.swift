@@ -39,9 +39,9 @@ struct AtomView: View {
                     .multilineTextAlignment(.leading)
                 
                 LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(elements, id: \.symbol) { element in
+                    ForEach(elements.indices, id: \.self) { index in
                         VStack {
-                            NavigationLink(destination: AtomDetailView(element: element), tag: 1, selection: $action) {
+                            NavigationLink(destination: AtomDetailView(element: elements[index]), tag: index + 1, selection: $action) {
                                 EmptyView()
                             }
                             
@@ -53,17 +53,17 @@ struct AtomView: View {
                                     
                                 } else {
                                     //perform some tasks if needed before opening Destination view
-                                    self.action = 1
+                                    self.action = index + 1
                                 }
                             }) {
                                 VStack {
-                                    Text(element.symbol)
+                                    Text(elements[index].symbol)
                                         .font(.system(size: 24, weight: .bold))
                                         .frame(width: 50, height: 50)
-                                        .foregroundColor(Color(AtomView.hexStringToUIColor(hex: element.color)))
+                                        .foregroundColor(Color(AtomView.hexStringToUIColor(hex: elements[index].color)))
                                         .background(Color.white.opacity(0.2))
                                         .clipShape(Circle())
-                                    Text(element.name)
+                                    Text(elements[index].name)
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                 }
