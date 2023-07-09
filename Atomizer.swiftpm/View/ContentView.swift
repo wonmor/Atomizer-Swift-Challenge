@@ -116,6 +116,21 @@ struct ContentView: View {
                     .padding(.top, 16)
                     
                     MemberView(isPlaying: $isShowingSheet)
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .background(.white)
+                       .overlay(
+                           HStack(spacing: 10) {
+                               Image(systemName: "arrow.down.circle")
+                                   .font(Font.system(size: 20))
+                                   .foregroundStyle(.black)
+                               
+                               Text("Scroll Down")
+                                   .font(Font.system(.headline, design: .rounded))
+                                   .foregroundStyle(.black)
+                           }
+                       )
+                       .frame(height: 40)
                 }
             }
             
