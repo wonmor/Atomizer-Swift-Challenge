@@ -9,9 +9,10 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     @Published var subscriptionExpirationDate: Date?
     
     private var resetTimer: Timer?
-    
     private var products: [SKProduct] = []
     private var productRequest: SKProductsRequest?
+    
+    private let resetTimerKey = "resetTimer"
     
     func requestProducts(withIdentifiers identifiers: Set<String>) {
         productRequest?.cancel()
@@ -54,24 +55,60 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
         }
     }
     
-    func incrementButtonClickCount() {
+    func incrementButtonClickCount() -> Bool {
+        guard timeUntilReset <= 0 else {
+            // User still needs to wait
+            print("User still needs to wait!")
+            
+            return false
+        }
+        
         buttonClickCount += 1
+        
+        print("Incrementing button click count...")
+        
         if buttonClickCount >= 3 {
+            print("Starting the timer...")
+            
             startResetTimer()
         }
+        return true
     }
     
     private func startResetTimer() {
-        timeUntilReset = 2 * 60 * 60 // 2 hours in seconds
-        resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            if self.timeUntilReset > 0 {
-                self.timeUntilReset -= 1
-            } else {
-                self.resetButtonClickCount()
-            }
-        }
-    }
+          timeUntilReset = 2 * 60 * 60 // 2 hours in seconds
+          resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+              guard let self = self else { return }
+              if self.timeUntilReset > 0 {
+                  self.timeUntilReset -= 1
+                  UserDefaults.standard.set(self.timeUntilReset, forKey: self.resetTimerKey)
+              } else {
+                  self.resetButtonClickCount()
+              }
+          }
+          
+          // Save the timer start time
+          let startTime = Date()
+          UserDefaults.standard.set(startTime, forKey: resetTimerKey)
+      }
+    
+    func restorePreviousState() {
+           if let startTime = UserDefaults.standard.object(forKey: resetTimerKey) as? Date {
+               let elapsedTime = Date().timeIntervalSince(startTime)
+               let remainingTime = max(0, 2 * 60 * 60 - elapsedTime)
+               timeUntilReset = remainingTime
+               
+               if remainingTime > 0 {
+                   resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                       self?.timeUntilReset -= 1
+                       if self?.timeUntilReset ?? 0 <= 0 {
+                           self?.resetButtonClickCount()
+                       }
+                   }
+               }
+           }
+       }
+       
     
     private func resetButtonClickCount() {
         buttonClickCount = 0
@@ -106,6 +143,20 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     
+    static func displayErrorMessage(title: String, message: String) {
+        // Handle failed transaction
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okayAction)
+        
+        // Get the top-most view controller to present the alert
+        if let topViewController = UIApplication.shared.windows.first?.rootViewController {
+            topViewController.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     private func calendarComponent(for unit: SKProduct.PeriodUnit) -> Calendar.Component? {
         switch unit {
         case .day:
@@ -123,15 +174,6 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     
     private func fail(transaction: SKPaymentTransaction) {
         // Handle failed transaction
-        let alert = UIAlertController(title: "Payment Failed",
-                                      message: "Your payment could not be processed.",
-                                      preferredStyle: .alert)
-        let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okayAction)
-        
-        // Get the top-most view controller to present the alert
-        if let topViewController = UIApplication.shared.windows.first?.rootViewController {
-            topViewController.present(alert, animated: true, completion: nil)
-        }
+        StoreManager.displayErrorMessage(title: "Payment Failed", message: "Your payment could not be processed.")
     }
 }

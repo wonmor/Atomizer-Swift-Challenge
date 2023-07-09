@@ -8,7 +8,9 @@ import Kingfisher
 struct MoleculeView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     
-    @State var molecules: [Molecule] = []
+    @State private var molecules: [Molecule] = []
+    
+    @Binding var isShowingSheet: Bool
     
     let localizationManager = LocalizationManager.shared
     
@@ -29,7 +31,7 @@ struct MoleculeView: View {
                     
                     LazyVGrid(columns: columns, spacing: 24) {
                         ForEach(molecules) { molecule in
-                            MoleculeButton(molecule: molecule)
+                            MoleculeButton(molecule: molecule, isShowingSheet: $isShowingSheet)
                                 .padding(8)
                         }
                     }
@@ -53,7 +55,7 @@ struct MoleculeView: View {
                     
                     LazyVStack(spacing: 24) {
                         ForEach(molecules) { molecule in
-                            MoleculeButton(molecule: molecule)
+                            MoleculeButton(molecule: molecule, isShowingSheet: $isShowingSheet)
                                 .padding(.horizontal, 8)
                         }
                     }
@@ -76,11 +78,5 @@ struct MoleculeView: View {
         } catch {
             print("Error loading JSON: \(error.localizedDescription)")
         }
-    }
-}
-
-struct MoleculeView_Previews: PreviewProvider {
-    static var previews: some View {
-        MoleculeView()
     }
 }

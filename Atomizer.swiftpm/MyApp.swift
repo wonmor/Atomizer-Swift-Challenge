@@ -50,6 +50,7 @@ struct MyApp: App {
         let productIdentifiers = Set(arrayLiteral: "monthly", "yearly")
         
         StoreManager.shared.requestProducts(withIdentifiers: productIdentifiers)
+        StoreManager.shared.restorePreviousState()
     }
     
     var body: some Scene {

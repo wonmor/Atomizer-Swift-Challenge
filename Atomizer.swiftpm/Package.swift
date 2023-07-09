@@ -18,7 +18,7 @@ let package = Package(
             targets: ["AppModule"],
             bundleIdentifier: "com.johnseong.atomizer",
             teamIdentifier: "Z64KRUX3W3",
-            displayVersion: "1.1",
+            displayVersion: "1.2",
             bundleVersion: "1",
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.blue),

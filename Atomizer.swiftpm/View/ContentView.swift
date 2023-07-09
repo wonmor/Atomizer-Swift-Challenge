@@ -51,7 +51,7 @@ struct ContentView: View {
                 )
                 
                 NavigationLink(
-                    destination: MoleculeView(),
+                    destination: MoleculeView(isShowingSheet: $isShowingSheet),
                     tag: 2,
                     selection: $selectedView,
                     label: {
@@ -105,7 +105,7 @@ struct ContentView: View {
                 } else if selectedView == 1 {
                     AtomView()
                 } else if selectedView == 2 {
-                    MoleculeView()
+                    MoleculeView(isShowingSheet: $isShowingSheet)
                 } else if selectedView == 3 {
                     PlaygroundView()
                 }

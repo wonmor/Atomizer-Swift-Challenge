@@ -69,7 +69,7 @@ struct ExploreView: View {
                 }
             
         case "OPEN_MOLECULE_PAGE":
-            MoleculeView()
+            MoleculeView(isShowingSheet: $isShowingSheet)
                 .onAppear() {
                     selectedView = 2
                 }
