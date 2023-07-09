@@ -76,45 +76,45 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
         return true
     }
     
-    func hasActiveMembership() -> Bool {
+    func hasActiveMembership() -> String {
         guard let expirationDate = subscriptionExpirationDate else {
             // No expiration date set
-            var isActiveMembership: Date? = nil
-            
             guard let latestTransaction = retrieveLatestTransaction() else {
-                    return false
-                }
+                return "none"
+            }
+            
+            if let product = products.first(where: { $0.productIdentifier == latestTransaction.payment.productIdentifier }),
+               let duration = product.subscriptionPeriod?.numberOfUnits,
+               let unit = product.subscriptionPeriod?.unit,
+               let component = calendarComponent(for: unit)
+            {
+                let calendar = Calendar.current
+                var components = DateComponents()
+                components.setValue(duration, for: component)
                 
-                if let product = products.first(where: { $0.productIdentifier == latestTransaction.payment.productIdentifier }),
-                   let duration = product.subscriptionPeriod?.numberOfUnits,
-                   let unit = product.subscriptionPeriod?.unit,
-                   let component = calendarComponent(for: unit)
-                {
-                    let calendar = Calendar.current
-                    var components = DateComponents()
-                    components.setValue(duration, for: component)
+                if let expiryDate = calendar.date(byAdding: components, to: latestTransaction.transactionDate ?? Date()) {
+                    subscriptionExpirationDate = expiryDate
                     
-                    if let expiryDate = calendar.date(byAdding: components, to: latestTransaction.transactionDate ?? Date()) {
-                        isActiveMembership = expiryDate
-                        
-                        print("Expiry Date: \(expiryDate)")
-                    }
+                    print("Expiry Date: \(expiryDate)")
+                    
+                    return product.productIdentifier // Return the product identifier as a string
                 }
-                
-                return isActiveMembership != nil
+            }
+            
+            return "none"
         }
         
         let currentDate = Date()
         
         if currentDate < expirationDate {
             // Current date is before the expiration date, membership is active
-            return true
+            return products.first?.productIdentifier ?? "none" // Return the product identifier as a string
         } else {
             // Current date is after the expiration date, membership is inactive
-            return false
+            return "none"
         }
     }
-    
+
     private func retrieveLatestTransaction() -> SKPaymentTransaction? {
         guard let transaction = SKPaymentQueue.default().transactions.last else {
             return nil
