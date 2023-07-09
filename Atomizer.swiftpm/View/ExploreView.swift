@@ -163,26 +163,6 @@ struct ExploreView: View {
                         webViewModel.intention = "NO_NETWORK"
                     }
                 }
-                .sheet(isPresented: $isShowingSheet) {
-                    VStack {
-                        HStack {
-                            Button(action: {
-                                isShowingSheet = false
-                            }) {
-                                Image(systemName: "chevron.left")
-                                    .foregroundColor(.primary)
-                                Text("Back")
-                                    .foregroundColor(.primary)
-                                    .font(Font.system(.headline, design: .rounded))
-                            }
-                            Spacer()
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
-                        
-                        MemberView(isPlaying: $isShowingSheet)
-                    }
-                }
                 .navigationTitle(localizationManager.localizedString(for: "explore"))
                 .toolbar {
                     ToolbarItem(placement: .automatic) {

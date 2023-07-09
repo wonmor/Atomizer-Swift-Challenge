@@ -42,6 +42,7 @@ struct MoleculeButton: View {
                 
                 if result == false {
                     isShowingSheet = true
+                    
                 } else {
                     //perform some tasks if needed before opening Destination view
                     self.action = 1
