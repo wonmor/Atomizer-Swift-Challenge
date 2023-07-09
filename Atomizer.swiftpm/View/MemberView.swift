@@ -55,6 +55,8 @@ struct MemberView: View {
                                     print("Membership status: \(StoreManager.shared.hasActiveMembership())")
                                 }
                         }
+                        .multilineTextAlignment(.center)
+                        
                     } else {
                         VStack {
                             Text("You're officially")
