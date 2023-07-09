@@ -67,7 +67,7 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
         
         print("Incrementing button click count...")
         
-        if buttonClickCount >= 3 {
+        if buttonClickCount >= 2 {
             print("Starting the timer...")
             
             startResetTimer()
