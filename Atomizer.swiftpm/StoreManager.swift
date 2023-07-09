@@ -13,6 +13,7 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     private var productRequest: SKProductsRequest?
     
     private let resetTimerKey = "resetTimer"
+    private let timeDelay: Double = 90 // in seconds, 2 * 60 * 60 for 2 hours
     
     func requestProducts(withIdentifiers identifiers: Set<String>) {
         productRequest?.cancel()
@@ -76,7 +77,7 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     }
     
     private func startResetTimer() {
-          timeUntilReset = 2 * 60 * 60 // 2 hours in seconds
+        timeUntilReset = self.timeDelay // 2 hours in seconds
           resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
               guard let self = self else { return }
               if self.timeUntilReset > 0 {
@@ -95,7 +96,7 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     func restorePreviousState() {
            if let startTime = UserDefaults.standard.object(forKey: resetTimerKey) as? Date {
                let elapsedTime = Date().timeIntervalSince(startTime)
-               let remainingTime = max(0, 2 * 60 * 60 - elapsedTime)
+               let remainingTime = max(0, self.timeDelay - elapsedTime)
                timeUntilReset = remainingTime
                
                if remainingTime > 0 {
