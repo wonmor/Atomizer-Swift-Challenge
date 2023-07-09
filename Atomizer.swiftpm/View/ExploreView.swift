@@ -63,7 +63,7 @@ struct ExploreView: View {
             }
             
         case "OPEN_ATOM_PAGE":
-            AtomView()
+            AtomView(isShowingSheet: $isShowingSheet)
                 .onAppear() {
                     selectedView = 1
                 }
