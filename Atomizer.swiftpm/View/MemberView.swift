@@ -7,16 +7,16 @@ struct MemberView: View {
     @ObservedObject var storeManager = StoreManager.shared
     
     var timeUntilReset: Double {
-            return storeManager.timeUntilReset
-        }
+        return storeManager.timeUntilReset
+    }
+    
+    var formattedTime: String {
+        let hours = Int(timeUntilReset) / 3600
+        let minutes = (Int(timeUntilReset) % 3600) / 60
+        let seconds = Int(timeUntilReset) % 60
         
-        var formattedTime: String {
-            let hours = Int(timeUntilReset) / 3600
-            let minutes = (Int(timeUntilReset) % 3600) / 60
-            let seconds = Int(timeUntilReset) % 60
-            
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        }
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -25,8 +25,8 @@ struct MemberView: View {
                     Spacer()
                     
                     Text(formattedTime == "00:00:00" ? "Get Atomizer Tenure" : formattedTime)
-                                    .font(Font.system(size: 32, weight: .bold, design: .rounded))
-                                    .fontWeight(.bold)
+                        .font(Font.system(size: 32, weight: .bold, design: .rounded))
+                        .fontWeight(.bold)
                     
                     if (formattedTime != "00:00:00") {
                         Text("until you can view the next element")
