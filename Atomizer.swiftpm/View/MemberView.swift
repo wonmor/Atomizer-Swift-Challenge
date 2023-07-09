@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 import AVKit
 
 struct MemberView: View {
@@ -16,6 +17,17 @@ struct MemberView: View {
         let seconds = Int(timeUntilReset) % 60
         
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+    
+    @MainActor
+    func manageSubscriptions() async {
+        if let windowScene = UIApplication.shared.connectedScenes.first {
+            do {
+                try await AppStore.showManageSubscriptions(in: windowScene as! UIWindowScene)
+            } catch {
+                //error
+            }
+        }
     }
     
     var body: some View {
@@ -47,7 +59,7 @@ struct MemberView: View {
                         VStack {
                             Text("You're officially")
                                 .font(Font.system(size: 24, weight: .bold, design: .rounded))
-                   
+                            
                             Text("tenured!")
                                 .font(Font.system(size: 32, weight: .bold, design: .rounded))
                                 .foregroundStyle(.green)
@@ -144,9 +156,9 @@ struct MemberView: View {
                             } else if (StoreManager.shared.hasActiveMembership() == "yearly") {
                                 VStack(spacing: 10) {
                                     Image(systemName: "checkmark.circle.fill")
-                                                .resizable()
-                                                .foregroundColor(.green)
-                                                .frame(width: 40, height: 40)
+                                        .resizable()
+                                        .foregroundColor(.green)
+                                        .frame(width: 40, height: 40)
                                     
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.green, lineWidth: 2)
@@ -171,7 +183,7 @@ struct MemberView: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical)
                     
-                    VStack(spacing: 10) {
+                    if (StoreManager.shared.hasActiveMembership() == "none") {
                         Button(action: {
                             StoreManager.shared.restorePurchases()
                         }) {
@@ -181,6 +193,21 @@ struct MemberView: View {
                                 .padding(.vertical, 8)
                                 .padding(.horizontal, 20)
                                 .background(Color.indigo)
+                                .cornerRadius(10)
+                        }
+                        
+                    } else {
+                        Button(action: {
+                            Task {
+                                await manageSubscriptions()
+                            }
+                        }) {
+                            Text("Manage Subscription")
+                                .foregroundColor(.white)
+                                .font(Font.system(size: 16, weight: .bold, design: .rounded))
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 20)
+                                .background(Color.blue)
                                 .cornerRadius(10)
                         }
                     }
