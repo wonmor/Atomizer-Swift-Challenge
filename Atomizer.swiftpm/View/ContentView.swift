@@ -92,7 +92,7 @@ struct ContentView: View {
                         tag: 6,
                         selection: $selectedView,
                         label: {
-                            Label(localizationManager.localizedString(for: "homo-and-lumo-title"), systemImage: "figure.2.and.child.holdinghands")
+                            Label(localizationManager.localizedString(for: "homo-and-lumo-title"), systemImage: "point.3.connected.trianglepath.dotted")
                         }
                     )
                 }

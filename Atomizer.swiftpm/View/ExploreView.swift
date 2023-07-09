@@ -46,7 +46,8 @@ struct ExploreView: View {
                 switch webViewModel.metadata?["type"] {
                 case let type as String where type == "molecule":
                     if let formula = webViewModel.metadata?["formula"] as? String {
-                        if (StoreManager.shared.hasActiveMembership() != "none") {
+                        // Reverse below conditional in production...
+                        if (StoreManager.shared.hasActiveMembership() == "none") {
                             if loadMolecule(formula: formula) != nil {
                                 MoleculeDetailView(molecule: loadMolecule(formula: formula)!)
                             }
@@ -62,7 +63,8 @@ struct ExploreView: View {
                     
                 case let type as String where type == "atom":
                     if let formula = webViewModel.metadata?["formula"] as? String {
-                        if (StoreManager.shared.hasActiveMembership() != "none") {
+                        // Reverse below conditional in production...
+                        if (StoreManager.shared.hasActiveMembership() == "none") {
                             if loadElement(formula: formula) != nil {
                                 AtomDetailView(element: loadElement(formula: formula)!)
                             }
