@@ -39,6 +39,9 @@ struct MemberView: View {
                         .font(Font.system(.headline, design: .rounded))
                         .multilineTextAlignment(.center)
                         .padding()
+                        .onAppear() {
+                            print("Membership status: \(StoreManager.shared.hasActiveMembership())")
+                        }
                     
                     if let videoURL = Bundle.main.url(forResource: "promo", withExtension: "mp4") {
                         PlayerView(videoURL: videoURL, isPlaying: $isPlaying)

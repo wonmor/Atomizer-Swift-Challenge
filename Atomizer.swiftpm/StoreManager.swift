@@ -76,6 +76,58 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
         return true
     }
     
+    func hasActiveMembership() -> Bool {
+        guard let expirationDate = subscriptionExpirationDate else {
+            // No expiration date set
+            var isActiveMembership: Date? = nil
+            
+            guard let latestTransaction = retrieveLatestTransaction() else {
+                    return false
+                }
+                
+                if let product = products.first(where: { $0.productIdentifier == latestTransaction.payment.productIdentifier }),
+                   let duration = product.subscriptionPeriod?.numberOfUnits,
+                   let unit = product.subscriptionPeriod?.unit,
+                   let component = calendarComponent(for: unit)
+                {
+                    let calendar = Calendar.current
+                    var components = DateComponents()
+                    components.setValue(duration, for: component)
+                    
+                    if let expiryDate = calendar.date(byAdding: components, to: latestTransaction.transactionDate ?? Date()) {
+                        isActiveMembership = expiryDate
+                        
+                        print("Expiry Date: \(expiryDate)")
+                    }
+                }
+                
+                return isActiveMembership != nil
+        }
+        
+        let currentDate = Date()
+        
+        if currentDate < expirationDate {
+            // Current date is before the expiration date, membership is active
+            return true
+        } else {
+            // Current date is after the expiration date, membership is inactive
+            return false
+        }
+    }
+    
+    private func retrieveLatestTransaction() -> SKPaymentTransaction? {
+        guard let transaction = SKPaymentQueue.default().transactions.last else {
+            return nil
+        }
+        
+        // Check if the transaction is completed or restored
+        if transaction.transactionState == .purchased || transaction.transactionState == .restored {
+            return transaction
+        }
+        
+        return nil
+    }
+    
     private func startResetTimer() {
         timeUntilReset = self.timeDelay // 2 hours in seconds
           resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
