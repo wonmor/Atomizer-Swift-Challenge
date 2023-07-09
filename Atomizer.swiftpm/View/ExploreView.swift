@@ -46,14 +46,33 @@ struct ExploreView: View {
                 switch webViewModel.metadata?["type"] {
                 case let type as String where type == "molecule":
                     if let formula = webViewModel.metadata?["formula"] as? String {
-                        // The force unwrapped value below should later be handled with error message, as there might be more molecules added to the website but not necessarily reflected back on the app on time.
-                        MoleculeDetailView(molecule: loadMolecule(formula: formula)!)
+                        if (StoreManager.shared.hasActiveMembership()) {
+                            if loadMolecule(formula: formula) != nil {
+                                MoleculeDetailView(molecule: loadMolecule(formula: formula)!)
+                            }
+                        } else {
+                            webViewWrapper()
+                                .onAppear() {
+                                    isShowingSheet = true
+                                }
+                        }
+                        
                         // Do NOT change selectedView variable here. It will break the code.
                     }
                     
                 case let type as String where type == "atom":
                     if let formula = webViewModel.metadata?["formula"] as? String {
-                        AtomDetailView(element: loadElement(formula: formula)!)
+                        if (StoreManager.shared.hasActiveMembership()) {
+                            if loadElement(formula: formula) != nil {
+                                AtomDetailView(element: loadElement(formula: formula)!)
+                            }
+                        } else {
+                            webViewWrapper()
+                                .onAppear() {
+                                    isShowingSheet = true
+                                }
+                        }
+                        
                         // Do NOT change selectedView variable here. It will break the code.
                     }
                     
