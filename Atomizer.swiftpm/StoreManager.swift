@@ -20,6 +20,10 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
         productRequest?.start()
     }
     
+    func getProducts() -> [SKProduct] {
+        return products
+    }
+    
     func buyProduct(_ product: SKProduct) {
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)

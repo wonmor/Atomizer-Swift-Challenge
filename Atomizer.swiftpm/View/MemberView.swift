@@ -4,6 +4,8 @@ import AVKit
 struct MemberView: View {
     @Binding var isPlaying: Bool
     
+    @ObservedObject var storeManager = StoreManager.shared
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -30,6 +32,9 @@ struct MemberView: View {
                     
                     HStack(spacing: 20) {
                         Button(action: {
+                            if let productToBuy = storeManager.getProducts().first(where: { $0.productIdentifier == "monthly" }) {
+                                StoreManager.shared.buyProduct(productToBuy)
+                            }
                             
                         }) {
                             RoundedRectangle(cornerRadius: 10)
@@ -49,7 +54,10 @@ struct MemberView: View {
                         }
                         
                         Button(action: {
-                            
+                            // Assuming you have obtained the available products in the response
+                            if let productToBuy = storeManager.getProducts().first(where: { $0.productIdentifier == "yearly" }) {
+                                StoreManager.shared.buyProduct(productToBuy)
+                            }
                         }) {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.blue, lineWidth: 2)
@@ -74,7 +82,7 @@ struct MemberView: View {
                     
                     VStack(spacing: 10) {
                         Button(action: {
-                            
+                            StoreManager.shared.restorePurchases()
                         }) {
                             Text("Restore Purchases")
                                 .foregroundColor(.white)

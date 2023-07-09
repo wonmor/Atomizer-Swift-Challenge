@@ -48,6 +48,8 @@ import SwiftUI
 struct MyApp: App {
     init() {
         let productIdentifiers = Set(arrayLiteral: "monthly", "yearly")
+        
+        StoreManager.shared.requestProducts(withIdentifiers: productIdentifiers)
     }
     
     var body: some Scene {
