@@ -58,7 +58,7 @@ struct AtomView: View {
                             }) {
                                 VStack {
                                     Text(elements[index].symbol)
-                                        .font(.system(size: 24, weight: .bold))
+                                        .font(Font.system(size: 24, weight: .bold, design: .rounded))
                                         .frame(width: 50, height: 50)
                                         .foregroundColor(Color(AtomView.hexStringToUIColor(hex: elements[index].color)))
                                         .background(Color.white.opacity(0.2))

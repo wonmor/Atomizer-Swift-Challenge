@@ -31,9 +31,11 @@ struct ExploreView: View {
     
     @State private var lastHostingView: UIView!
     @State private var intention: String = ""
+    @State private var isNotMaxedOut: Bool = true
     
     @ObservedObject var articleData = ArticleViewModel()
     @ObservedObject var webViewModel = WebViewModel()
+    @ObservedObject var storeManager = StoreManager.shared
     
     var body: some View {
         // A basic finite-state machine
@@ -46,10 +48,12 @@ struct ExploreView: View {
                 switch webViewModel.metadata?["type"] {
                 case let type as String where type == "molecule":
                     if let formula = webViewModel.metadata?["formula"] as? String {
-                        // Reverse below conditional in production...
-                        if (StoreManager.shared.hasActiveMembership() == "none") {
-                            if loadMolecule(formula: formula) != nil {
-                                MoleculeDetailView(molecule: loadMolecule(formula: formula)!)
+                        if (isNotMaxedOut) {
+                            if let molecule = loadMolecule(formula: formula) {
+                                MoleculeDetailView(molecule: molecule)
+                                    .onAppear() {
+                                        isNotMaxedOut = storeManager.incrementButtonClickCount()
+                                    }
                             }
                         } else {
                             webViewWrapper()
@@ -57,16 +61,25 @@ struct ExploreView: View {
                                     isShowingSheet = true
                                 }
                         }
-                        
-                        // Do NOT change selectedView variable here. It will break the code.
+                    } else {
+                        webViewWrapper()
+                            .onAppear() {
+                                isShowingSheet = true
+                            }
                     }
+                    
+                    // Do NOT change selectedView variable here. It will break the code.
+                    
                     
                 case let type as String where type == "atom":
                     if let formula = webViewModel.metadata?["formula"] as? String {
-                        // Reverse below conditional in production...
-                        if (StoreManager.shared.hasActiveMembership() == "none") {
-                            if loadElement(formula: formula) != nil {
-                                AtomDetailView(element: loadElement(formula: formula)!)
+                        
+                        if (isNotMaxedOut) {
+                            if let element = loadElement(formula: formula) {
+                                AtomDetailView(element: element)
+                                    .onAppear() {
+                                        isNotMaxedOut = storeManager.incrementButtonClickCount()
+                                    }
                             }
                         } else {
                             webViewWrapper()
@@ -74,9 +87,15 @@ struct ExploreView: View {
                                     isShowingSheet = true
                                 }
                         }
-                        
-                        // Do NOT change selectedView variable here. It will break the code.
+                    } else {
+                        webViewWrapper()
+                            .onAppear() {
+                                isShowingSheet = true
+                            }
                     }
+                    
+                    // Do NOT change selectedView variable here. It will break the code.
+                    
                     
                 default:
                     webViewWrapper()
@@ -100,7 +119,7 @@ struct ExploreView: View {
                 .onAppear() {
                     selectedView = nil
                 }
-
+            
             
         default:
             webViewWrapper()
