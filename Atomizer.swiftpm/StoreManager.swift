@@ -13,7 +13,12 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     private var productRequest: SKProductsRequest?
     
     private let resetTimerKey = "resetTimer"
-    private let timeDelay: Double = 0.9 * 60 * 60 // in seconds, 2 * 60 * 60 for 2 hours
+    private let timeDelay: Double = 2 * 60 * 60 // 2 hours in seconds
+    
+    override init() {
+        super.init()
+        restorePreviousState()
+    }
     
     func requestProducts(withIdentifiers identifiers: Set<String>) {
         productRequest?.cancel()
@@ -129,46 +134,48 @@ class StoreManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SK
     }
     
     private func startResetTimer() {
-        timeUntilReset = self.timeDelay // 2 hours in seconds
-          resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-              guard let self = self else { return }
-              if self.timeUntilReset > 0 {
-                  self.timeUntilReset -= 1
-                  UserDefaults.standard.set(self.timeUntilReset, forKey: self.resetTimerKey)
-              } else {
-                  self.resetButtonClickCount()
-              }
-          }
-          
-          // Save the timer start time
-          let startTime = Date()
-          UserDefaults.standard.set(startTime, forKey: resetTimerKey)
-      }
-    
+         timeUntilReset = self.timeDelay // 2 hours in seconds
+         resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+             guard let self = self else { return }
+             if self.timeUntilReset > 0 {
+                 self.timeUntilReset -= 1
+                 UserDefaults.standard.set(self.timeUntilReset, forKey: self.resetTimerKey)
+             } else {
+                 self.resetButtonClickCount()
+             }
+         }
+         
+         // Save the timer start time
+         let startTime = Date()
+         UserDefaults.standard.set(startTime, forKey: resetTimerKey)
+     }
+     
     func restorePreviousState() {
-           if let startTime = UserDefaults.standard.object(forKey: resetTimerKey) as? Date {
-               let elapsedTime = Date().timeIntervalSince(startTime)
-               let remainingTime = max(0, self.timeDelay - elapsedTime)
-               timeUntilReset = remainingTime
-               
-               if remainingTime > 0 {
-                   resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-                       self?.timeUntilReset -= 1
-                       if self?.timeUntilReset ?? 0 <= 0 {
-                           self?.resetButtonClickCount()
-                       }
-                   }
-               }
-           }
-       }
-       
+        if let startTime = UserDefaults.standard.object(forKey: resetTimerKey) as? Date {
+            let elapsedTime = Date().timeIntervalSince(startTime)
+            let remainingTime = max(0, self.timeDelay - elapsedTime)
+            timeUntilReset = remainingTime
+            
+            if remainingTime > 0 {
+                resetTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                    self?.timeUntilReset -= 1
+                    if self?.timeUntilReset ?? 0 <= 0 {
+                        self?.resetButtonClickCount()
+                    }
+                }
+            } else {
+                resetButtonClickCount()
+            }
+        }
+    }
     
     private func resetButtonClickCount() {
-        buttonClickCount = 0
-        resetTimer?.invalidate()
-        resetTimer = nil
-        timeUntilReset = 0
-    }
+           buttonClickCount = 0
+           resetTimer?.invalidate()
+           resetTimer = nil
+           timeUntilReset = 0
+           UserDefaults.standard.removeObject(forKey: resetTimerKey)
+       }
     
     func complete(transaction: SKPaymentTransaction) {
         if let productIdentifier: String? = transaction.payment.productIdentifier {
