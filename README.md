@@ -2,7 +2,7 @@
 
 # Atomizer AR
 
-> **Visualizing Quantum Mechanics, Reimagined.**
+> **This public archive was not intended for use in production. Please read the license carefully before using any parts or segments of this source code.**
 
 Developed by John Seong, 2023. A WWDC23 Swift Student Challenge Submission.
 Built using Xcode 14 on macOS Ventura, designed to run on iPhone, iPad, and ARM-based Macs.
