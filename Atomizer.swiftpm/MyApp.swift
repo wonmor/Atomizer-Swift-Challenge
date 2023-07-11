@@ -46,13 +46,6 @@ import SwiftUI
 
 @main
 struct MyApp: App {
-    init() {
-        let productIdentifiers = Set(arrayLiteral: "monthly", "yearly")
-        
-        StoreManager.shared.requestProducts(withIdentifiers: productIdentifiers)
-        StoreManager.shared.restorePreviousState()
-    }
-    
     var body: some Scene {
         WindowGroup {
             ContentView()
