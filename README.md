@@ -7,6 +7,10 @@
 Developed by John Seong, 2023. A WWDC23 Swift Student Challenge Submission.
 Built using Xcode 14 on macOS Ventura, designed to run on iPhone, iPad, and ARM-based Macs.
 
+| iOS, iPadOS, and macOS |
+|:-:|
+| [<img src="Docs/appstore-badge.png" height="50">](https://apps.apple.com/us/app/atomizer-ar/id6449015706) |
+
 ---
 
 ![346091630_962156048139650_5797215412402448016_n](https://github.com/wonmor/wonmor/assets/35755386/b606d6ee-5c5a-482a-8c6e-b66be7aebad2)
